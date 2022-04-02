@@ -1,0 +1,14 @@
+{
+  "name": "ayvajs-docs",
+  "version": "0.10.0",
+  "description": "JavaScript Documentation and Tutorials for Ayva.js",
+  "scripts": {
+    "generate": "sh generate.sh"
+  },
+  "author": "soritesparadox",
+  "license": "MIT",
+  "dependencies": {
+    "better-docs": "2.3.2",
+    "jsdoc": "3.6.7"
+  }
+}

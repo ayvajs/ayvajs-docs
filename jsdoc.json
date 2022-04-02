@@ -1,0 +1,39 @@
+{
+  "source": {
+    "include": ["./ayvajs/src"]
+  },
+  "plugins": [
+    "better-docs/category",
+    "plugins/markdown"
+  ],
+  "opts": {
+    "encoding": "utf8",
+    "destination": "docs/",
+    "recurse": true,
+    "verbose": true,
+    "readme": "./ayvajs/README.md",
+    "template": "node_modules/better-docs",
+    "tutorials": "./tutorials"
+  },
+  "templates": {
+    "better-docs": {
+      "name": "Ayva Documentation",
+      "css": "custom-styles.css",
+      "navLinks": [
+        {
+          "label": "Github",
+          "href": "https://github.com/ayvajs/ayvajs"
+        }
+      ]
+    },
+    "search": true,
+    "default": {
+      "includeDate": false,
+      "staticFiles": {
+        "include": [
+            "./docs-static"
+        ]
+      }
+    }
+  }
+}
