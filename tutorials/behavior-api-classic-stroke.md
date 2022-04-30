@@ -194,7 +194,8 @@ ayva.do(new ClassicStroke({
   <br/><br/>
   <code>from</code> - position of the twist axis when at the <i>bottom</i> of a stroke.<br/>
   <code>to</code> - position of the twist axis when at the <i>top</i> of a stroke.<br/>
-  <code>phase</code> - phase of the cos wave in multiples of π/2<br/><br/>
+  <code>phase</code> - phase of the cos wave in multiples of π/2<br/>
+  <code>ecc</code> - the eccentricity of the cos wave<br/><br/>
   <b>Defaults to <code>null</code></b> (i.e. no twist).
 </p>
 
@@ -203,11 +204,38 @@ ayva.do(new ClassicStroke({
   twist: {
     from: 0.5,
     to: 1,
-    phase: 1
+    phase: 1,
+    ecc: 1
   }
 }));
 ```
 <a href="./tutorial-examples/classic-stroke-example-twist.html" target="_blank">Try it out!</a>
+
+<h5 class="parameter-heading">pitch</h5>
+<div class="type-section">
+  <b>Type:</b> Object
+</div>
+<p>
+  A configuration object for a cos shaped pitch with the following parameters:
+  <br/><br/>
+  <code>from</code> - position of the pitch axis when at the <i>bottom</i> of a stroke.<br/>
+  <code>to</code> - position of the pitch axis when at the <i>top</i> of a stroke.<br/>
+  <code>phase</code> - phase of the cos wave in multiples of π/2<br/>
+  <code>ecc</code> - the eccentricity of the cos wave<br/><br/>
+  <b>Defaults to <code>null</code></b> (i.e. no pitch).
+</p>
+
+```java
+ayva.do(new ClassicStroke({
+  pitch: {
+    from: 0.5,
+    to: 1,
+    phase: 1,
+    ecc: 1
+  }
+}));
+```
+<a href="./tutorial-examples/classic-stroke-example-pitch.html" target="_blank">Try it out!</a>
 
 ### All Together Now
 

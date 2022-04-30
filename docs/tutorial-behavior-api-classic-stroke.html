@@ -80,6 +80,10 @@
                                 Behavior API
                             </a>
                         
+                            <a class="dropdown-item" href="tutorial-ayva-stroker-lite.html">
+                                Ayva Stroker Lite
+                            </a>
+                        
                         </div>
                     </div>
                 </div>
@@ -111,7 +115,7 @@
             
             <nav>
                 
-                    <div class="category"><h3>Tutorials</h3><ul><li><a href="tutorial-getting-started.html">Getting Started</a></li><li><a href="tutorial-configuration.html">Configuration</a></li><li><a href="tutorial-motion-api.html">Motion API</a><ul><li><a href="tutorial-motion-api-overview.html">Overview</a></li><li><a href="tutorial-motion-api-value-providers.html">Value Providers</a></li><li><a href="tutorial-motion-api-multiaxis.html">Multiaxis Movements</a></li><li><a href="tutorial-motion-api-syntactic-sugar.html">Syntactic Sugar ($)</a></li></ul></li><li><a href="tutorial-behavior-api.html">Behavior API</a><ul><li><a href="tutorial-behavior-api-overview.html">Overview</a></li><li><a href="tutorial-behavior-api-classic-stroke.html">Classic Stroke</a></li><li><a href="tutorial-behavior-api-tempest-stroke.html">Tempest Stroke</a></li><li><a href="tutorial-behavior-api-custom.html">Custom Behaviors</a></li><li><a href="tutorial-behavior-api-ayva-behavior.html">Ayva Behaviors</a></li></ul></li></ul></div>
+                    <div class="category"><h3>Tutorials</h3><ul><li><a href="tutorial-getting-started.html">Getting Started</a></li><li><a href="tutorial-configuration.html">Configuration</a></li><li><a href="tutorial-motion-api.html">Motion API</a><ul><li><a href="tutorial-motion-api-overview.html">Overview</a></li><li><a href="tutorial-motion-api-value-providers.html">Value Providers</a></li><li><a href="tutorial-motion-api-multiaxis.html">Multiaxis Movements</a></li><li><a href="tutorial-motion-api-syntactic-sugar.html">Syntactic Sugar ($)</a></li></ul></li><li><a href="tutorial-behavior-api.html">Behavior API</a><ul><li><a href="tutorial-behavior-api-overview.html">Overview</a></li><li><a href="tutorial-behavior-api-classic-stroke.html">Classic Stroke</a></li><li><a href="tutorial-behavior-api-tempest-stroke.html">Tempest Stroke</a></li><li><a href="tutorial-behavior-api-custom.html">Custom Behaviors</a></li><li><a href="tutorial-behavior-api-ayva-behavior.html">Ayva Behaviors</a></li></ul></li><li><a href="tutorial-ayva-stroker-lite.html">Ayva Stroker Lite</a></li></ul></div>
                 
             </nav>
         </div>
@@ -273,18 +277,43 @@ ayva.do(new ClassicStroke({
   <br/><br/>
   <code>from</code> - position of the twist axis when at the <i>bottom</i> of a stroke.<br/>
   <code>to</code> - position of the twist axis when at the <i>top</i> of a stroke.<br/>
-  <code>phase</code> - phase of the cos wave in multiples of π/2<br/><br/>
+  <code>phase</code> - phase of the cos wave in multiples of π/2<br/>
+  <code>ecc</code> - the eccentricity of the cos wave<br/><br/>
   <b>Defaults to <code>null</code></b> (i.e. no twist).
 </p>
 <pre class="prettyprint source lang-java"><code>ayva.do(new ClassicStroke({
   twist: {
     from: 0.5,
     to: 1,
-    phase: 1
+    phase: 1,
+    ecc: 1
   }
 }));
 </code></pre>
 <p><a href="./tutorial-examples/classic-stroke-example-twist.html" target="_blank">Try it out!</a></p>
+<h5 class="parameter-heading">pitch</h5>
+<div class="type-section">
+  <b>Type:</b> Object
+</div>
+<p>
+  A configuration object for a cos shaped pitch with the following parameters:
+  <br/><br/>
+  <code>from</code> - position of the pitch axis when at the <i>bottom</i> of a stroke.<br/>
+  <code>to</code> - position of the pitch axis when at the <i>top</i> of a stroke.<br/>
+  <code>phase</code> - phase of the cos wave in multiples of π/2<br/>
+  <code>ecc</code> - the eccentricity of the cos wave<br/><br/>
+  <b>Defaults to <code>null</code></b> (i.e. no pitch).
+</p>
+<pre class="prettyprint source lang-java"><code>ayva.do(new ClassicStroke({
+  pitch: {
+    from: 0.5,
+    to: 1,
+    phase: 1,
+    ecc: 1
+  }
+}));
+</code></pre>
+<p><a href="./tutorial-examples/classic-stroke-example-pitch.html" target="_blank">Try it out!</a></p>
 <h3>All Together Now</h3>
 <p>All of these parameters can be used together to create a unique experience:</p>
 <pre class="prettyprint source lang-java"><code>ayva.do(new ClassicStroke({
