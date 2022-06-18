@@ -1,0 +1,407 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title> util/validator.js</title>
+
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="./build/entry.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,400,700|Inconsolata,700" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/iframe.css">
+  <link type="text/css" rel="stylesheet" href="custom-styles.css">
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+  
+</head>
+
+
+
+<body class="layout">
+    <div id="stickyNavbarOverlay"></div>
+    
+
+<div class="top-nav">
+    <div class="inner">
+        <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+        <div class="logo">
+            
+             
+                <a href="index.html">
+                    <h1 class="navbar-item">Ayva Documentation</h1>
+                </a>
+            
+        </div>
+        <div class="menu">
+            
+            <div class="navigation">
+                <a
+                    href="index.html"
+                    class="link"
+                >
+                    API Documentation
+                </a>
+                
+                <div class="dropdown is-hoverable is-right">
+                    <a class="dropdown-trigger link">
+                        Tutorials
+                        <i class="fas fa-chevron-down fa-xs"></i>
+                    </a>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-content">
+                        
+                            <a class="dropdown-item" href="tutorial-getting-started.html">
+                                Getting Started
+                            </a>
+                        
+                            <a class="dropdown-item" href="tutorial-configuration.html">
+                                Configuration
+                            </a>
+                        
+                            <a class="dropdown-item" href="tutorial-motion-api.html">
+                                Motion API
+                            </a>
+                        
+                            <a class="dropdown-item" href="tutorial-behavior-api.html">
+                                Behavior API
+                            </a>
+                        
+                            <a class="dropdown-item" href="tutorial-ayva-stroker-lite.html">
+                                Ayva Stroker Lite
+                            </a>
+                        
+                        </div>
+                    </div>
+                </div>
+                
+                 
+                    
+                        <a
+                            class="link user-link "
+                            href="https://github.com/ayvajs/ayvajs"
+                        >
+                            Github
+                        </a>
+                    
+                
+                
+            </div>
+        </div>
+    </div>
+</div>
+    <div id="main">
+        <div
+            class="sidebar "
+            id="sidebarNav"
+        >
+            
+                <div class="search-wrapper">
+                    <input id="search" type="text" placeholder="Search docs..." class="input">
+                </div>
+            
+            <nav>
+                
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Classes</h3><ul><li><a href="Ayva.html">Ayva</a></li><li><a href="AyvaBehavior.html">AyvaBehavior</a></li><li><a href="ClassicStroke.html">ClassicStroke</a></li><li><a href="TempestStroke.html">TempestStroke</a></li><li><a href="VariableDuration.html">VariableDuration</a></li><li><a href="WebSerialDevice.html">WebSerialDevice</a></li></ul></div>
+                
+            </nav>
+        </div>
+        <div class="core" id="main-content-wrapper">
+            <div class="content">
+                <header class="page-title">
+                    <p>Source</p>
+                    <h1>util/validator.js</h1>
+                </header>
+                
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import {
+  has, fail, validNumber
+} from './util.js';
+
+export default {
+  /**
+   * All the validation on movement descriptors :O
+   *
+   * @param {Array} movements
+   */
+  validateMovements (movements, axes, defaultAxis) {
+    const movementMap = {};
+    let atLeastOneDuration = false;
+    let atLeastOneNonBoolean = false;
+
+    if (!movements || !movements.length) {
+      fail('Must supply at least one movement.');
+    }
+
+    movements.forEach((movement) => {
+      if (!movement || typeof movement !== 'object') {
+        fail(`Invalid movement: ${movement}`);
+      }
+
+      const invalidValue = (name) => fail(`Invalid value for parameter '${name}': ${movement[name]}`);
+      const hasTo = has(movement, 'to');
+      const hasSpeed = has(movement, 'speed');
+      const hasDuration = has(movement, 'duration');
+      const hasValue = has(movement, 'value');
+      const axis = movement.axis || defaultAxis;
+
+      if (!axis) {
+        fail('No default axis configured. Must specify an axis for each movement.');
+      }
+
+      if (has(movement, 'axis')) {
+        if (typeof movement.axis !== 'string' || !movement.axis.trim() || !axes[movement.axis]) {
+          invalidValue('axis');
+        }
+      }
+
+      if (hasTo) {
+        let invalidTo = false;
+
+        if (axes[axis].type === 'boolean') {
+          invalidTo = typeof movement.to !== 'boolean';
+        } else {
+          invalidTo = !Number.isFinite(movement.to) || (movement.to &lt; 0 || movement.to > 1);
+        }
+
+        if (invalidTo) {
+          invalidValue('to');
+        }
+      } else if (!hasValue) {
+        fail('Must provide a \'to\' property or \'value\' function.');
+      }
+
+      if (hasSpeed &amp;&amp; hasDuration) {
+        fail('Cannot supply both speed and duration.');
+      }
+
+      if (hasSpeed || hasDuration) {
+        atLeastOneDuration = true;
+
+        if (hasSpeed &amp;&amp; (!Number.isFinite(movement.speed) || movement.speed &lt;= 0)) {
+          invalidValue('speed');
+        } else if (hasDuration &amp;&amp; (!Number.isFinite(movement.duration) || movement.duration &lt;= 0)) {
+          invalidValue('duration');
+        }
+      }
+
+      if (hasSpeed &amp;&amp; !hasTo) {
+        fail('Must provide a target position when specifying speed.');
+      }
+
+      if (hasValue &amp;&amp; typeof movement.value !== 'function') {
+        fail('\'value\' must be a function.');
+      }
+
+      if (has(movement, 'sync')) {
+        if (typeof movement.sync !== 'string' || !movement.sync.trim()) {
+          invalidValue('sync');
+        }
+
+        if (has(movement, 'speed') || has(movement, 'duration')) {
+          fail(`Cannot specify a speed or duration when sync property is present: ${movement.axis}`);
+        }
+      }
+
+      if (axes[axis].type !== 'boolean') {
+        atLeastOneNonBoolean = true;
+      } else {
+        if (has(movement, 'speed')) {
+          fail(`Cannot specify speed for boolean axes: ${axis}`);
+        }
+
+        if (has(movement, 'duration') &amp;&amp; hasTo &amp;&amp; !hasValue) {
+          // { to: &lt;boolean>, duration: &lt;number> } is invalid (for now).
+          fail('Cannot specify a duration for a boolean axis movement with constant value.');
+        }
+      }
+
+      if (movementMap[axis]) {
+        fail(`Duplicate axis movement: ${axis}`);
+      }
+
+      movementMap[axis] = movement;
+
+      if (axes[axis].alias) {
+        movementMap[axes[axis].alias] = movement;
+      }
+    });
+
+    movements.forEach((movement) => {
+      let syncMovement = movement;
+      const originalMovementAxis = movement.axis;
+
+      while (has(syncMovement, 'sync')) {
+        if (!movementMap[syncMovement.sync]) {
+          fail(`Cannot sync with axis not specified in movement: ${syncMovement.axis} -> ${syncMovement.sync}`);
+        }
+
+        syncMovement = movementMap[syncMovement.sync];
+
+        if (syncMovement.sync === originalMovementAxis) {
+          fail('Sync axes cannot form a cycle.');
+        }
+      }
+    });
+
+    if (!atLeastOneDuration &amp;&amp; atLeastOneNonBoolean) {
+      fail('At least one movement must have a speed or duration.');
+    }
+  },
+
+  /**
+   * Ensure all required fields are present in the configuration and that all are of valid types.
+   *
+   * @param {Object} axisConfig
+   */
+  validateAxisConfig (axisConfig) {
+    if (!axisConfig || typeof axisConfig !== 'object') {
+      fail(`Invalid configuration object: ${axisConfig}`);
+    }
+
+    const required = ['name', 'type'];
+
+    const types = {
+      name: 'string',
+      type: 'string',
+      alias: 'string',
+      max: 'number',
+      min: 'number',
+    };
+
+    const missing = required.filter(
+      (property) => axisConfig[property] === undefined || axisConfig[property] === null
+    ).sort();
+
+    if (missing.length) {
+      fail(`Configuration is missing properties: ${missing.join(', ')}`);
+    }
+
+    const invalid = [];
+
+    Object.keys(types).forEach((property) => {
+      const value = axisConfig[property];
+
+      // Since we've already caught missing required fields by this point,
+      // we only need to check types of optional fields if they are actually present.
+      if (value !== undefined &amp;&amp; value !== null) {
+        // eslint-disable-next-line valid-typeof
+        if (typeof value !== types[property]) {
+          invalid.push(property);
+        } else if (property === 'min' || property === 'max') {
+          if (!Number.isFinite(value) || value &lt; 0 || value > 1) {
+            invalid.push(property);
+          }
+        }
+      }
+    });
+
+    let { defaultValue } = axisConfig;
+
+    if (defaultValue !== undefined &amp;&amp; defaultValue !== null) {
+      // Validate user supplied default value.
+      if (axisConfig.type === 'boolean') {
+        if (typeof defaultValue !== 'boolean') {
+          invalid.push('defaultValue');
+        }
+      } else if (!Number.isFinite(defaultValue) || defaultValue &lt; 0 || defaultValue > 1) {
+        invalid.push('defaultValue');
+      }
+    } else if (axisConfig.type === 'boolean') {
+      defaultValue = false;
+    } else if (axisConfig.type === 'auxiliary') {
+      defaultValue = 0;
+    } else {
+      // 0.5 is home position for linear and rotation axes.
+      defaultValue = 0.5;
+    }
+
+    if (invalid.length) {
+      const message = invalid.sort().map((property) => `${property} = ${axisConfig[property]}`).join(', ');
+      fail(`Invalid configuration parameter(s): ${message}`);
+    }
+
+    if (['linear', 'rotation', 'auxiliary', 'boolean'].indexOf(axisConfig.type) === -1) {
+      fail(`Invalid type. Must be linear, rotation, auxiliary, or boolean: ${axisConfig.type}`);
+    }
+
+    const resultConfig = {
+      ...axisConfig,
+      defaultValue,
+      max: axisConfig.max || 1,
+      min: axisConfig.min || 0,
+      value: defaultValue,
+      lastValue: defaultValue,
+    };
+
+    if (resultConfig.max === resultConfig.min || resultConfig.min > resultConfig.max) {
+      fail(`Invalid configuration parameter(s): max = ${resultConfig.max}, min = ${resultConfig.min}`);
+    }
+
+    return resultConfig;
+  },
+
+  validateTempestParameters (from, to, phase, ecc, bpm, shift) {
+    const valid = validNumber(from, 0, 1)
+      &amp;&amp; validNumber(to, 0, 1)
+      &amp;&amp; validNumber(phase)
+      &amp;&amp; validNumber(ecc)
+      &amp;&amp; validNumber(bpm) &amp;&amp; bpm > 0
+      &amp;&amp; validNumber(shift);
+
+    if (!valid) {
+      throw new Error(`One or more stroke parameters are invalid (${from}, ${to}, ${phase}, ${ecc}, ${bpm}, ${shift})`);
+    }
+  },
+};
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+            </div>
+            
+            <footer class="footer">
+                <div class="content has-text-centered">
+                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.7</a></p>
+                    <p class="sidebar-created-by">
+                        <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by 
+                        <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>
+                    </p>
+                </div>
+            </footer>
+            
+        </div>
+        <div id="side-nav" class="side-nav">
+        </div>
+    </div>
+<script src="scripts/app.min.js"></script>
+<script>PR.prettyPrint();</script>
+<script src="scripts/linenumber.js"> </script>
+
+<script src="scripts/search.js"> </script>
+
+</body>
+</html>
