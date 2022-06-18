@@ -129,8 +129,14 @@
 
 <article>
     <p><a href="https://ayvajs.github.io/ayva-stroker-lite/" target="_blank">Ayva Stroker Lite</a> is a small web based random stroker app that uses the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Serial_API" target="_blank">Web Serial API</a> to connect to and control an OSR2 or SR6 device.</p>
+<style>
+  ol.strokes ::marker {
+    font-weight: bold;
+  }
+</style>
 <p>Features:</p>
 <ul>
+<li>Create, import, and export your own custom multiaxis strokes.</li>
 <li>Run any <a href="https://ayvajs.github.io/ayvajs-docs/tutorial-behavior-api-tempest-stroke.html" target="_blank">TempestStroke</a> in Ayva's library.</li>
 <li>Change the speed (bpm) of the currently running stroke.</li>
 <li>Enter Free Play mode where strokes are randomly selected according to user preferences.</li>
@@ -138,7 +144,7 @@
 <li>Smooth transitions between strokes.</li>
 <li>Set the duration range for transitions.</li>
 <li>Set the bpm range (the speed of the next stroke is randomly selected).</li>
-<li>Enable twist movements.</li>
+<li>Enable default twist movements.</li>
 <li>Choose what strokes to include in Free Play mode.</li>
 <li>Set device output limits.</li>
 <li>Connect to device via Web Serial API.</li>
@@ -146,7 +152,20 @@
 </ul>
 <h2>Guide</h2>
 <img src="./images/stroker-lite-guide-1.png">
-<h3>1. Emulator</h3>
+<h3>Contents</h3>
+<ol>
+  <li><a href="#emulator">Emulator</a></li>
+  <li><a href="#output">Output Range and Device Connection</a></li>
+  <li><a href="#controls">Controls</a></li>
+  <li><a href="#parameters">Parameters</a></li>
+  <li><a href="#strokes">Strokes</a></li>
+  <li><a href="#mode">Mode</a></li>
+  <li><a href="#bpm">Current BPM</a></li>
+  <li><a href="#designer">Stroke Designer</a></li>
+  <li><a href="#import-export">Import / Export</a></li>
+  <li><a href="#stroke-format">Stroke File Format</a></li>
+</ol>
+<h3 id="emulator">1. Emulator</h3>
 <p>The emulator provides a 3D simulation of the movements of the device. The current version is of an OSR2+. It does not have a <code>forward</code> or <code>left</code> axis (as available on the SR6), however, movements on those axes are still supported by the application and will be sent to an actual device when connected. Strokes can be played on the emulator alone (a physical device does not have to be connected).</p>
 <p>Controls:</p>
 <ul>
@@ -154,41 +173,111 @@
 <li><em>Mousewheel</em> to zoom in and out.</li>
 <li><em>Shift+Click+Drag</em> to pan.</li>
 </ul>
-<h3>2. Output Range and Device Connection</h3>
+<h3 id="output">2. Output Range and Device Connection</h3>
 <p><img width="350px" src="./images/stroker-lite-guide-output-range.png"><br/></p>
 <p>This section allows you to set the output range for all supported axes (linear and rotational). The details on how Ayva scales output can be found in the <a href="https://ayvajs.github.io/ayvajs-docs/tutorial-configuration.html" target="_blank">Configuration</a> documentation under the Axis Limits section.</p>
 <p>The button in the top right gives the device connection status. Clicking it will open the built-in Web Serial API window of the browser that allows you to select a device to connect to. <em>For safety reasons, connections can only be made when in <strong>Stopped</strong> mode. You will not be able to connect to a device if a stroke is currently playing.</em></p>
-<h3>3. Controls</h3>
+<h3 id="controls">3. Controls</h3>
 <img width="500px" src="./images/stroker-lite-guide-controls.png">  
 <ul>
 <li><strong>Home Device</strong>: Stops the current behavior and moves the device to the home position.</li>
 <li><strong>Free Play</strong>: Commands Ayva to start playing strokes randomly according to the current parameters.</li>
 <li><strong>Stop (Esc)</strong>: Immediately stops the current behavior and ceases to send any output to the device. Pressing the <em>Escape</em> key will also trigger this action.</li>
 </ul>
-<h3>4. Parameters</h3>
+<h3 id="parameters">4. Parameters</h3>
 <p><img width="500px" src="./images/stroker-lite-guide-parameters.png"><br/></p>
 <p>This section allows you to set the parameters that are used during free play mode (and some for manually triggered strokes). All parameters in this section only take effect on the <em>next</em> stroke played.</p>
 <ul>
 <li><strong>BPM Range</strong>: The speed range of strokes in beats per minute. When a stroke is randomly selected, it will pick a random speed within this range.</li>
 <li><strong>Pattern Duration</strong>: The duration range of strokes in seconds. When a stroke is randomly selected, it will last for a random amount of seconds within this range.</li>
 <li><strong>Transition Duration</strong>: The duration range for smooth transitions in seconds. When a new stroke is starting, the transition into the new stroke will take a random amount of seconds within this range.</li>
-<li><strong>Enable Twist</strong>: Currently, all patterns in the default library of strokes do not have any movement on the twist axis. This option allows you to add custom motion to the twist axis for all strokes.</li>
+<li><strong>Default Twist</strong>: This option allows you to add custom motion to the twist axis for any stroke that doesn't have it (i.e. the twist motion specified here only takes effect if the current stroke playing does not have its own twist).</li>
 <li><strong>Twist Range</strong>: When twist is enabled, this allows you to specify the range of the twist motion.</li>
 <li><strong>Twist Phase</strong>: When twist is enabled, this allows you to specify the <em>phase</em> of the twist motion.</li>
 <li><strong>Twist Eccentricity</strong>: When twist is enabled, this allows you to specify the <em>eccentricity</em> of the twist motion.</li>
 </ul>
 <p>The twist motion (like any other axis motion for TempestStrokes) is a <strong>cosine</strong> shaped movement. See the <a href="https://ayvajs.github.io/ayvajs-docs/tutorial-behavior-api-tempest-stroke.html" target="_blank">TempestStroke</a> documentation for additional details on parameters such as phase and eccentricity.</p>
-<h3>5. Strokes</h3>
+<h3 id="strokes">5. Strokes</h3>
 <p><img width="500px" src="./images/stroker-lite-guide-strokes.png"><br/></p>
-<p>This section allows you to choose what strokes are included in free play mode, or to manually trigger a stroke. Manually triggering a stroke transitions out of free play mode. In manual mode, the current stroke will play continuously until another stroke is selected or free play mode is triggered. All transitions between free play and manual mode are smooth.</p>
-<p>The top right will update to show the current stroke that is playing, as well as when a transition is occurring.</p>
-<h3>6. Mode</h3>
+<p>This section allows you to manage strokes.</p>
+<ol class="strokes" style="list-style-type: upper-alpha">
+  <li>Select what strokes to include in free play mode. The top most checkbox can be used to select or deselect all strokes.</li>
+  <li>Manually trigger a stroke. Manually triggering a stroke transitions out of free play mode. In manual mode, the current stroke will play continuously until another stroke is selected or free play mode is triggered.</li>
+  <li>Hover over the <i>eye</i> icon to quickly view a preview of the corresponding stroke.</li>
+  <li>Access create, import, and export strokes functionality. These features are covered in the <a href="#designer">Stroke Designer</a> section. This menu can only be accessed in Stopped mode. When a stroke is playing this area will instead show the current stroke, as well as when a transition is occurring.</li>
+</ol>
+<h3 id="mode">6. Mode</h3>
 <p><img width="200px" src="./images/stroker-lite-guide-mode.png"><br/></p>
 <p>This label displays the current mode. It will be either <strong>Stopped</strong>, <strong>Free Play</strong>, or <strong>Manual</strong>.</p>
-<h3>7. Current BPM</h3>
+<h3 id="bpm">7. Current BPM</h3>
 <p><img width="600px" src="./images/stroker-lite-guide-current-bpm.png"><br/></p>
 <p>This slider shows the current speed. In both <strong>Free Play</strong> and <strong>Manual</strong> mode the speed of the current stroke can be changed in real time. However, while you can set the speed in <strong>Free Play</strong> mode, Ayva can (and likely <strong>will</strong>) choose a new speed when it decides to play a new stroke. But Ayva will never changes strokes while you are dragging the slider. This means that if you are in Free Play mode and you would like to stay on the current pattern without leaving Free Play, you could keep the bpm slider engaged until you are ready to switch.</p>
 <p>Manually updating the bpm is not allowed during a transition (the widget will be disabled), as Ayva has full control of the speed during that time.</p>
+<h3 id="designer">8. Stroke Designer</h3>
+<p><img width="600px" src="./images/stroker-lite-guide-designer-1.png"><br/></p>
+<p>The stroke designer can be accessed by clicking the <em>gear</em> icon in the top right of the <em>Strokes</em> section, then clicking <em>Create</em>.</p>
+<br/>  
+<p><img width="900px" src="./images/stroker-lite-guide-designer-2.png"><br/></p>
+<ol class="strokes" style="list-style: upper-alpha">
+  <li>Clicking the axes button allows you to select which axes to include in your stroke. All axes of an SR6 device are available.</li>
+  <li>Motion can be specified for each axis with an interactive graph widget. The parameters available are:<ul>
+      <li><b>Range:</b> The left slider sets the range. This is a dual slider specifying the <i>from</i> and <i>to</i> values for the motion. The knobs can be slid past each other to change the shape of the motion, as well as be set to the same value if you want the axis to hold a value for the duration of the motion.</li>
+      <li><b>Phase:</b> The bottom left slider sets the phase of the motion.</li>
+      <li><b>Eccentricity.:</b> The bottom right slider sets the eccentricity of the motion.</li>
+    </ul>
+    Use the middle mouse over a graph to quickly expand or contract the range.
+    <br/>Double click a slider knob to reset to default value(s). 
+    <br/>The progress dot on the graph will move along with the current motion in real time.
+    <br/><br/><img width="450px" src="./images/demo-tempest-motion.gif">
+    <br/><br/>Note that when there are more axes than available space you can scroll to view the additional axes.<br/><br/>
+  </li>
+  <li>The current motion will automatically preview on the emulator. The BPM can be adjusted to preview at higher or lower speeds.</li>
+  <li>If a device is connected, you can optionally send the preview of the stroke to the actual device. This option is disabled by default, and will be unavailable if there is no device connected.</li>
+  <li>Clicking the preset button will open a dropdown allowing you to select a stroke from the library (custom or default) as a starting point. You may also cycle through the presets by clicking the arrows.</li>
+  <li>You can give your stroke a name and add it to the library. Names are restricted to lowercase alphanumeric characters and dashes, and must be unique. When a stroke is added to the library, it will be made available on the main screen for use in Free Play or Manual modes. It will also be available as a preset if you return to the stroke designer later.</li>
+</ol>
+<p>Strokes can be editted by clicking the <em>gear</em> icon next to them on the main screen.</p>
+<p>Note that all strokes are saved in the local storage of the browser, so they will remain between sessions. However, if you clear your browser storage then you will lose your strokes. To make a backup of your stroke(s) (or to share your strokes with others) you can use the import/export functionality as detailed in the next section.</p>
+<h3 id="import-export">9. Import / Export</h3>
+<p><img width="600px" src="./images/stroker-lite-guide-designer-3.png"><br/></p>
+<p>Import or Export can be accessed by clicking the <em>gear</em> icon in the top right of the <em>Strokes</em> section. These will open the browser file dialogs and allow you to import or export a stroke file. When exporting this way, all custom strokes will be exported. The option to export an individual stroke can be found by clicking the <em>gear</em> icon next to the desired stroke:</p>
+<p><img width="600px" src="./images/stroker-lite-guide-designer-4.png"><br/></p>
+<p><em>Note that this is also how you access the Edit and Delete functionality.</em></p>
+<h3 id="stroke-format">10. Stroke File Format</h3>
+<p>Stroke files are <a href="https://www.json.org/json-en.html" target="_blank">JSON</a> files. The top level object is an array containing all the strokes. Each stroke has the following properties:</p>
+<ul>
+  <li><code>name</code>: alphanumeric, dash separated name of the stroke.</li>
+  <li><code>type</code>: currently the only supported type is <b>tempest-stroke</b></li>
+  <li><code>data</code>: an object containing the stroke parameters, keyed by axis name or alias.</code></li>
+</ul>
+<h4>Example</h4>
+<pre class="prettyprint source lang-javascript"><code>[
+  {
+    &quot;name&quot;: &quot;my-orbit-grind&quot;,
+    &quot;type&quot;: &quot;tempest-stroke&quot;,
+    &quot;data&quot;: {
+      &quot;L0&quot;: {
+        &quot;from&quot;: 0,
+        &quot;to&quot;: 0.6,
+        &quot;phase&quot;: 0,
+        &quot;ecc&quot;: 0.3
+      },
+      &quot;R1&quot;: {
+        &quot;from&quot;: 0.1,
+        &quot;to&quot;: 0.9,
+        &quot;phase&quot;: 1,
+        &quot;ecc&quot;: -0.3
+      },
+      &quot;R2&quot;: {
+        &quot;from&quot;: 0.9,
+        &quot;to&quot;: 0.1,
+        &quot;phase&quot;: 0,
+        &quot;ecc&quot;: -0.3
+      }
+    }
+  }
+]
+</code></pre>
 </article>
 
 </section>
