@@ -82,7 +82,7 @@ The parameters passed to value providers in multiaxis movements are unique to ea
 See the full list of <a href="./tutorial-motion-api-value-providers.html#parameters" target="_blank">parameters</a> in the Value Providers documentation.
 
 ### home()
-Ayva provides a convenience method to move all linear and rotation axes to the _home_ position (0.5):
+Ayva provides a convenience method to move all axes to their default values (_in the default configuration this is 0.5 for linear axes and 0 for auxiliary axes_):
 
 ```javascript
 ayva.home();

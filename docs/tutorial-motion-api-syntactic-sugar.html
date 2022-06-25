@@ -293,11 +293,15 @@ or for certain axes for which a &quot;move&quot; doesn't make sense (i.e. settin
 <pre class="prettyprint source lang-javascript"><code>// Set the suck algorithm to close to 0.8 on the up strokes.
 ayva.$.suck.value = 0.8;
 </code></pre>
-<h3>Updating Limits with $</h3>
-<p>The axis subproperties of <strong>$</strong> also allow updating limits:</p>
-<pre class="prettyprint source lang-javascript"><code>ayva.$.stroke.min = 0.25;
+<!--Uncomment if and when this functionality becomes available.
+### Updating Limits with $
+
+The axis subproperties of __$__ also allow updating limits:
+
+```javascript
+ayva.$.stroke.min = 0.25;
 ayva.$.stroke.max = 0.75;
-</code></pre>
+```-->
 <h3 id="convenience">Convenience Methods</h3>
 When you want to quickly execute a move on only one axis, even a move builder might feel verbose:
 <pre class="prettyprint source lang-javascript"><code>ayva.$.stroke(0, 1).execute();

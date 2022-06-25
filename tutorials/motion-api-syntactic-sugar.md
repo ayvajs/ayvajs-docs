@@ -212,6 +212,7 @@ or for certain axes for which a "move" doesn't make sense (i.e. setting the suck
 ayva.$.suck.value = 0.8;
 ```
 
+<!--Uncomment if and when this functionality becomes available.
 ### Updating Limits with $
 
 The axis subproperties of __$__ also allow updating limits:
@@ -219,7 +220,7 @@ The axis subproperties of __$__ also allow updating limits:
 ```javascript
 ayva.$.stroke.min = 0.25;
 ayva.$.stroke.max = 0.75;
-```
+```-->
 
 <h3 id="convenience">Convenience Methods</h3>
 When you want to quickly execute a move on only one axis, even a move builder might feel verbose:

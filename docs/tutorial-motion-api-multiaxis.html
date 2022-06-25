@@ -195,7 +195,7 @@ ayva.move({
 <p>The parameters passed to value providers in multiaxis movements are unique to each axis (when applicable).
 See the full list of <a href="./tutorial-motion-api-value-providers.html#parameters" target="_blank">parameters</a> in the Value Providers documentation.</p>
 <h3>home()</h3>
-<p>Ayva provides a convenience method to move all linear and rotation axes to the <em>home</em> position (0.5):</p>
+<p>Ayva provides a convenience method to move all axes to their default values (<em>in the default configuration this is 0.5 for linear axes and 0 for auxiliary axes</em>):</p>
 <pre class="prettyprint source lang-javascript"><code>ayva.home();
 </code></pre>
 <p>It returns a Promise that resolves when all the moves have finished.</p>

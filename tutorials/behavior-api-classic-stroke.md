@@ -274,7 +274,7 @@ ayva.do(new ClassicStroke({
 ```
 <a href="./tutorial-examples/classic-stroke-example-all-together.html" target="_blank">Try it out!</a>
 
-> <p style="color: #AA0000"><b>Warning:</b><code style="color: #AA0000">ClassicStroke</code> does not manipulate the values of any axis but the <b>stroke</b> and <b>twist</b> axis (<i>if configured</i>). You must therefore take care to orient other axes to the values you would like them to be for the duration of the stroke. The following example demonstrates the effect of <b>not</b> doing this. 😅
+> <p style="color: #AA0000"><b>Warning:</b><code style="color: #AA0000">ClassicStroke</code> does not manipulate the values of any axis but the <b>stroke</b>, <b>pitch</b>, and <b>twist</b> axes (<i>the latter two only if configured</i>). You must therefore take care to orient other axes to the values you would like them to be for the duration of the stroke. The following example demonstrates the effect of <b>not</b> doing this. 😅
 
 ```javascript
 // Move the roll and pitch axis way off.
