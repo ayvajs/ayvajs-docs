@@ -21,6 +21,8 @@ Features:
 - Connect to device via Web Serial API.
 - Emulator to see 3D simulation of movements on screen (with or without hardware device connected).
 
+A video guide is available <a href="https://www.youtube.com/watch?v=0WTC9joyvN8" target="_blank">here</a>.
+
 ## Guide
 
 <img src="./images/stroker-lite-guide-1.png">
