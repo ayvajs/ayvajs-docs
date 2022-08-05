@@ -176,7 +176,7 @@ ayva.do(new TempestStroke(myOrbitGrind, 30));
 
 Internally, ```TempestStroke``` uses a <a href="./tutorial-motion-api-value-providers.html" target="_blank">value provider</a> to describe Tempest Motion. This value provider is available to be used independently of a ```TempestStroke``` in your own moves. See the <a href="./Ayva.html#.tempestMotion" target="_blank">API Documentation</a> for ```Ayva.tempestMotion()```.
 
-### Other Motion Shapes
+<h3 id="other-motion-shapes">Other Motion Shapes</h3>
 
 It is possible to use functions other than cosine by specifying the ```construct``` parameter. This property should be a function that creates the value provider to use for the motion. There are currently two additional built-in types available:
 
