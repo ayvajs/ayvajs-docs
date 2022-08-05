@@ -141,8 +141,8 @@
   &lt;script type=&quot;module&quot;>
     // Import the latest version of Ayva. 
     // To import a specific version, add @&lt;version> to the end of the url. 
-    // Ex: https://unpkg.com/ayvajs@0.10.0
-    import Ayva from 'https://unpkg.com/ayvajs'; 
+    // Ex: https://unpkg.com/ayvajs@0.13.0
+    import { Ayva } from 'https://unpkg.com/ayvajs'; 
 
     // Construct a new instance of Ayva using the default configuration (a stroker with 6+ axes)
     const ayva = new Ayva().defaultConfiguration();
@@ -151,7 +151,8 @@
   &lt;/script>
 &lt;/body>
 </code></pre>
-<p>One or more output devices must be added to an instance of Ayva in order to do anything. You may create your own device object (any object with a <code>write()</code> method is considered an output device), or you may use the simple <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Serial_API" target="_blank">Web Serial API</a> based <em>WebSerialDevice</em> provided:</p>
+<br/> 
+<p>One or more outputs must be added to an instance of Ayva in order to do anything. You may create your own output (a function or any object with a <code>write()</code> method is considered an output), or you may use the simple <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Serial_API" target="_blank">Web Serial API</a> based <em>WebSerialDevice</em> provided:</p>
 <pre class="prettyprint source lang-html"><code>&lt;!DOCTYPE html>
 &lt;body>
   &lt;!-- 
@@ -161,7 +162,7 @@
   &lt;button id=&quot;connect&quot;>Connect&lt;/button>
 
   &lt;script type=&quot;module&quot;>
-    import Ayva, { WebSerialDevice } from 'https://unpkg.com/ayvajs';
+    import { Ayva, WebSerialDevice } from 'https://unpkg.com/ayvajs';
 
     // Construct a new instance of Ayva using the default configuration (a stroker with 6+ axes)
     const ayva = new Ayva().defaultConfiguration();
@@ -173,7 +174,7 @@
     document.querySelector('#connect').addEventListener('click', () => {
       device.requestConnection().then(() => {
         // Add the output device to the Ayva instance.
-        ayva.addOutputDevice(device);
+        ayva.addOutput(device);
 
         // I can now start using Ayva to control the device.
         // The following line sends a command to move the default axis to position zero at 1 unit per second.
@@ -191,7 +192,7 @@
 <pre class="prettyprint source"><code>npm install ayvajs
 </code></pre>
 <p>To import Ayva into your Node.js app:</p>
-<pre class="prettyprint source lang-js"><code>import Ayva from 'ayvajs';
+<pre class="prettyprint source lang-js"><code>import { Ayva } from 'ayvajs';
 
 const ayva = new Ayva().defaultConfiguration();
 
@@ -201,7 +202,7 @@ const ayva = new Ayva().defaultConfiguration();
 <pre class="prettyprint source"><code>npm install serialport
 </code></pre>
 <p>Then:</p>
-<pre class="prettyprint source lang-js"><code>import Ayva from 'ayvajs';
+<pre class="prettyprint source lang-js"><code>import { Ayva } from 'ayvajs';
 import { SerialPort } from 'serialport';
 
 // Create a new device on the specified port. 
@@ -209,7 +210,7 @@ import { SerialPort } from 'serialport';
 const device = new SerialPort({ path: '/dev/cu.usbserial-0001', baudRate: 115200 });
 
 const ayva = new Ayva().defaultConfiguration();
-ayva.addOutputDevice(device);
+ayva.addOutput(device);
 
 ayva.move({ to: 0, speed: 1 });
 </code></pre>

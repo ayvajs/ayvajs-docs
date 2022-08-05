@@ -76,7 +76,7 @@ myStroke();
 
 ### Move Queue
 
-Internally, Ayva uses a queue to keep track of moves. If a move is already in progress when ```move()``` is called, the requested move is added to a queue and will not execute until all preceding moves have finished. So while ```move()``` is asynchronous, all moves are guaranteed to execute in the order they were called. The following example illustrates this:
+Internally, Ayva uses a queue to keep track of moves. If a move is already in progress when ```move()``` is called, the requested move is added to the queue and will not execute until all preceding moves have finished. So while ```move()``` is asynchronous, all moves are guaranteed to execute in the order they were called. The following example illustrates this:
 
 ```javascript
 // Perform a few down and up strokes (with up strokes performed at half speed).

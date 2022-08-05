@@ -117,7 +117,7 @@
             
             <nav>
                 
-                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Classes</h3><ul><li><a href="Ayva.html">Ayva</a></li><li><a href="AyvaBehavior.html">AyvaBehavior</a></li><li><a href="ClassicStroke.html">ClassicStroke</a></li><li><a href="TempestStroke.html">TempestStroke</a></li><li><a href="VariableDuration.html">VariableDuration</a></li><li><a href="WebSerialDevice.html">WebSerialDevice</a></li></ul></div>
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Classes</h3><ul><li><a href="Ayva.html">Ayva</a></li><li><a href="AyvaBehavior.html">AyvaBehavior</a></li><li><a href="ClassicStroke.html">ClassicStroke</a></li><li><a href="GeneratorBehavior.html">GeneratorBehavior</a></li><li><a href="TempestStroke.html">TempestStroke</a></li><li><a href="VariableDuration.html">VariableDuration</a></li><li><a href="WebSerialDevice.html">WebSerialDevice</a></li></ul></div>
                 
             </nav>
         </div>
@@ -361,7 +361,7 @@ export default {
     return resultConfig;
   },
 
-  validateTempestParameters (from, to, phase, ecc, bpm, shift) {
+  validateMotionParameters (from, to, phase, ecc, bpm, shift) {
     const valid = validNumber(from, 0, 1)
       &amp;&amp; validNumber(to, 0, 1)
       &amp;&amp; validNumber(phase)
@@ -370,7 +370,7 @@ export default {
       &amp;&amp; validNumber(shift);
 
     if (!valid) {
-      throw new Error(`One or more stroke parameters are invalid (${from}, ${to}, ${phase}, ${ecc}, ${bpm}, ${shift})`);
+      throw new Error(`One or more motion parameters are invalid (${from}, ${to}, ${phase}, ${ecc}, ${bpm}, ${shift})`);
     }
   },
 };

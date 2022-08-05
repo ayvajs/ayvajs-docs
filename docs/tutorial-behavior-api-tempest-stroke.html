@@ -129,7 +129,7 @@
 
 <article>
     <h2>What is a Tempest Stroke?</h2>
-<p>Named for its creator, <a href="https://www.patreon.com/tempestvr" target="_blank">Tempest MAx</a>, a <code>TempestStroke</code> is a behavior that allows specifying oscillatory motion on an arbitrary number of axes with a formula loosely based on orbital motion calculations. The base formula is:</p>
+<p>Named for its creator, <a href="https://www.patreon.com/tempestvr" target="_blank">Tempest MAx</a>, a <code>TempestStroke</code> is a behavior that allows specifying oscillatory motion on an arbitrary number of axes with a formula loosely based on orbital motion calculations. The default base formula is:</p>
 <img style="width:250px" src="./images/tempest-motion.png">
 <p>Where <code>θ</code> is the angle in radians, <code>p</code> is the <em>phase</em>, and <code>c</code> is the <em>eccentricity</em>. Here is a simple graph that shows how these parameters effect the shape of the motion (<em>try tweaking phase and eccentricity</em>):</p>
 <p><canvas style="margin-top:20px" width=450 height=100 id="tempest-motion-graph"></canvas></p>
@@ -141,7 +141,7 @@
     min="-1000" 
     max = "1000" 
     value=0 
-    oninput="updateGraph(event)">
+    oninput="updateTempestGraph(event)">
   <b style="justify-self: end">eccentricity (<span id="ecc-value">0.00</span>):</b> 
   <input 
     id="ecc" 
@@ -149,7 +149,7 @@
     min="-1000" 
     max = "1000" 
     value=0 
-    oninput="updateGraph(event)">
+    oninput="updateTempestGraph(event)">
 </div>
 <script>
   function plot (selector, fn, range) {
@@ -185,15 +185,9 @@
     context.stroke(); 
   }
 
-  function updateGraph (event) {
+  function updateTempestGraph (event) {
     let phase = document.querySelector('#phase').value / 250;
     let ecc = document.querySelector('#ecc').value / 1000;
-
-    if (event.target.getAttribute('id') === '#phase') {
-
-    } else {
-
-    }
 
     document.querySelector('#phase-value').textContent = phase.toFixed(2);
     document.querySelector('#ecc-value').textContent = ecc.toFixed(2);
@@ -207,12 +201,11 @@
 </script>
 <h3>Setup</h3>
 <p>To use <code>TempestStroke</code>, you must import it. This can be done at the same time that you import the Ayva class. For example, <em>in a browser</em>:</p>
-<pre class="prettyprint source lang-javascript"><code>import Ayva, { TempestStroke } from 'https://unpkg.com/ayvajs';
+<pre class="prettyprint source lang-javascript"><code>import { Ayva, TempestStroke } from 'https://unpkg.com/ayvajs';
 </code></pre>
 <p>or <em>from within a Node.js app</em>:</p>
-<pre class="prettyprint source lang-javascript"><code>import Ayva, { TempestStroke } from 'ayvajs';
+<pre class="prettyprint source lang-javascript"><code>import { Ayva, TempestStroke } from 'ayvajs';
 </code></pre>
-<p><em>Note: Ayva is the</em> <strong><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import" target="_blank">default export</a></strong> <em>of ayvajs, while <code>TempestStroke</code> is a</em> <strong><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import" target="_blank">named export</a></strong>. <em>This is the reason <code>TempestStroke</code> is enclosed in curly brackets.</em></p>
 <p>Once <code>TempestStroke</code> is imported, you can create new strokes using <code>TempestStroke</code>'s constructor, which takes a configuration object and bpm (beats per minute).</p>
 <pre class="prettyprint source lang-java"><code>const myStroke = new TempestStroke({
   stroke: {
@@ -276,6 +269,112 @@ ayva.do(new TempestStroke(myOrbitGrind, 30));
 <p><a href="./tutorial-examples/tempest-stroke-example-4.html" target="_blank">Try it out!</a></p>
 <h3>Value Provider</h3>
 <p>Internally, <code>TempestStroke</code> uses a <a href="./tutorial-motion-api-value-providers.html" target="_blank">value provider</a> to describe Tempest Motion. This value provider is available to be used independently of a <code>TempestStroke</code> in your own moves. See the <a href="./Ayva.html#.tempestMotion" target="_blank">API Documentation</a> for <code>Ayva.tempestMotion()</code>.</p>
+<h3>Other Motion Shapes</h3>
+<p>It is possible to use functions other than cosine by specifying the <code>construct</code> parameter. This property should be a function that creates the value provider to use for the motion. There are currently two additional built-in types available:</p>
+<h4>Parabolic</h4>
+<p>Parabolic motion can be used to create a &quot;bounce&quot; effect (<em>try tweaking phase and eccentricity</em>):</p>
+<p><canvas style="margin-top:20px" width=450 height=100 id="parabolic-motion-graph"></canvas></p>
+<div style="display: grid; grid-template-columns: 1fr 1fr; max-width: 50%">
+  <b style="justify-self: end">phase (<span id="parabolic-phase-value">0.00</span>):</b> 
+  <input 
+    id="parabolic-phase" 
+    type="range" 
+    min="-1000" 
+    max = "1000" 
+    value=0 
+    oninput="updateParabolicGraph(event)">
+  <b style="justify-self: end">eccentricity (<span id="parabolic-ecc-value">0.00</span>):</b> 
+  <input 
+    id="parabolic-ecc" 
+    type="range" 
+    min="-1000" 
+    max = "1000" 
+    value=0 
+    oninput="updateParabolicGraph(event)">
+</div>
+<script>
+  const mod = (a, b) => ((a % b) + b) % b;
+
+  function updateParabolicGraph (event) {
+    const { PI, sin } = Math;
+    let phase = document.querySelector('#parabolic-phase').value / 250;
+    let ecc = document.querySelector('#parabolic-ecc').value / 1000;
+
+    document.querySelector('#parabolic-phase-value').textContent = phase.toFixed(2);
+    document.querySelector('#parabolic-ecc-value').textContent = ecc.toFixed(2);
+
+    const fn = (x) => {
+      const angle = x + (PI * phase / 2);
+      const a = (mod(angle, (2 * PI)) / PI) - 1 + (ecc / PI) * sin(angle);
+
+      return 1 - (a * a);
+    }
+
+    plot('#parabolic-motion-graph', fn, [0, Math.PI * 2, 0, 1]);
+  }
+
+  plot('#parabolic-motion-graph', (x) => 1-((mod(x, (2 * Math.PI)) / Math.PI) - 1)**2, [0, Math.PI * 2, 0, 1]);
+</script>
+<br/>  
+<p>You can tell an axis to use motion shaped like this by passing <code>Ayva.parabolicMotion</code> into the <code>construct</code> parameter:</p>
+<pre class="prettyprint source lang-javascript"><code>ayva.do(new TempestStroke({
+  stroke: { from: 0.0, to: 1, construct: Ayva.parabolicMotion },
+  pitch:  { from: 0.1, to: 0.9, phase: -1 }
+}));
+</code></pre>
+<p><a href="./tutorial-examples/tempest-stroke-example-5.html" target="_blank">Try it out!</a>
+<br/></p>
+<h4>Linear</h4>
+<p>Linear motion can be used to create more &quot;robotic&quot; movements (<em>try tweaking phase and eccentricity</em>):</p>
+<p><canvas style="margin-top:20px" width=450 height=100 id="linear-motion-graph"></canvas></p>
+<div style="display: grid; grid-template-columns: 1fr 1fr; max-width: 50%">
+  <b style="justify-self: end">phase (<span id="linear-phase-value">0.00</span>):</b> 
+  <input 
+    id="linear-phase" 
+    type="range" 
+    min="-1000" 
+    max = "1000" 
+    value=0 
+    oninput="updateLinearGraph(event)">
+  <b style="justify-self: end">eccentricity (<span id="linear-ecc-value">0.00</span>):</b> 
+  <input 
+    id="linear-ecc" 
+    type="range" 
+    min="-1000" 
+    max = "1000" 
+    value=0 
+    oninput="updateLinearGraph(event)">
+</div>
+<script>
+  function updateLinearGraph (event) {
+    const { PI, sin, abs } = Math;
+    let phase = document.querySelector('#linear-phase').value / 250;
+    let ecc = document.querySelector('#linear-ecc').value / 1000;
+
+    document.querySelector('#linear-phase-value').textContent = phase.toFixed(2);
+    document.querySelector('#linear-ecc-value').textContent = ecc.toFixed(2);
+
+    const fn = (x) => {
+      const angle = x + (PI * phase / 2);
+      const a = (mod(angle, (2 * PI)) / PI) - 1 + (ecc / PI) * sin(angle);
+
+      return 1 - abs(a);
+    }
+
+    plot('#linear-motion-graph', fn, [0, Math.PI * 2, 0, 1]);
+  }
+
+  plot('#linear-motion-graph', (x) => 1-Math.abs((mod(x, (2 * Math.PI)) / Math.PI) - 1), [0, Math.PI * 2, 0, 1]);
+</script>
+<br/>  
+<p>You can tell an axis to use motion shaped like this by passing <code>Ayva.linearMotion</code> into the <code>construct</code> parameter:</p>
+<pre class="prettyprint source lang-javascript"><code>ayva.do(new TempestStroke({
+  stroke: { from: 0.0, to: 1, construct: Ayva.linearMotion },
+  pitch:  { from: 0.1, to: 0.9, phase: -1 }
+}));
+</code></pre>
+<p><a href="./tutorial-examples/tempest-stroke-example-6.html" target="_blank">Try it out!</a>
+<br/></p>
 <div style="text-align: center; font-size: 18px">Next: <a href="./tutorial-behavior-api-custom.html">Custom Behaviors</a></div>
 </article>
 

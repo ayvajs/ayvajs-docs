@@ -1,13 +1,13 @@
 ## What are Behaviors?
 
-Behaviors are classes that package movements and logic into an object that can be given to Ayva to perform. They allow for inheritance and composition to create more complex, reusable, and holistic experiences. 
+Behaviors are functions or classes that package movements and logic into units that can be given to Ayva to perform. They allow for inheritance and composition to create more complex, reusable, and holistic experiences. 
 
 There are some built-in behaviors, and you can create custom behaviors that utilize those. Or you can create something entirely new!
 
 ### do()
 
 The entry point for behaviors is Ayva's simple ```do()``` method. It takes a behavior and performs that behavior until commanded to stop 
-(or the behavior completes). The following example uses the built-in behavior ```ClassicStroke```, whose default configuration commands Ayva to perform a full stroke at one stroke per second:
+(or the behavior completes). The following example uses the built-in behavior ```ClassicStroke```, a class whose default configuration commands Ayva to perform a full stroke at one stroke per second:
 
 ```javascript
 ayva.do(new ClassicStroke());
