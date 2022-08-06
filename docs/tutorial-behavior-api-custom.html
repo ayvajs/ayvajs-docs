@@ -115,7 +115,7 @@
             
             <nav>
                 
-                    <div class="category"><h3>Tutorials</h3><ul><li><a href="tutorial-getting-started.html">Getting Started</a></li><li><a href="tutorial-configuration.html">Configuration</a></li><li><a href="tutorial-motion-api.html">Motion API</a><ul><li><a href="tutorial-motion-api-overview.html">Overview</a></li><li><a href="tutorial-motion-api-value-providers.html">Value Providers</a></li><li><a href="tutorial-motion-api-multiaxis.html">Multiaxis Movements</a></li><li><a href="tutorial-motion-api-syntactic-sugar.html">Syntactic Sugar ($)</a></li></ul></li><li><a href="tutorial-behavior-api.html">Behavior API</a><ul><li><a href="tutorial-behavior-api-overview.html">Overview</a></li><li><a href="tutorial-behavior-api-classic-stroke.html">Classic Stroke</a></li><li><a href="tutorial-behavior-api-tempest-stroke.html">Tempest Stroke</a></li><li><a href="tutorial-behavior-api-custom.html">Custom Behaviors</a></li><li><a href="tutorial-behavior-api-ayva-behavior.html">Ayva Behaviors</a></li></ul></li><li><a href="tutorial-ayva-stroker-lite.html">Ayva Stroker Lite</a></li></ul></div>
+                    <div class="category"><h3>Tutorials</h3><ul><li><a href="tutorial-getting-started.html">Getting Started</a></li><li><a href="tutorial-configuration.html">Configuration</a></li><li><a href="tutorial-motion-api.html">Motion API</a><ul><li><a href="tutorial-motion-api-overview.html">Overview</a></li><li><a href="tutorial-motion-api-value-providers.html">Value Providers</a></li><li><a href="tutorial-motion-api-multiaxis.html">Multiaxis Movements</a></li><li><a href="tutorial-motion-api-syntactic-sugar.html">Syntactic Sugar ($)</a></li></ul></li><li><a href="tutorial-behavior-api.html">Behavior API</a><ul><li><a href="tutorial-behavior-api-overview.html">Overview</a></li><li><a href="tutorial-behavior-api-classic-stroke.html">Classic Stroke</a></li><li><a href="tutorial-behavior-api-tempest-stroke.html">Tempest Stroke</a></li><li><a href="tutorial-behavior-api-custom.html">Custom Behaviors</a></li><li><a href="tutorial-behavior-api-generator-behavior.html">Generator Behaviors</a></li></ul></li><li><a href="tutorial-ayva-stroker-lite.html">Ayva Stroker Lite</a></li></ul></div>
                 
             </nav>
         </div>
@@ -128,63 +128,42 @@
                 <section>
 
 <article>
-    <h3>perform()</h3>
-<p>A behavior as far as Ayva is concerned is any object with a <code>perform()</code> method. An implementation of <code>perform()</code> should take an Ayva instance and
-return a <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise" target="_blank">Promise</a> that resolves when a single iteration of the behavior is complete. Here is an example of a behavior that simply strokes up and down
-the full range of the stroke axis:</p>
-<pre class="prettyprint source lang-javascript"><code>const myStrokeBehavior = {
-  perform (ayvaInstance) {
-    ayvaInstance.stroke(0, 1);        // Stroke down.
-    return ayvaInstance.stroke(1, 1); // Stroke up.
-  }
+    <h3 class="pad">Overview</h3>
+<p>Ayva's <code>do()</code> method accepts behaviors in the form of a function, or an object with a <code>perform()</code> method. Upon calling <code>do()</code>, the Ayva instance will start a loop that continuously invokes the provided function (or <code>perform()</code> method). After each invocation it will wait for any moves started by the behavior to complete before starting the next iteration. The loop will continue forever until either <code>do()</code> is called with another behavior, <code>stop()</code> is called, or the behavior completes itself.</p>
+<h3>Function</h3>
+<pre class="prettyprint source lang-javascript"><code>const myStroke = function (ayvaInstance) {
+    ayvaInstance.stroke(0, 1); // Stroke down.
+    ayvaInstance.stroke(1, 1); // Stroke up.
 };
 
-ayva.do(myStrokeBehavior); // Perform the behavior until commanded to stop.
+ayva.do(myStroke); // Perform the behavior until commanded to stop.
 </code></pre>
-<p><em>Note: This example uses the convenience methods for stroking as documented in the <a href="./tutorial-motion-api-syntactic-sugar.html#convenience" target="_blank">Syntactic Sugar ($)</a> tutorial.</em></p>
+<p><em>Note: This example uses the convenience methods for single axis stroking as documented in the <a href="./tutorial-motion-api-syntactic-sugar.html#convenience" target="_blank">Syntactic Sugar ($)</a> tutorial.</em></p>
 <p><a href="./tutorial-examples/behavior-api-custom-example-1.html" target="_blank">Try it out!</a></p>
-<p>A behavior is independent of any specific instance of Ayva. When a particular Ayva instance performs the behavior, it passes itself as the parameter to <code>perform()</code>. In the previous example we named this parameter <code>ayvaInstance</code> just to make it clear that it is not necessarily the same instance of Ayva used later in the example.</p>
-<blockquote>
-<p style="color: #AA0000"><b>Warning!</b> Remember to return a Promise that resolves when the behavior finishes! The <code style="color: #AA0000">do()</code> method continuously calls <code style="color: #AA0000">perform()</code>, so not doing this will cause an infinite loop and <b>block the main thread!</b></p>
-</blockquote>
-<pre class="prettyprint source lang-javascript"><code>// Do not do this!
-const myStrokeBehavior = {
-  perform (ayvaInstance) {
-    ayvaInstance.stroke(0, 1);  // Stroke down.
-    ayvaInstance.stroke(1, 1);  // Stroke up without returning the Promise...!
-  }
-}
-
-// This will block!!
-ayva.do(myStrokeBehavior); 
-</code></pre>
-<p><em>Note: The exception is if <code>perform()</code> is an <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function" target="_blank">async</a> function that uses <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/await" target="_blank">await</a>. In that case, the Promise return is implicit. Ex:</em></p>
-<pre class="prettyprint source lang-javascript"><code>const myStrokeBehavior = {
-  async perform (ayvaInstance) {
-    await ayvaInstance.stroke(0, 1); 
-    await ayvaInstance.stroke(1, 1);
-  }
-}
+<p>A behavior is independent of any specific instance of Ayva. When a particular Ayva instance performs the behavior, it passes itself as the sole parameter to the function. In the previous example we named this parameter <code>ayvaInstance</code> just to make it clear that it is not necessarily the same instance of Ayva used later in the example. If your program is only ever using one (global) instance of Ayva, you don't need to specify it as a parameter to your function. The following would also work:</p>
+<pre class="prettyprint source lang-javascript"><code>ayva.do(() => {
+  ayva.stroke(0, 1); // Stroke down.
+  ayva.stroke(1, 1); // Stroke up.
+}); 
 </code></pre>
 <h3>Object Oriented Programming</h3>
-<p>You can package your behavior into a class to make it more reusable and/or configurable. Here is a reimplementation of the previous example
-using OOP to allow setting the speed of the stroke:</p>
-<pre class="prettyprint source lang-javascript"><code>class MyStrokeBehavior {
+<p>You can package your behavior into a class that implements the <code>perform()</code> method to make it more reusable and/or configurable. Here is a reimplementation of the previous example using OOP to allow setting the speed of the stroke:</p>
+<pre class="prettyprint source lang-javascript"><code>class MyStroke {
   constructor (speed) {
     this.speed = speed;
   }
 
   perform (ayva) {
     ayva.stroke(0, this.speed);
-    return ayva.stroke(1, this.speed);
+    ayva.stroke(1, this.speed);
   }
 }
 
-ayva.do(new MyStrokeBehavior(2)); // Perform a 2 strokes per second stroke.
+ayva.do(new MyStroke(2)); // Perform a 2 strokes per second stroke.
 </code></pre>
 <p><a href="./tutorial-examples/behavior-api-custom-example-2.html" target="_blank">Try it out!</a></p>
 <h3>Completion</h3>
-<p>By default, an Ayva instance will perform a behavior forever until commanded to stop. A behavior can however signal its own completion if desired. It can
+<p>By default, Ayva will perform a behavior forever until commanded to stop. A behavior can however signal its own completion if desired. It can
 do this by setting its <code>complete</code> property to true. Here is a behavior that only strokes for five seconds and then stops (using <a href="https://developer.mozilla.org/en-US/docs/Web/API/Performance/now" target="_blank">performance.now()</a> to keep track of time):</p>
 <pre class="prettyprint source lang-javascript"><code>class FiveSecondStroke {
   constructor (speed) {
@@ -198,7 +177,7 @@ do this by setting its <code>complete</code> property to true. Here is a behavio
 
     if (performance.now() - this.startTime &lt; 5000) {
       ayva.stroke(0, this.speed);
-      return ayva.stroke(1, this.speed);  
+      ayva.stroke(1, this.speed);  
     } else {
       // Five seconds has elapsed, so signal completion.
       this.complete = true;
@@ -210,8 +189,8 @@ ayva.do(new FiveSecondStroke(2)); // Perform a 2 strokes per second stroke for f
 </code></pre>
 <p><em>Note: Ayva includes a convenience class for dealing with durations called <code>VariableDuration</code>. See the <a href="./VariableDuration.html" target="_blank">API Documentation</a> to think of other ways you might implement this example.</em></p>
 <p><a href="./tutorial-examples/behavior-api-custom-example-3.html" target="_blank">Try it out!</a></p>
-<p>For simple behaviors that consist of only moves, creating an object or class that implements the <code>perform()</code> method might be enough. However, for more complex behaviors that require logic based on the current state, have pauses, or depend on the actions of sub behaviors, the asynchronous nature of the <em>Motion API</em> requires special handling. This is discussed in the next section.</p>
-<div style="text-align: center; font-size: 18px">Next: <a href="./tutorial-behavior-api-ayva-behavior.html">Ayva Behaviors</a></div>
+<p>For simple behaviors that consist of only moves, passing a function or creating an object or class that implements the <code>perform()</code> method might be enough. However, for more complex behaviors that require logic based on the current state, have pauses, or depend on the actions of sub behaviors, the asynchronous nature of the <em>Motion API</em> requires special handling. This is discussed in the next section.</p>
+<div style="text-align: center; font-size: 18px">Next: <a href="./tutorial-behavior-api-generator-behavior.html">Generator Behaviors</a></div>
 </article>
 
 </section>

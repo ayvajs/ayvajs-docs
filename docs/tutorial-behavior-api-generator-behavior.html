@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title> Generator Behaviors</title>
+
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="./build/entry.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,400,700|Inconsolata,700" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/iframe.css">
+  <link type="text/css" rel="stylesheet" href="custom-styles.css">
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+  
+</head>
+
+
+
+<body class="layout">
+    <div id="stickyNavbarOverlay"></div>
+    
+
+<div class="top-nav">
+    <div class="inner">
+        <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+        <div class="logo">
+            
+             
+                <a href="index.html">
+                    <h1 class="navbar-item">Ayva Documentation</h1>
+                </a>
+            
+        </div>
+        <div class="menu">
+            
+            <div class="navigation">
+                <a
+                    href="index.html"
+                    class="link"
+                >
+                    API Documentation
+                </a>
+                
+                <div class="dropdown is-hoverable is-right">
+                    <a class="dropdown-trigger link">
+                        Tutorials
+                        <i class="fas fa-chevron-down fa-xs"></i>
+                    </a>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-content">
+                        
+                            <a class="dropdown-item" href="tutorial-getting-started.html">
+                                Getting Started
+                            </a>
+                        
+                            <a class="dropdown-item" href="tutorial-configuration.html">
+                                Configuration
+                            </a>
+                        
+                            <a class="dropdown-item" href="tutorial-motion-api.html">
+                                Motion API
+                            </a>
+                        
+                            <a class="dropdown-item" href="tutorial-behavior-api.html">
+                                Behavior API
+                            </a>
+                        
+                            <a class="dropdown-item" href="tutorial-ayva-stroker-lite.html">
+                                Ayva Stroker Lite
+                            </a>
+                        
+                        </div>
+                    </div>
+                </div>
+                
+                 
+                    
+                        <a
+                            class="link user-link "
+                            href="https://github.com/ayvajs/ayvajs"
+                        >
+                            Github
+                        </a>
+                    
+                
+                
+            </div>
+        </div>
+    </div>
+</div>
+    <div id="main">
+        <div
+            class="sidebar tutorials"
+            id="sidebarNav"
+        >
+            
+                <div class="search-wrapper">
+                    <input id="search" type="text" placeholder="Search docs..." class="input">
+                </div>
+            
+            <nav>
+                
+                    <div class="category"><h3>Tutorials</h3><ul><li><a href="tutorial-getting-started.html">Getting Started</a></li><li><a href="tutorial-configuration.html">Configuration</a></li><li><a href="tutorial-motion-api.html">Motion API</a><ul><li><a href="tutorial-motion-api-overview.html">Overview</a></li><li><a href="tutorial-motion-api-value-providers.html">Value Providers</a></li><li><a href="tutorial-motion-api-multiaxis.html">Multiaxis Movements</a></li><li><a href="tutorial-motion-api-syntactic-sugar.html">Syntactic Sugar ($)</a></li></ul></li><li><a href="tutorial-behavior-api.html">Behavior API</a><ul><li><a href="tutorial-behavior-api-overview.html">Overview</a></li><li><a href="tutorial-behavior-api-classic-stroke.html">Classic Stroke</a></li><li><a href="tutorial-behavior-api-tempest-stroke.html">Tempest Stroke</a></li><li><a href="tutorial-behavior-api-custom.html">Custom Behaviors</a></li><li><a href="tutorial-behavior-api-generator-behavior.html">Generator Behaviors</a></li></ul></li><li><a href="tutorial-ayva-stroker-lite.html">Ayva Stroker Lite</a></li></ul></div>
+                
+            </nav>
+        </div>
+        <div class="core" id="main-content-wrapper">
+            <div class="content">
+                <header class="page-title">
+                    <p>Tutorial</p>
+                    <h1>Generator Behaviors</h1>
+                </header>
+                <section>
+
+<article>
+    <blockquote>
+<p>In JavaScript, generators are functions that can be exited and later re-entered. Their context (variable bindings) are saved across re-entrances. This makes them ideal for behaviors because they ensure that the behavior is interruptable, that logic executes at the right time, and that the main thread is never blocked. <br/><br/> You should have at least a basic understanding of <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function*" target="_blank">generator functions</a> before proceeding.</p>
+</blockquote>
+<p>Ayva's <code>do()</code> method accepts behaviors in the form of a <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function*" target="_blank">generator function</a>. When using a generator function, the <code>yield</code> keyword can be used to pause execution until any moves that have been queued are finished. A value may optionally be passed to <code>yield</code> to perform an action as well. That value may take the following forms:<br>
+<br/></p>
+<h4>yield &lt;number&gt;</h4>
+<p>A number is interpreted as the number of seconds to wait <em>after all moves have finished</em>:</p>
+<pre class="prettyprint source lang-javascript"><code>ayva.do(function*() {
+  ayva.stroke(0, 1); // Stroke down.
+  ayva.stroke(1, 1); // Stroke up.
+  yield 0.5;         // Wait half a second.
+});
+</code></pre>
+<p><a href="./tutorial-examples/behavior-api-custom-example-4.html" target="_blank">Try it out!</a><br>
+<br/></p>
+<h4>yield &lt;single-axis-move&gt;</h4>
+<p>A single-axis move can be yielded directly (see the <a href="./tutorial-motion-api-overview.html" target="_blank">Motion API</a>):</p>
+<pre class="prettyprint source lang-javascript"><code>ayva.do(function*() {
+  yield { to: 0, speed: 1 };  // Stroke down.
+  yield { to: 1, speed: 0.5 }; // Stroke up.
+});
+</code></pre>
+<p><a href="./tutorial-examples/behavior-api-custom-example-5.html" target="_blank">Try it out!</a><br>
+<br/></p>
+<h4>yield &lt;multi-axis-move&gt;</h4>
+<p>A multi-axis move can be yielded by passing an array of moves (see the <a href="./tutorial-motion-api-multiaxis.html" target="_blank">Motion API: Multiaxis Movements</a>):</p>
+<pre class="prettyprint source lang-javascript"><code>ayva.do(function*() {
+  yield [
+    { to: 0, speed: 1 },
+    { axis: 'twist', to: 0 }
+  ];
+
+  yield [
+    { to: 1, speed: 0.5 },
+    { axis: 'twist', to: 1 }
+  ];
+});
+</code></pre>
+<p><a href="./tutorial-examples/behavior-api-custom-example-6.html" target="_blank">Try it out!</a><br>
+<br/></p>
+<h4>yield &lt;move-builder&gt;</h4>
+<p>A move builder can be yielded directly (see <a href="./tutorial-motion-api-syntactic-sugar.html" target="_blank">Syntactic Sugar ($)</a>):</p>
+<pre class="prettyprint source lang-javascript"><code>ayva.do(function*() {
+  const { stroke } = ayva.$;                // Get a move builder.
+  
+  yield stroke(0, 1).twist(0).pitch(0.75);  // Stroke down.
+  yield stroke(1, 1).twist(1).pitch(0.25);  // Stroke up.
+});
+</code></pre>
+<p><a href="./tutorial-examples/behavior-api-custom-example-7.html" target="_blank">Try it out!</a><br>
+<br/></p>
+<h4>yield &lt;Promise&gt;</h4>
+<p>A <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise" target="_blank">Promise</a> can be yielded. Execution will continue after all previous moves have finished and the specified Promise has resolved.</p>
+<pre class="prettyprint source lang-javascript"><code>ayva.do(function*() {
+  ayva.stroke(0, 1);
+  ayva.stroke(1, 1);
+  yield new Promise ((resolve) => { /* Some asynchronous operation */ });
+});
+</code></pre>
+<br/>  
+<h4>yield &lt;null&gt; or &lt;undefined&gt;</h4>
+<p>Yielding <code>null</code> or <code>undefined</code> will simply pause execution until any moves that have been queued are finished.</p>
+<pre class="prettyprint source lang-javascript"><code>ayva.do(function*() {
+  ayva.stroke(0, 1);
+  ayva.stroke(1, 1);
+  yield;
+
+  console.log('This will print after the above strokes are complete.');
+});
+</code></pre>
+<h3>Object Oriented Programming</h3>
+<p>You can package your generator behavior into a class to make it more reusable and/or configurable by extending the <code>GeneratorBehavior</code> base class.
+To use a <code>GeneratorBehavior</code>, you must import it. For example, <em>in a browser</em>:</p>
+<pre class="prettyprint source lang-javascript"><code>import { Ayva, GeneratorBehavior } from 'https://unpkg.com/ayvajs';
+</code></pre>
+<p>or <em>from within a Node.js app</em>:</p>
+<pre class="prettyprint source lang-javascript"><code>import { Ayva, GeneratorBehavior } from 'ayvajs';
+</code></pre>
+<br/>  
+<h4>*generate()</h4>
+<p>When you extend a <code>GeneratorBehavior</code>, you must implement the <code>*generate()</code> method. The <code>*generate()</code> method takes an optional Ayva instance as the argument and is expected to perform and/or yield the actions that constitute a single iteration of the behavior.</p>
+<pre class="prettyprint source lang-javascript"><code>class MyStroke extends GeneratorBehavior {
+  constructor (speed) {
+    super(); // Must call super constructor.
+    this.speed = speed;
+  }
+
+  * generate (ayva) {
+    const { stroke } = ayva.$; // Get a move builder.
+
+    yield stroke(0, this.speed); // Stroke down.
+    yield stroke(1, this.speed); // Stroke up.
+    yield 0.5;                   // Wait 0.5 seconds.
+  }
+}
+
+ayva.do(new MyStroke(2)); // 2 strokes per second.
+</code></pre>
+<p><a href="./tutorial-examples/behavior-api-custom-example-8.html" target="_blank">Try it out!</a><br>
+<br/></p>
+<h3>Behavior Composition</h3>
+<p>A <code>GeneratorBehavior</code> can incorporate another <code>GeneratorBehavior</code> by using a <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/yield*" target="_blank">yield*</a> expression.</p>
+<p>The following example demonstrates using <code>ClassicStroke</code> inside a <code>GeneratorBehavior</code> (<code>ClassicStroke</code> is a subclass of <code>GeneratorBehavior</code>):</p>
+<pre class="prettyprint source lang-javascript"><code>class MyCompositeBehavior extends GeneratorBehavior {
+  constructor (speed) {
+    super();
+    this.speed = speed;
+  }
+
+  * generate (ayva) {
+    const fullSpeedStroke = new ClassicStroke(0, 1, this.speed);
+    const halfSpeedStroke = new ClassicStroke(0, 1, this.speed / 2);
+
+    yield* fullSpeedStroke(ayva, 4); // 4 full speed strokes.
+    yield* halfSpeedStroke(ayva, 4); // 4 half speed strokes.
+  }
+}
+
+ayva.do(new MyCompositeBehavior(2));
+</code></pre>
+<p><a href="./tutorial-examples/behavior-api-custom-example-9.html" target="_blank">Try it out!</a></p>
+<p>Notice that when we used <code>ClassicStroke</code> in a <code>yield*</code> expression, we called it like a function:</p>
+<pre class="prettyprint source lang-javascript"><code>yield* fullSpeedStroke(ayva, 4);
+</code></pre>
+<p>This is because a <code>GeneratorBehavior</code> is designed to be a <em>callable</em> object. i.e. It can behave like a function. When invoked, it will automatically call its <code>*generate()</code> function to return the generator for the behavior. The first parameter is the Ayva instance to pass to <code>*generate()</code>, and the second (optional) parameter is the number of iterations to perform (<em>default = 1</em>).</p>
+<p><code>yield*</code> will give control to the sub behavior until the specified number of iterations have completed.
+<br/></p>
+<h4>bind()</h4>
+<p>It is sometimes tedious to always have to pass the Ayva instance to a generator behavior when it is invoked. To prevent having to do this, a <code>GeneratorBehavior</code> can be bound to an Ayva instance using the <code>bind()</code> method (not to be confused with <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_objects/Function/bind" target="_blank">Function.prototype.bind()</a>, although the effect is similar).</p>
+<p>Here is the previous example rewritten using <code>bind()</code>:</p>
+<pre class="prettyprint source lang-javascript"><code>class MyCompositeBehavior extends GeneratorBehavior {
+  constructor (speed) {
+    super();
+    this.speed = speed;
+  }
+
+  * generate (ayva) {
+     // Create and bind the strokes to the Ayva instance.
+    const fullSpeedStroke = new ClassicStroke(0, 1, this.speed).bind(ayva);
+    const halfSpeedStroke = new ClassicStroke(0, 1, this.speed / 2).bind(ayva);
+
+    // The ayva parameter can now be omitted.
+    yield* fullSpeedStroke(4); // 4 full speed strokes.
+    yield* halfSpeedStroke(4); // 4 half speed strokes.
+  }
+}
+
+ayva.do(new MyCompositeBehavior(2));
+</code></pre>
+<p>If only one iteration needs to be performed, and a generator behavior has been bound to an Ayva instance (or doesn't need one), it can itself be yielded without having to invoke it. For example:</p>
+<pre class="prettyprint source lang-javascript"><code>class MyBehavior extends GeneratorBehavior {
+  /* ... */
+}
+
+const behavior = new MyBehavior();
+
+ayva.do(function*() {
+  /* ... */
+
+  yield* behavior;
+});
+</code></pre>
+<h3>Whew!</h3>
+<p>That's all for the Behavior API! Feel free to explore the <a href="./index.html" target="_blank">API Documentation</a> to discover anything not covered here. 😊</p>
+</article>
+
+</section>
+
+            </div>
+            
+            <footer class="footer">
+                <div class="content has-text-centered">
+                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.7</a></p>
+                    <p class="sidebar-created-by">
+                        <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by 
+                        <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>
+                    </p>
+                </div>
+            </footer>
+            
+        </div>
+        <div id="side-nav" class="side-nav">
+        </div>
+    </div>
+<script src="scripts/app.min.js"></script>
+<script>PR.prettyPrint();</script>
+<script src="scripts/linenumber.js"> </script>
+
+<script src="scripts/search.js"> </script>
+
+</body>
+</html>

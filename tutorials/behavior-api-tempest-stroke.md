@@ -118,7 +118,7 @@ ayva.do(new TempestStroke({
 }));
 ```
 
-_Note: only the ```from``` and ```to``` properties are required for an axis. ```phase``` and ```eccentricity``` both default to __0__. The default for bpm is __60__._
+_Note: only the ```from``` and ```to``` properties are required for an axis. ```phase``` and ```ecc``` both default to __0__. The default for bpm is __60__._
 
 <a href="./tutorial-examples/tempest-stroke-example-2.html" target="_blank">Try it out!</a>
 
