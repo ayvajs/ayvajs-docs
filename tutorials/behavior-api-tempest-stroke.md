@@ -178,7 +178,7 @@ Internally, ```TempestStroke``` uses a <a href="./tutorial-motion-api-value-prov
 
 <h3 id="other-motion-shapes">Other Motion Shapes</h3>
 
-It is possible to use functions other than cosine by specifying the ```construct``` parameter. This property should be a function that creates the value provider to use for the motion. There are currently two additional built-in types available:
+It is possible to use functions other than cosine by specifying the ```motion``` parameter. This property should be a function that creates the value provider to use for the motion. There are currently two additional built-in types available:
 
 #### Parabolic
 
@@ -229,11 +229,11 @@ Parabolic motion can be used to create a "bounce" effect (_try tweaking phase an
 </script>
 <br/>  
 
-You can tell an axis to use motion shaped like this by passing ```Ayva.parabolicMotion``` into the ```construct``` parameter:
+You can tell an axis to use motion shaped like this by passing ```Ayva.parabolicMotion``` into the ```motion``` parameter:
 
 ```javascript
 ayva.do(new TempestStroke({
-  stroke: { from: 0.0, to: 1, construct: Ayva.parabolicMotion },
+  stroke: { from: 0.0, to: 1, motion: Ayva.parabolicMotion },
   pitch:  { from: 0.1, to: 0.9, phase: -1 }
 }));
 ```
@@ -289,11 +289,11 @@ Linear motion can be used to create more "robotic" movements (_try tweaking phas
 </script>
 <br/>  
 
-You can tell an axis to use motion shaped like this by passing ```Ayva.linearMotion``` into the ```construct``` parameter:
+You can tell an axis to use motion shaped like this by passing ```Ayva.linearMotion``` into the ```motion``` parameter:
 
 ```javascript
 ayva.do(new TempestStroke({
-  stroke: { from: 0.0, to: 1, construct: Ayva.linearMotion },
+  stroke: { from: 0.0, to: 1, motion: Ayva.linearMotion },
   pitch:  { from: 0.1, to: 0.9, phase: -1 }
 }));
 ```
