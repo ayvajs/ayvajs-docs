@@ -54,7 +54,7 @@ Controls:
 
 <img width="350px" src="./images/stroker-lite-guide-output-range.png"><br/> 
 
-This section allows you to set the output range for all supported axes (linear and rotational). The details on how Ayva scales output can be found in the <a href="https://ayvajs.github.io/ayvajs-docs/tutorial-configuration.html" target="_blank">Configuration</a> documentation under the Axis Limits section.
+This section allows you to set the output range for all linear and rotational axes. The details on how Ayva scales output can be found in the <a href="https://ayvajs.github.io/ayvajs-docs/tutorial-configuration.html" target="_blank">Configuration</a> documentation under the Axis Limits section.
 
 The button in the top right gives the device connection status. Clicking it will open the built-in Web Serial API window of the browser that allows you to select a device to connect to. _For safety reasons, connections can only be made when in __Stopped__ mode. You will not be able to connect to a device if a stroke is currently playing._
 
@@ -80,7 +80,7 @@ This section allows you to set the parameters that are used during free play mod
 - __Twist Phase__: When twist is enabled, this allows you to specify the _phase_ of the twist motion.
 - __Twist Eccentricity__: When twist is enabled, this allows you to specify the _eccentricity_ of the twist motion.
 
-The twist motion (like any other axis motion for TempestStrokes) is a __cosine__ shaped movement. See the <a href="https://ayvajs.github.io/ayvajs-docs/tutorial-behavior-api-tempest-stroke.html" target="_blank">TempestStroke</a> documentation for additional details on parameters such as phase and eccentricity.
+Default twist motion is a sinusoidal shaped movement. See the <a href="https://ayvajs.github.io/ayvajs-docs/tutorial-behavior-api-tempest-stroke.html" target="_blank">TempestStroke</a> documentation for additional details on parameters such as phase and eccentricity.
 
 <h3 id="strokes">5. Strokes</h3>
 
@@ -123,7 +123,8 @@ The stroke designer can be accessed by clicking the _gear_ icon in the top right
   <li>Motion can be specified for each axis with an interactive graph widget. The parameters available are:<ul>
       <li><b>Range:</b> The left slider sets the range. This is a dual slider specifying the <i>from</i> and <i>to</i> values for the motion. The knobs can be slid past each other to change the shape of the motion, as well as be set to the same value if you want the axis to hold a value for the duration of the motion.</li>
       <li><b>Phase:</b> The bottom left slider sets the phase of the motion.</li>
-      <li><b>Eccentricity.:</b> The bottom right slider sets the eccentricity of the motion.</li>
+      <li><b>Eccentricity:</b> The bottom right slider sets the eccentricity of the motion.</li>
+      <li><b>Function:</b> The bottom right icon (fx) allows you to change the mathematical function. The options are <i>Sinusoidal</i>, <i>Parabolic</i>, or <i>Linear</i></li>
     </ul>
     Use the middle mouse over a graph to quickly expand or contract the range.
     <br/>Double click a slider knob to reset to default value(s). 
