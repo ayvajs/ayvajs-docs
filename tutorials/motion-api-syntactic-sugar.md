@@ -222,29 +222,6 @@ ayva.$.stroke.min = 0.25;
 ayva.$.stroke.max = 0.75;
 ```-->
 
-<h3 id="convenience">Convenience Methods</h3>
-When you want to quickly execute a move on only one axis, even a move builder might feel verbose:
-
-```javascript
-ayva.$.stroke(0, 1).execute();
-```
-
-There are convenience methods for the default six axes configuration that are direct properties of an Ayva instance.
-These methods are shorthands for creating a move builder on one axis and executing it immediately:
-
-```javascript
-ayva.stroke(0, 1);  // Equivalent to ayva.$.stroke(0, 1).execute()
-ayva.left(0, 1);    // Equivalent to ayva.$.left(0, 1).execute()  
-ayva.forward(0, 1); // Equivalent to ayva.$.forward(0, 1).execute()
-ayva.twist(0, 1);   // Equivalent to ayva.$.twist(0, 1).execute()
-ayva.pitch(0, 1);   // Equivalent to ayva.$.pitch(0, 1).execute()
-ayva.roll(0, 1);    // Equivalent to ayva.$.roll(0, 1).execute()
-```
-
-They accept the same arguments a move builder accepts.  
-
-Note: __These methods only work when the corresponding axes are configured (such as in the default configuration).__
-
 ### Whew!
 
 That's all for the Motion API! The next tutorial will cover a layer of abstraction built on top of all of this—the Behavior API. 😊
