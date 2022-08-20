@@ -136,8 +136,8 @@
 <h4>yield &lt;number&gt;</h4>
 <p>A number is interpreted as the number of seconds to wait <em>after all moves have finished</em>:</p>
 <pre class="prettyprint source lang-javascript"><code>ayva.do(function*() {
-  ayva.stroke(0, 1); // Stroke down.
-  ayva.stroke(1, 1); // Stroke up.
+  ayva.$.stroke(0, 1).execute(); // Stroke down.
+  ayva.$.stroke(1, 1).execute(); // Stroke up.
   yield 0.5;         // Wait half a second.
 });
 </code></pre>
@@ -182,8 +182,8 @@
 <h4>yield &lt;Promise&gt;</h4>
 <p>A <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise" target="_blank">Promise</a> can be yielded. Execution will continue after all previous moves have finished and the specified Promise has resolved.</p>
 <pre class="prettyprint source lang-javascript"><code>ayva.do(function*() {
-  ayva.stroke(0, 1);
-  ayva.stroke(1, 1);
+  ayva.$.stroke(0, 1).execute();
+  ayva.$.stroke(1, 1).execute();
   yield new Promise ((resolve) => { /* Some asynchronous operation */ });
 });
 </code></pre>
@@ -191,8 +191,8 @@
 <h4>yield &lt;null&gt; or &lt;undefined&gt;</h4>
 <p>Yielding <code>null</code> or <code>undefined</code> will simply pause execution until any moves that have been queued are finished.</p>
 <pre class="prettyprint source lang-javascript"><code>ayva.do(function*() {
-  ayva.stroke(0, 1);
-  ayva.stroke(1, 1);
+  ayva.$.stroke(0, 1).execute();
+  ayva.$.stroke(1, 1).execute();
   yield;
 
   console.log('This will print after the above strokes are complete.');

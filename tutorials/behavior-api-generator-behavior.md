@@ -9,8 +9,8 @@ A number is interpreted as the number of seconds to wait _after all moves have f
 
 ```javascript
 ayva.do(function*() {
-  ayva.stroke(0, 1); // Stroke down.
-  ayva.stroke(1, 1); // Stroke up.
+  ayva.$.stroke(0, 1).execute(); // Stroke down.
+  ayva.$.stroke(1, 1).execute(); // Stroke up.
   yield 0.5;         // Wait half a second.
 });
 ```
@@ -71,8 +71,8 @@ A <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Glo
 
 ```javascript
 ayva.do(function*() {
-  ayva.stroke(0, 1);
-  ayva.stroke(1, 1);
+  ayva.$.stroke(0, 1).execute();
+  ayva.$.stroke(1, 1).execute();
   yield new Promise ((resolve) => { /* Some asynchronous operation */ });
 });
 ```  
@@ -84,8 +84,8 @@ Yielding ```null``` or ```undefined``` will simply pause execution until any mov
 
 ```javascript
 ayva.do(function*() {
-  ayva.stroke(0, 1);
-  ayva.stroke(1, 1);
+  ayva.$.stroke(0, 1).execute();
+  ayva.$.stroke(1, 1).execute();
   yield;
 
   console.log('This will print after the above strokes are complete.');

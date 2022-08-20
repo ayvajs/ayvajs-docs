@@ -132,18 +132,17 @@
 <p>Ayva's <code>do()</code> method accepts behaviors in the form of a function, or an object with a <code>perform()</code> method. Upon calling <code>do()</code>, the Ayva instance will start a loop that continuously invokes the provided function (or <code>perform()</code> method). After each invocation it will wait for any moves started by the behavior to complete before starting the next iteration. The loop will continue forever until either <code>do()</code> is called with another behavior, <code>stop()</code> is called, or the behavior completes itself.</p>
 <h3>Function</h3>
 <pre class="prettyprint source lang-javascript"><code>const myStroke = function (ayvaInstance) {
-    ayvaInstance.stroke(0, 1); // Stroke down.
-    ayvaInstance.stroke(1, 1); // Stroke up.
+    ayvaInstance.$.stroke(0, 1).execute(); // Stroke down.
+    ayvaInstance.$.stroke(1, 1).execute(); // Stroke up.
 };
 
 ayva.do(myStroke); // Perform the behavior until commanded to stop.
 </code></pre>
-<p><em>Note: This example uses the convenience methods for single axis stroking as documented in the <a href="./tutorial-motion-api-syntactic-sugar.html#convenience" target="_blank">Syntactic Sugar ($)</a> tutorial.</em></p>
 <p><a href="./tutorial-examples/behavior-api-custom-example-1.html" target="_blank">Try it out!</a></p>
 <p>A behavior is independent of any specific instance of Ayva. When a particular Ayva instance performs the behavior, it passes itself as the sole parameter to the function. In the previous example we named this parameter <code>ayvaInstance</code> just to make it clear that it is not necessarily the same instance of Ayva used later in the example. If your program is only ever using one (global) instance of Ayva, you don't need to specify it as a parameter to your function. The following would also work:</p>
 <pre class="prettyprint source lang-javascript"><code>ayva.do(() => {
-  ayva.stroke(0, 1); // Stroke down.
-  ayva.stroke(1, 1); // Stroke up.
+  ayva.$.stroke(0, 1).execute(); // Stroke down.
+  ayva.$.stroke(1, 1).execute(); // Stroke up.
 }); 
 </code></pre>
 <h3>Object Oriented Programming</h3>
@@ -154,8 +153,8 @@ ayva.do(myStroke); // Perform the behavior until commanded to stop.
   }
 
   perform (ayva) {
-    ayva.stroke(0, this.speed);
-    ayva.stroke(1, this.speed);
+    ayva.$.stroke(0, this.speed).execute();
+    ayva.$.stroke(1, this.speed).execute();
   }
 }
 
@@ -176,8 +175,8 @@ do this by setting its <code>complete</code> property to true. Here is a behavio
     }
 
     if (performance.now() - this.startTime &lt; 5000) {
-      ayva.stroke(0, this.speed);
-      ayva.stroke(1, this.speed);  
+      ayva.$.stroke(0, this.speed).execute();
+      ayva.$.stroke(1, this.speed).execute();  
     } else {
       // Five seconds has elapsed, so signal completion.
       this.complete = true;

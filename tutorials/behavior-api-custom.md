@@ -6,14 +6,12 @@ Ayva's ```do()``` method accepts behaviors in the form of a function, or an obje
 
 ```javascript
 const myStroke = function (ayvaInstance) {
-    ayvaInstance.stroke(0, 1); // Stroke down.
-    ayvaInstance.stroke(1, 1); // Stroke up.
+    ayvaInstance.$.stroke(0, 1).execute(); // Stroke down.
+    ayvaInstance.$.stroke(1, 1).execute(); // Stroke up.
 };
 
 ayva.do(myStroke); // Perform the behavior until commanded to stop.
 ```
-
-_Note: This example uses the convenience methods for single axis stroking as documented in the <a href="./tutorial-motion-api-syntactic-sugar.html#convenience" target="_blank">Syntactic Sugar ($)</a> tutorial._
 
 <a href="./tutorial-examples/behavior-api-custom-example-1.html" target="_blank">Try it out!</a>
 
@@ -21,8 +19,8 @@ A behavior is independent of any specific instance of Ayva. When a particular Ay
 
 ```javascript
 ayva.do(() => {
-  ayva.stroke(0, 1); // Stroke down.
-  ayva.stroke(1, 1); // Stroke up.
+  ayva.$.stroke(0, 1).execute(); // Stroke down.
+  ayva.$.stroke(1, 1).execute(); // Stroke up.
 }); 
 ```
 
@@ -37,8 +35,8 @@ class MyStroke {
   }
 
   perform (ayva) {
-    ayva.stroke(0, this.speed);
-    ayva.stroke(1, this.speed);
+    ayva.$.stroke(0, this.speed).execute();
+    ayva.$.stroke(1, this.speed).execute();
   }
 }
 
@@ -64,8 +62,8 @@ class FiveSecondStroke {
     }
 
     if (performance.now() - this.startTime < 5000) {
-      ayva.stroke(0, this.speed);
-      ayva.stroke(1, this.speed);  
+      ayva.$.stroke(0, this.speed).execute();
+      ayva.$.stroke(1, this.speed).execute();  
     } else {
       // Five seconds has elapsed, so signal completion.
       this.complete = true;
