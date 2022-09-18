@@ -7,14 +7,15 @@
 </style>
 Features:
 
-- Create, import, and export your own custom multiaxis strokes.
+- Create, import, and export your own custom multiaxis strokes with variations.
 - Run any <a href="https://ayvajs.github.io/ayvajs-docs/tutorial-behavior-api-tempest-stroke.html" target="_blank">TempestStroke</a> in Ayva's library.
 - Change the speed (bpm) of the currently running stroke.
 - Enter Free Play mode where strokes are randomly selected according to user preferences.
 - Set the duration range for random strokes.
 - Smooth transitions between strokes.
 - Set the duration range for transitions.
-- Set the bpm range (the speed of the next stroke is randomly selected).
+- Set the bpm range.
+- Set the bpm to change continuously or only on transitions to the next stroke.
 - Enable default twist movements.
 - Choose what strokes to include in Free Play mode.
 - Set device output limits.
@@ -62,6 +63,7 @@ The button in the top right gives the device connection status. Clicking it will
 
 <img width="500px" src="./images/stroker-lite-guide-controls.png">  
 
+- __Eye Icon__: Hide/show the UI.
 - __Home Device__: Stops the current behavior and moves the device to the home position.
 - __Free Play__: Commands Ayva to start playing strokes randomly according to the current parameters.
 - __Stop (Esc)__: Immediately stops the current behavior and ceases to send any output to the device. Pressing the _Escape_ key will also trigger this action.
@@ -70,9 +72,13 @@ The button in the top right gives the device connection status. Clicking it will
 
 <img width="500px" src="./images/stroker-lite-guide-parameters.png"><br/>  
 
-This section allows you to set the parameters that are used during free play mode (and some for manually triggered strokes). All parameters in this section only take effect on the _next_ stroke played.
+This section allows you to set the parameters that are used during free play mode (and some for manually triggered strokes). Most parameters in this section take effect on the _next_ stroke played.
 
+- __Change BPM__: Select when to change the BPM. The options are:
+  - _On Transition_ - changes the BPM when a new stroke is selected.
+  - _Continuously_ - continuously changes the BPM.
 - __BPM Range__: The speed range of strokes in beats per minute. When a stroke is randomly selected, it will pick a random speed within this range.
+- __Acceleration (bpm/s)__: How fast to change the BPM in units of BPM per second. This is only enabled when in _Continuous_ BPM change mode.
 - __Pattern Duration__: The duration range of strokes in seconds. When a stroke is randomly selected, it will last for a random amount of seconds within this range.
 - __Transition Duration__: The duration range for smooth transitions in seconds. When a new stroke is starting, the transition into the new stroke will take a random amount of seconds within this range.
 - __Default Twist__: This option allows you to add custom motion to the twist axis for any stroke that doesn't have it (i.e. the twist motion specified here only takes effect if the current stroke playing does not have its own twist).
@@ -124,6 +130,7 @@ The stroke designer can be accessed by clicking the _gear_ icon in the top right
       <li><b>Range:</b> The left slider sets the range. This is a dual slider specifying the <i>from</i> and <i>to</i> values for the motion. The knobs can be slid past each other to change the shape of the motion, as well as be set to the same value if you want the axis to hold a value for the duration of the motion.</li>
       <li><b>Phase:</b> The bottom left slider sets the phase of the motion.</li>
       <li><b>Eccentricity:</b> The bottom right slider sets the eccentricity of the motion.</li>
+      <li><b>Noise:</b> The two knobs on the bottom right set the noise (amount of variation) for either end of the range of motion.
       <li><b>Function:</b> The bottom right icon (fx) allows you to change the mathematical function. The options are <i>Sinusoidal</i>, <i>Parabolic</i>, or <i>Linear</i></li>
     </ul>
     Use the middle mouse over a graph to quickly expand or contract the range.

@@ -136,14 +136,15 @@
 </style>
 <p>Features:</p>
 <ul>
-<li>Create, import, and export your own custom multiaxis strokes.</li>
+<li>Create, import, and export your own custom multiaxis strokes with variations.</li>
 <li>Run any <a href="https://ayvajs.github.io/ayvajs-docs/tutorial-behavior-api-tempest-stroke.html" target="_blank">TempestStroke</a> in Ayva's library.</li>
 <li>Change the speed (bpm) of the currently running stroke.</li>
 <li>Enter Free Play mode where strokes are randomly selected according to user preferences.</li>
 <li>Set the duration range for random strokes.</li>
 <li>Smooth transitions between strokes.</li>
 <li>Set the duration range for transitions.</li>
-<li>Set the bpm range (the speed of the next stroke is randomly selected).</li>
+<li>Set the bpm range.</li>
+<li>Set the bpm to change continuously or only on transitions to the next stroke.</li>
 <li>Enable default twist movements.</li>
 <li>Choose what strokes to include in Free Play mode.</li>
 <li>Set device output limits.</li>
@@ -181,15 +182,23 @@
 <h3 id="controls">3. Controls</h3>
 <img width="500px" src="./images/stroker-lite-guide-controls.png">  
 <ul>
+<li><strong>Eye Icon</strong>: Hide/show the UI.</li>
 <li><strong>Home Device</strong>: Stops the current behavior and moves the device to the home position.</li>
 <li><strong>Free Play</strong>: Commands Ayva to start playing strokes randomly according to the current parameters.</li>
 <li><strong>Stop (Esc)</strong>: Immediately stops the current behavior and ceases to send any output to the device. Pressing the <em>Escape</em> key will also trigger this action.</li>
 </ul>
 <h3 id="parameters">4. Parameters</h3>
 <p><img width="500px" src="./images/stroker-lite-guide-parameters.png"><br/></p>
-<p>This section allows you to set the parameters that are used during free play mode (and some for manually triggered strokes). All parameters in this section only take effect on the <em>next</em> stroke played.</p>
+<p>This section allows you to set the parameters that are used during free play mode (and some for manually triggered strokes). Most parameters in this section take effect on the <em>next</em> stroke played.</p>
 <ul>
+<li><strong>Change BPM</strong>: Select when to change the BPM. The options are:
+<ul>
+<li><em>On Transition</em> - changes the BPM when a new stroke is selected.</li>
+<li><em>Continuously</em> - continuously changes the BPM.</li>
+</ul>
+</li>
 <li><strong>BPM Range</strong>: The speed range of strokes in beats per minute. When a stroke is randomly selected, it will pick a random speed within this range.</li>
+<li><strong>Acceleration (bpm/s)</strong>: How fast to change the BPM in units of BPM per second. This is only enabled when in <em>Continuous</em> BPM change mode.</li>
 <li><strong>Pattern Duration</strong>: The duration range of strokes in seconds. When a stroke is randomly selected, it will last for a random amount of seconds within this range.</li>
 <li><strong>Transition Duration</strong>: The duration range for smooth transitions in seconds. When a new stroke is starting, the transition into the new stroke will take a random amount of seconds within this range.</li>
 <li><strong>Default Twist</strong>: This option allows you to add custom motion to the twist axis for any stroke that doesn't have it (i.e. the twist motion specified here only takes effect if the current stroke playing does not have its own twist).</li>
@@ -225,6 +234,7 @@
       <li><b>Range:</b> The left slider sets the range. This is a dual slider specifying the <i>from</i> and <i>to</i> values for the motion. The knobs can be slid past each other to change the shape of the motion, as well as be set to the same value if you want the axis to hold a value for the duration of the motion.</li>
       <li><b>Phase:</b> The bottom left slider sets the phase of the motion.</li>
       <li><b>Eccentricity:</b> The bottom right slider sets the eccentricity of the motion.</li>
+      <li><b>Noise:</b> The two knobs on the bottom right set the noise (amount of variation) for either end of the range of motion.
       <li><b>Function:</b> The bottom right icon (fx) allows you to change the mathematical function. The options are <i>Sinusoidal</i>, <i>Parabolic</i>, or <i>Linear</i></li>
     </ul>
     Use the middle mouse over a graph to quickly expand or contract the range.
