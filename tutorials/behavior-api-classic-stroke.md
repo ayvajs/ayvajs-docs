@@ -6,7 +6,7 @@ with just the stroke and twist axis. If you're one of those people, ```ClassicSt
 
 ### Setup
 
-To use ```ClassicStroke```, you must import it. This can be done at the same time that you import the Ayva class. For example, _in a browser_:
+```ClassicStroke``` is available as part of the standard distribution, but to use it within an <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules" target="_blank">ES6 module</a>, you must import it. This can be done at the same time that you import the Ayva class. For example, _in a browser_:
 
 ```javascript
 import { Ayva, ClassicStroke } from 'https://unpkg.com/ayvajs';

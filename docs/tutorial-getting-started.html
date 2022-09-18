@@ -42,7 +42,7 @@
             
              
                 <a href="index.html">
-                    <h1 class="navbar-item">Ayva Documentation</h1>
+                    <h1 class="navbar-item">Ayva.js Documentation</h1>
                 </a>
             
         </div>
@@ -129,66 +129,84 @@
 
 <article>
     <blockquote>
-<p>This tutorial assumes basic familiarity with <a href="https://www.patreon.com/tempestvr" target="_blank">Open Source Multi Axis Stroker Robots</a>, TCode, and <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank">JavaScript</a>.</p>
+<p>Note: This is the guide for <em>Ayva.js</em>—the software library. It assumes basic familiarity with <a href="https://www.patreon.com/tempestvr" target="_blank">Open Source Multi Axis Stroker Robots</a>, TCode, and <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank">JavaScript</a>. If you are looking for the guide for the web application <em>Ayva Stroker Lite</em>, click <a href="./tutorial-ayva-stroker-lite.html">here.</a></p>
 </blockquote>
-<h2>What is Ayva?</h2>
-<p>Ayva is a lightweight, behavior-based JavaScript library for controlling <a href="https://www.patreon.com/tempestvr" target="_blank">Open Source Multi Axis Stroker Robots</a> such as the <a href="https://www.thingiverse.com/thing:4843410" target="_blank">OSR2+</a>, SR6, or any device that can be controlled with TCode. It allows specifying simple or complex multi-axis movements using an expressive Motion API. More complex behaviors can be constructed using a Behavior API.</p>
+<h2>What is Ayva.js?</h2>
+<p>Ayva.js is a lightweight, behavior-based JavaScript library for controlling <a href="https://www.patreon.com/tempestvr" target="_blank">Open Source Multi Axis Stroker Robots</a> such as the <a href="https://www.thingiverse.com/thing:4843410" target="_blank">OSR2+</a>, SR6, or any device that can be controlled with TCode. It allows specifying simple or complex multi-axis movements using an expressive Motion API. More complex behaviors can be constructed using a Behavior API.</p>
 <h2>Quick Start</h2>
-<h3>CDN</h3>
-<p>In a web app, Ayva can be imported as an <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules" target="_blank">ES6 module</a> using a <a href="https://developer.mozilla.org/en-US/docs/Glossary/CDN" target="_blank">CDN</a> such as <a href="https://unpkg.com/" target="_blank">unpkg</a>:</p>
-<pre class="prettyprint source lang-html"><code>&lt;!DOCTYPE html>
-&lt;body>
-  &lt;script type=&quot;module&quot;>
-    // Import the latest version of Ayva. 
-    // To import a specific version, add @&lt;version> to the end of the url. 
-    // Ex: https://unpkg.com/ayvajs@0.13.0
-    import { Ayva } from 'https://unpkg.com/ayvajs'; 
+<h3>Web</h3>
+<p>To get started with Ayva.js for the web, simply copy the following code into an HTML file and open it in your browser:</p>
+<pre class="prettyprint source lang-html"><code>&lt;script src=&quot;https://unpkg.com/osr-emu/dist/osr-emu.dist.min.js&quot;>&lt;/script>
+&lt;script src=&quot;https://unpkg.com/ayvajs/dist/ayva.dist.min.js&quot;>&lt;/script>
 
-    // Construct a new instance of Ayva using the default configuration (a stroker with 6+ axes)
-    const ayva = new Ayva().defaultConfiguration();
+&lt;div id=&quot;emulator&quot; style=&quot;height: 100vh&quot;>&lt;/div>
 
-    // ...
-  &lt;/script>
-&lt;/body>
+&lt;script>
+  const emulator = new OSREmulator('#emulator');
+  const ayva = new Ayva().defaultConfiguration();
+  ayva.addOutput(emulator);
+
+  ayva.move({ to: 0, duration: 2 });
+&lt;/script>
 </code></pre>
-<br/> 
-<p>One or more outputs must be added to an instance of Ayva in order to do anything. You may create your own output (a function or any object with a <code>write()</code> method is considered an output), or you may use the simple <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Serial_API" target="_blank">Web Serial API</a> based <em>WebSerialDevice</em> provided:</p>
-<pre class="prettyprint source lang-html"><code>&lt;!DOCTYPE html>
-&lt;body>
-  &lt;!-- 
-    Create a button that requests a connection to the device when clicked. We need to do this
-    because the Web Serial API only allows a request to connect if it was triggered by a user gesture.
-  -->
-  &lt;button id=&quot;connect&quot;>Connect&lt;/button>
+<p>The above example imports the minified distributions of Ayva.js and the <a href="https://github.com/ayvajs/osr-emu" target="_blank">OSR Emulator</a> from <a href="https://unpkg.com/" target="_blank">unpkg</a>. It loads the emulator into an html element, creates a new instance of Ayva, adds the emulator as an output, and then commands the emulator to move to the bottom position over two seconds.</p>
+<p>To connect to an actual device using the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Serial_API" target="_blank">Web Serial API</a>, you may use a <em>WebSerialDevice</em>. The following example creates a button that requests a connection to a device when clicked (<em>we need to do this because the Web Serial API only allows a request to connect if it was triggered by a user gesture</em>):</p>
+<pre class="prettyprint source lang-html"><code>&lt;script src=&quot;https://unpkg.com/ayvajs/dist/ayva.dist.min.js&quot;>&lt;/script>
 
-  &lt;script type=&quot;module&quot;>
-    import { Ayva, WebSerialDevice } from 'https://unpkg.com/ayvajs';
+&lt;button id=&quot;connect&quot; onclick=&quot;connect()&quot;>Connect&lt;/button>
 
-    // Construct a new instance of Ayva using the default configuration (a stroker with 6+ axes)
-    const ayva = new Ayva().defaultConfiguration();
+&lt;script>
+  const ayva = new Ayva().defaultConfiguration();
+  const device = new WebSerialDevice();
 
-    // Construct a new WebSerialDevice.
-    const device = new WebSerialDevice();
+  function connect () {
+    device.requestConnection().then(() => {
+      ayva.addOutput(device);
 
-    // Setup event listener to request device connection after the Connect button is clicked.
-    document.querySelector('#connect').addEventListener('click', () => {
-      device.requestConnection().then(() => {
-        // Add the output device to the Ayva instance.
-        ayva.addOutput(device);
-
-        // I can now start using Ayva to control the device.
-        // The following line sends a command to move the default axis to position zero at 1 unit per second.
-        ayva.move({ to: 0, speed: 1 });
-      }).catch((error) => {
-        console.error('Error connecting to device:', error);
-      });
+      ayva.move({ to: 0, duration: 2 });
+    }).catch((error) => {
+      console.error('Error connecting to device:', error);
     });
-  &lt;/script>
-&lt;/body>
+  }
+&lt;/script>
 </code></pre>
-<p><em>You can try out this example <a href="./web-serial-example.html" target="_blank">here</a>. Make sure your device is powered on and plugged into your machine. Once you have clicked the button and connected, your device should move to the bottom position after a moment.</em></p>
+<h3>ES6 Module</h3>
+<p>Ayva.js (as well as the OSR Emulator) may also be imported as an <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules" target="_blank">ES6 module</a>. Here are the previous examples rewritten using modules:</p>
+<p><strong>Emulator:</strong></p>
+<pre class="prettyprint source lang-html"><code>&lt;div id=&quot;emulator&quot; style=&quot;height: 100vh&quot;>&lt;/div>
+
+&lt;script type=&quot;module&quot;>
+  import { Ayva } from 'https://unpkg.com/ayvajs';
+  import { OSREmulator } from 'https://unpkg.com/osr-emu';
+
+  const emulator = new OSREmulator('#emulator');
+  const ayva = new Ayva().defaultConfiguration();
+  ayva.addOutput(emulator);
+
+  ayva.move({ to: 0, duration: 2 });
+&lt;/script>
+</code></pre>
+<p><strong>Actual Device:</strong></p>
+<pre class="prettyprint source lang-html"><code>&lt;button id=&quot;connect&quot; onclick=&quot;connect()&quot;>Connect&lt;/button>
+
+&lt;script type=&quot;module&quot;>
+  import { Ayva, WebSerialDevice } from 'https://unpkg.com/ayvajs';
+  const ayva = new Ayva().defaultConfiguration();
+  const device = new WebSerialDevice();
+
+  window.connect = function () {
+    device.requestConnection().then(() => {
+      ayva.addOutput(device);
+
+      ayva.move({ to: 0, duration: 2 });
+    }).catch((error) => {
+      console.error('Error connecting to device:', error);
+    });
+  }
+&lt;/script>
+</code></pre>
 <h3>npm</h3>
-<p>Ayva can be installed and used in a <a href="https://nodejs.org/en/" target="_blank">Node.js</a> app via <a href="https://docs.npmjs.com/about-npm" target="_blank">npm</a>:</p>
+<p>Ayva.js can be installed and used in a <a href="https://nodejs.org/en/" target="_blank">Node.js</a> app via <a href="https://docs.npmjs.com/about-npm" target="_blank">npm</a>:</p>
 <pre class="prettyprint source"><code>npm install ayvajs
 </code></pre>
 <p>To import Ayva into your Node.js app:</p>
@@ -198,7 +216,7 @@ const ayva = new Ayva().defaultConfiguration();
 
 // ...
 </code></pre>
-<p>Ayva does not provide any device implementations that work in a Node.js app. Instead, Ayva can work with an external library. The recommended serial library for Node.js is <a href="https://serialport.io/" target="_blank">serialport</a>:</p>
+<p>Ayva.js does not provide any device implementations that work in a Node.js app. Instead, Ayva.js can work with an external library. The recommended serial library for Node.js is <a href="https://serialport.io/" target="_blank">serialport</a>:</p>
 <pre class="prettyprint source"><code>npm install serialport
 </code></pre>
 <p>Then:</p>
@@ -218,6 +236,20 @@ ayva.move({ to: 0, speed: 1 });
 <p>When running in Node.js, your app will need to be configured with type <em>module</em> (in the <a href="https://nodejs.org/api/packages.html#type" target="_blank">package.json</a>), <strong>or</strong> you will need to suffix your file with the <code>.mjs</code> extension and include that extension explicitly when running it. i.e.</p>
 <pre class="prettyprint source lang-javascript"><code>node my-app.mjs
 </code></pre>
+<h3>Versions</h3>
+<p>While Ayva.js is relatively stable, it is still considered to be under active development. It has not yet reached version <strong>1.0.0</strong>. Therefore breaking changes might be introduced as the API matures. You can protect yourself from breaking changes by locking to a specific version.</p>
+<p>Examples in this tutorial have all used the latest version. When importing using <a href="https://unpkg.com/" target="_blank">unpkg</a>, to restrict to a specific version simply add @&lt;version&gt; into the url. Ex:</p>
+<pre class="prettyprint source lang-html"><code>&lt;script src=&quot;https://unpkg.com/ayvajs@0.14.0/dist/ayva.dist.min.js&quot;>&lt;/script>
+</code></pre>
+<p><em>ES6 module:</em></p>
+<pre class="prettyprint source lang-html"><code>&lt;script type=&quot;module&quot;>
+  import { Ayva } from &quot;https://unpkg.com/ayvajs@0.14.0&quot;;
+&lt;/script>
+</code></pre>
+<p><em>Node.js app:</em></p>
+<pre class="prettyprint source"><code>npm install ayvajs@0.14.0
+</code></pre>
+<p>All releases may be viewed <a href="https://github.com/ayvajs/ayvajs/releases" target="_blank">here.</a></p>
 <div style="text-align: center; font-size: 18px">Next: <a href="./tutorial-configuration.html">Configuration</a></div>
 </article>
 

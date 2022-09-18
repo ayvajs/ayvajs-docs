@@ -21,12 +21,12 @@ To control a device with an instance of Ayva, the axes for the device must be co
       <tr class="deep-level-0">
         <td class="name"><code>L1</code></td>
         <td class="default">linear</td>
-        <td class="description last">forward</td>
+        <td class="description last">surge</td>
       </tr>
       <tr class="deep-level-0">
         <td class="name"><code>L2</code></td>
         <td class="default">linear</td>
-        <td class="description last">left</td>
+        <td class="description last">sway</td>
       </tr>
       <tr class="deep-level-0">
         <td class="name"><code>R0</code></td>

@@ -42,7 +42,7 @@
             
              
                 <a href="index.html">
-                    <h1 class="navbar-item">Ayva Documentation</h1>
+                    <h1 class="navbar-item">Ayva.js Documentation</h1>
                 </a>
             
         </div>
@@ -115,7 +115,7 @@
             
             <nav>
                 
-                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Classes</h3><ul><li><a href="Ayva.html">Ayva</a></li><li><a href="AyvaBehavior.html">AyvaBehavior</a></li><li><a href="ClassicStroke.html">ClassicStroke</a></li><li><a href="GeneratorBehavior.html">GeneratorBehavior</a></li><li><a href="TempestStroke.html">TempestStroke</a></li><li><a href="VariableDuration.html">VariableDuration</a></li><li><a href="WebSerialDevice.html">WebSerialDevice</a></li></ul></div>
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Classes</h3><ul><li><a href="Ayva.html">Ayva</a></li><li><a href="ClassicStroke.html">ClassicStroke</a></li><li><a href="GeneratorBehavior.html">GeneratorBehavior</a></li><li><a href="ScriptBehavior.html">ScriptBehavior</a></li><li><a href="TempestStroke.html">TempestStroke</a></li><li><a href="VariableDuration.html">VariableDuration</a></li><li><a href="WebSerialDevice.html">WebSerialDevice</a></li></ul></div>
                 
             </nav>
         </div>
@@ -495,7 +495,7 @@
         <p class="tag-source">
             <a href="ayva.js.html" class="button">View Source</a>
             <span>
-                <a href="ayva.js.html">ayva.js</a>, <a href="ayva.js.html#line1100">line 1100</a>
+                <a href="ayva.js.html">ayva.js</a>, <a href="ayva.js.html#line1158">line 1158</a>
             </span>
         </p>
     
@@ -692,7 +692,7 @@ The first provider's values will be multiplied by 1 - factor.</p>
         <p class="tag-source">
             <a href="ayva.js.html" class="button">View Source</a>
             <span>
-                <a href="ayva.js.html">ayva.js</a>, <a href="ayva.js.html#line1093">line 1093</a>
+                <a href="ayva.js.html">ayva.js</a>, <a href="ayva.js.html#line1151">line 1151</a>
             </span>
         </p>
     
@@ -771,8 +771,6 @@ The first provider's values will be multiplied by 1 - factor.</p>
             
 
             
-            <th>Default</th>
-            
 
             <th class="last">Description</th>
         </tr>
@@ -807,10 +805,6 @@ The first provider's values will be multiplied by 1 - factor.</p>
   
 
   
-      <td class="default">
-      
-      </td>
-  
 
   <td class="description last"><p>the start of the range of motion</p></td>
 </tr>
@@ -843,10 +837,6 @@ The first provider's values will be multiplied by 1 - factor.</p>
       </td>
   
 
-  
-      <td class="default">
-      
-      </td>
   
 
   <td class="description last"><p>the end of the range of motion</p></td>
@@ -883,12 +873,6 @@ The first provider's values will be multiplied by 1 - factor.</p>
   
 
   
-      <td class="default">
-      
-          0
-      
-      </td>
-  
 
   <td class="description last"><p>the phase of the motion in multiples of π/2</p></td>
 </tr>
@@ -923,12 +907,6 @@ The first provider's values will be multiplied by 1 - factor.</p>
       </td>
   
 
-  
-      <td class="default">
-      
-          0
-      
-      </td>
   
 
   <td class="description last"><p>the eccentricity of the motion</p></td>
@@ -965,12 +943,6 @@ The first provider's values will be multiplied by 1 - factor.</p>
   
 
   
-      <td class="default">
-      
-          60
-      
-      </td>
-  
 
   <td class="description last"><p>beats per minute</p></td>
 </tr>
@@ -1005,12 +977,6 @@ The first provider's values will be multiplied by 1 - factor.</p>
       </td>
   
 
-  
-      <td class="default">
-      
-          0
-      
-      </td>
   
 
   <td class="description last"><p>additional phase shift of the motion in radians</p></td>
@@ -1061,7 +1027,176 @@ The first provider's values will be multiplied by 1 - factor.</p>
         <p class="tag-source">
             <a href="ayva.js.html" class="button">View Source</a>
             <span>
-                <a href="ayva.js.html">ayva.js</a>, <a href="ayva.js.html#line1056">line 1056</a>
+                <a href="ayva.js.html">ayva.js</a>, <a href="ayva.js.html#line1090">line 1090</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'><p>the value provider</p></div>
+    
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id=".linearMotion">
+        <a class="href-link" href="#.linearMotion">#</a>
+        
+            
+                <span class='tag'>static</span>
+            
+        
+        <span class="code-name">
+            
+                linearMotion<span class="signature">(params)</span><span class="type-signature"></span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+    <div class="description">
+        <p>Eccentric Parametric Oscillatory Linear Motion™</p>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>params</code></td>
+  
+
+  <td class="type">
+  
+      
+<span class="param-type">Object</span>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>the parameters of the motion.</p></td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="ayva.js.html" class="button">View Source</a>
+            <span>
+                <a href="ayva.js.html">ayva.js</a>, <a href="ayva.js.html#line1090">line 1090</a>
             </span>
         </p>
     
@@ -1405,7 +1540,7 @@ Does not constrain values to within the range.</p>
         <p class="tag-source">
             <a href="ayva.js.html" class="button">View Source</a>
             <span>
-                <a href="ayva.js.html">ayva.js</a>, <a href="ayva.js.html#line1120">line 1120</a>
+                <a href="ayva.js.html">ayva.js</a>, <a href="ayva.js.html#line1178">line 1178</a>
             </span>
         </p>
     
@@ -1484,8 +1619,6 @@ Does not constrain values to within the range.</p>
             
 
             
-            <th>Default</th>
-            
 
             <th class="last">Description</th>
         </tr>
@@ -1520,10 +1653,6 @@ Does not constrain values to within the range.</p>
   
 
   
-      <td class="default">
-      
-      </td>
-  
 
   <td class="description last"><p>the start of the range of motion</p></td>
 </tr>
@@ -1556,10 +1685,6 @@ Does not constrain values to within the range.</p>
       </td>
   
 
-  
-      <td class="default">
-      
-      </td>
   
 
   <td class="description last"><p>the end of the range of motion</p></td>
@@ -1596,12 +1721,6 @@ Does not constrain values to within the range.</p>
   
 
   
-      <td class="default">
-      
-          0
-      
-      </td>
-  
 
   <td class="description last"><p>the phase of the motion in multiples of π/2</p></td>
 </tr>
@@ -1636,12 +1755,6 @@ Does not constrain values to within the range.</p>
       </td>
   
 
-  
-      <td class="default">
-      
-          0
-      
-      </td>
   
 
   <td class="description last"><p>the eccentricity of the motion</p></td>
@@ -1678,12 +1791,6 @@ Does not constrain values to within the range.</p>
   
 
   
-      <td class="default">
-      
-          60
-      
-      </td>
-  
 
   <td class="description last"><p>beats per minute</p></td>
 </tr>
@@ -1718,12 +1825,6 @@ Does not constrain values to within the range.</p>
       </td>
   
 
-  
-      <td class="default">
-      
-          0
-      
-      </td>
   
 
   <td class="description last"><p>additional phase shift of the motion in radians</p></td>
@@ -1774,7 +1875,176 @@ Does not constrain values to within the range.</p>
         <p class="tag-source">
             <a href="ayva.js.html" class="button">View Source</a>
             <span>
-                <a href="ayva.js.html">ayva.js</a>, <a href="ayva.js.html#line1025">line 1025</a>
+                <a href="ayva.js.html">ayva.js</a>, <a href="ayva.js.html#line1030">line 1030</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'><p>the value provider</p></div>
+    
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id=".parabolicMotion">
+        <a class="href-link" href="#.parabolicMotion">#</a>
+        
+            
+                <span class='tag'>static</span>
+            
+        
+        <span class="code-name">
+            
+                parabolicMotion<span class="signature">(params)</span><span class="type-signature"></span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+    <div class="description">
+        <p>Eccentric Parametric Oscillatory Parabolic Motion™</p>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>params</code></td>
+  
+
+  <td class="type">
+  
+      
+<span class="param-type">Object</span>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>the parameters of the motion.</p></td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="ayva.js.html" class="button">View Source</a>
+            <span>
+                <a href="ayva.js.html">ayva.js</a>, <a href="ayva.js.html#line1030">line 1030</a>
             </span>
         </p>
     
@@ -1943,7 +2213,7 @@ Does not constrain values to within the range.</p>
         <p class="tag-source">
             <a href="ayva.js.html" class="button">View Source</a>
             <span>
-                <a href="ayva.js.html">ayva.js</a>, <a href="ayva.js.html#line920">line 920</a>
+                <a href="ayva.js.html">ayva.js</a>, <a href="ayva.js.html#line872">line 872</a>
             </span>
         </p>
     
@@ -2061,7 +2331,7 @@ Does not constrain values to within the range.</p>
         <p class="tag-source">
             <a href="ayva.js.html" class="button">View Source</a>
             <span>
-                <a href="ayva.js.html">ayva.js</a>, <a href="ayva.js.html#line940">line 940</a>
+                <a href="ayva.js.html">ayva.js</a>, <a href="ayva.js.html#line892">line 892</a>
             </span>
         </p>
     
@@ -2162,7 +2432,7 @@ Does not constrain values to within the range.</p>
         <p class="tag-source">
             <a href="ayva.js.html" class="button">View Source</a>
             <span>
-                <a href="ayva.js.html">ayva.js</a>, <a href="ayva.js.html#line931">line 931</a>
+                <a href="ayva.js.html">ayva.js</a>, <a href="ayva.js.html#line883">line 883</a>
             </span>
         </p>
     
@@ -2264,7 +2534,7 @@ This creates the effect of &quot;launching&quot; towards the target position.</p
         <p class="tag-source">
             <a href="ayva.js.html" class="button">View Source</a>
             <span>
-                <a href="ayva.js.html">ayva.js</a>, <a href="ayva.js.html#line960">line 960</a>
+                <a href="ayva.js.html">ayva.js</a>, <a href="ayva.js.html#line912">line 912</a>
             </span>
         </p>
     
@@ -2366,7 +2636,7 @@ This creates the effect of &quot;falling&quot; towards the target position.</p>
         <p class="tag-source">
             <a href="ayva.js.html" class="button">View Source</a>
             <span>
-                <a href="ayva.js.html">ayva.js</a>, <a href="ayva.js.html#line950">line 950</a>
+                <a href="ayva.js.html">ayva.js</a>, <a href="ayva.js.html#line902">line 902</a>
             </span>
         </p>
     
@@ -2451,8 +2721,6 @@ where you can adjust the parameters to see how they affect the motion.</p>
             
 
             
-            <th>Default</th>
-            
 
             <th class="last">Description</th>
         </tr>
@@ -2487,10 +2755,6 @@ where you can adjust the parameters to see how they affect the motion.</p>
   
 
   
-      <td class="default">
-      
-      </td>
-  
 
   <td class="description last"><p>the start of the range of motion</p></td>
 </tr>
@@ -2523,10 +2787,6 @@ where you can adjust the parameters to see how they affect the motion.</p>
       </td>
   
 
-  
-      <td class="default">
-      
-      </td>
   
 
   <td class="description last"><p>the end of the range of motion</p></td>
@@ -2563,12 +2823,6 @@ where you can adjust the parameters to see how they affect the motion.</p>
   
 
   
-      <td class="default">
-      
-          0
-      
-      </td>
-  
 
   <td class="description last"><p>the phase of the wave in multiples of π/2</p></td>
 </tr>
@@ -2603,12 +2857,6 @@ where you can adjust the parameters to see how they affect the motion.</p>
       </td>
   
 
-  
-      <td class="default">
-      
-          0
-      
-      </td>
   
 
   <td class="description last"><p>the eccentricity of the wave</p></td>
@@ -2645,12 +2893,6 @@ where you can adjust the parameters to see how they affect the motion.</p>
   
 
   
-      <td class="default">
-      
-          60
-      
-      </td>
-  
 
   <td class="description last"><p>beats per minute</p></td>
 </tr>
@@ -2685,12 +2927,6 @@ where you can adjust the parameters to see how they affect the motion.</p>
       </td>
   
 
-  
-      <td class="default">
-      
-          0
-      
-      </td>
   
 
   <td class="description last"><p>additional phase shift of the wave in radians</p></td>
@@ -2741,7 +2977,7 @@ where you can adjust the parameters to see how they affect the motion.</p>
         <p class="tag-source">
             <a href="ayva.js.html" class="button">View Source</a>
             <span>
-                <a href="ayva.js.html">ayva.js</a>, <a href="ayva.js.html#line998">line 998</a>
+                <a href="ayva.js.html">ayva.js</a>, <a href="ayva.js.html#line976">line 976</a>
             </span>
         </p>
     
@@ -2793,10 +3029,201 @@ where you can adjust the parameters to see how they affect the motion.</p>
 ayva.$.stroke(Ayva.tempestMotion(1, 0), 10).execute();
 
 // ... out of phase with a little eccentricity.
-ayva.$.stroke(Ayva.tempestMotion(1, 0, 1, 2), 10).execute();
+ayva.$.stroke(Ayva.tempestMotion(1, 0, 1, 0.2), 10).execute();
 
 // ... at 30 BPM.
-ayva.$.stroke(Ayva.tempestMotion(1, 0, 1, 2, 30), 10).execute();</code></pre>
+ayva.$.stroke(Ayva.tempestMotion(1, 0, 1, 0.2, 30), 10).execute();</code></pre>
+    
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id=".tempestMotion">
+        <a class="href-link" href="#.tempestMotion">#</a>
+        
+            
+                <span class='tag'>static</span>
+            
+        
+        <span class="code-name">
+            
+                tempestMotion<span class="signature">(params)</span><span class="type-signature"></span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+    <div class="description">
+        <p>Creates a value provider that generates oscillatory motion. The formula is:</p>
+<p>cos(θ + phase·π/2 + ecc·sin(θ + phase·π/2))</p>
+<p>The result is translated and scaled to fit the range and beats per minute specified.
+This formula was created by <a href="https://www.patreon.com/tempestvr">Tempest MAx</a>—loosely based
+on orbital motion calculations. Hence, tempestMotion.</p>
+<p>See <a href="https://www.desmos.com/calculator/vnfke1rprt">this graph</a> of the function
+where you can adjust the parameters to see how they affect the motion.</p>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>params</code></td>
+  
+
+  <td class="type">
+  
+      
+<span class="param-type">Object</span>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>the parameters of the motion.</p></td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="ayva.js.html" class="button">View Source</a>
+            <span>
+                <a href="ayva.js.html">ayva.js</a>, <a href="ayva.js.html#line976">line 976</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'><p>the value provider.</p></div>
+    
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+    <h5>Example</h5>
+    
+    
+        <pre class="prettyprint"><code>// Note: These examples use Move Builders from the Motion API.
+
+// Simple up/down stroke for 10 seconds.
+ayva.$.stroke(Ayva.tempestMotion({ from: 1, to: 0}), 10).execute();
+
+// ... out of phase with a little eccentricity.
+ayva.$.stroke(Ayva.tempestMotion({ from: 1, to: 0, phase: 1, ecc: 0.2 }), 10).execute();
+
+// ... at 30 BPM.
+ayva.$.stroke(Ayva.tempestMotion({ from: 1, to: 0, phase: 1, ecc: 0.2, bpm: 30 }), 10).execute();</code></pre>
     
 
 
@@ -3781,104 +4208,6 @@ If another behavior is running, it will be stopped.</p>
 
 
     
-    <h4 class="name" id="forward">
-        <a class="href-link" href="#forward">#</a>
-        
-        <span class="code-name">
-            
-                forward<span class="signature">()</span><span class="type-signature"></span>
-            
-        </span>
-    </h4>
-    
-
-    
-    
-    <div class="description">
-        <p>Shorthand method for <code>ayva.$.forward(...).execute()</code>.
-Only applicable for configurations that have an axis named 'forward'.</p>
-    </div>
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    
-
-    
-
-    
-
-    
-        <p class="tag-source">
-            <a href="ayva.js.html" class="button">View Source</a>
-            <span>
-                <a href="ayva.js.html">ayva.js</a>, <a href="ayva.js.html#line504">line 504</a>
-            </span>
-        </p>
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
-            
-                <div class="member">
-
-
-    
     <h4 class="name" id="getAxes">
         <a class="href-link" href="#getAxes">#</a>
         
@@ -4656,104 +4985,6 @@ Only applicable for configurations that have an axis named 'forward'.</p>
 
 
     
-    <h4 class="name" id="left">
-        <a class="href-link" href="#left">#</a>
-        
-        <span class="code-name">
-            
-                left<span class="signature">()</span><span class="type-signature"></span>
-            
-        </span>
-    </h4>
-    
-
-    
-    
-    <div class="description">
-        <p>Shorthand method for <code>ayva.$.left(...).execute()</code>.
-Only applicable for configurations that have an axis named 'left'.</p>
-    </div>
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    
-
-    
-
-    
-
-    
-        <p class="tag-source">
-            <a href="ayva.js.html" class="button">View Source</a>
-            <span>
-                <a href="ayva.js.html">ayva.js</a>, <a href="ayva.js.html#line496">line 496</a>
-            </span>
-        </p>
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
-            
-                <div class="member">
-
-
-    
     <h4 class="name" id="move">
         <a class="href-link" href="#move">#</a>
         
@@ -5064,104 +5295,6 @@ For full details on how to use this method, see the <a href="tutorial-motion-api
                 
         </div>
     </div>
-
-
-
-
-</div>
-            
-                <div class="member">
-
-
-    
-    <h4 class="name" id="pitch">
-        <a class="href-link" href="#pitch">#</a>
-        
-        <span class="code-name">
-            
-                pitch<span class="signature">()</span><span class="type-signature"></span>
-            
-        </span>
-    </h4>
-    
-
-    
-    
-    <div class="description">
-        <p>Shorthand method for <code>ayva.$.pitch(...).execute()</code>.
-Only applicable for configurations that have an axis named 'pitch'.</p>
-    </div>
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    
-
-    
-
-    
-
-    
-        <p class="tag-source">
-            <a href="ayva.js.html" class="button">View Source</a>
-            <span>
-                <a href="ayva.js.html">ayva.js</a>, <a href="ayva.js.html#line528">line 528</a>
-            </span>
-        </p>
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -5592,104 +5725,6 @@ Only applicable for configurations that have an axis named 'pitch'.</p>
 
 
     
-    <h4 class="name" id="roll">
-        <a class="href-link" href="#roll">#</a>
-        
-        <span class="code-name">
-            
-                roll<span class="signature">()</span><span class="type-signature"></span>
-            
-        </span>
-    </h4>
-    
-
-    
-    
-    <div class="description">
-        <p>Shorthand method for <code>ayva.$.roll(...).execute()</code>.
-Only applicable for configurations that have an axis named 'roll'.</p>
-    </div>
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    
-
-    
-
-    
-
-    
-        <p class="tag-source">
-            <a href="ayva.js.html" class="button">View Source</a>
-            <span>
-                <a href="ayva.js.html">ayva.js</a>, <a href="ayva.js.html#line520">line 520</a>
-            </span>
-        </p>
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
-            
-                <div class="member">
-
-
-    
     <h4 class="name" id="sleep">
         <a class="href-link" href="#sleep">#</a>
         
@@ -5929,202 +5964,6 @@ Only applicable for configurations that have an axis named 'roll'.</p>
             <a href="ayva.js.html" class="button">View Source</a>
             <span>
                 <a href="ayva.js.html">ayva.js</a>, <a href="ayva.js.html#line270">line 270</a>
-            </span>
-        </p>
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
-            
-                <div class="member">
-
-
-    
-    <h4 class="name" id="stroke">
-        <a class="href-link" href="#stroke">#</a>
-        
-        <span class="code-name">
-            
-                stroke<span class="signature">()</span><span class="type-signature"></span>
-            
-        </span>
-    </h4>
-    
-
-    
-    
-    <div class="description">
-        <p>Shorthand method for <code>ayva.$.stroke(...).execute()</code>.
-Only applicable for configurations that have an axis named 'stroke'.</p>
-    </div>
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    
-
-    
-
-    
-
-    
-        <p class="tag-source">
-            <a href="ayva.js.html" class="button">View Source</a>
-            <span>
-                <a href="ayva.js.html">ayva.js</a>, <a href="ayva.js.html#line488">line 488</a>
-            </span>
-        </p>
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
-            
-                <div class="member">
-
-
-    
-    <h4 class="name" id="twist">
-        <a class="href-link" href="#twist">#</a>
-        
-        <span class="code-name">
-            
-                twist<span class="signature">()</span><span class="type-signature"></span>
-            
-        </span>
-    </h4>
-    
-
-    
-    
-    <div class="description">
-        <p>Shorthand method for <code>ayva.$.twist(...).execute()</code>.
-Only applicable for configurations that have an axis named 'twist'.</p>
-    </div>
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    
-
-    
-
-    
-
-    
-        <p class="tag-source">
-            <a href="ayva.js.html" class="button">View Source</a>
-            <span>
-                <a href="ayva.js.html">ayva.js</a>, <a href="ayva.js.html#line512">line 512</a>
             </span>
         </p>
     

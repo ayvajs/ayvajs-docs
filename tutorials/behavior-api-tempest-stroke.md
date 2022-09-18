@@ -77,7 +77,7 @@ Where ```θ``` is the angle in radians, ```p``` is the _phase_, and ```c``` is t
 
 ### Setup
 
-To use ```TempestStroke```, you must import it. This can be done at the same time that you import the Ayva class. For example, _in a browser_:
+```TempestStroke``` is available as part of the standard distribution, but to use it within an <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules" target="_blank">ES6 module</a>, you must import it. This can be done at the same time that you import the Ayva class. For example, _in a browser_:
 
 ```javascript
 import { Ayva, TempestStroke } from 'https://unpkg.com/ayvajs';
@@ -178,7 +178,7 @@ Internally, ```TempestStroke``` uses a <a href="./tutorial-motion-api-value-prov
 
 <h3 id="other-motion-shapes">Other Motion Shapes</h3>
 
-It is possible to use functions other than cosine by specifying the ```motion``` parameter. This property should be a function that creates the value provider to use for the motion. There are currently two additional built-in types available:
+It is possible to use functions other than cosine by specifying the ```motion``` parameter. This parameter should be a function that creates the value provider to use for the motion. There are currently two additional built-in types available:
 
 #### Parabolic
 
@@ -299,6 +299,43 @@ ayva.do(new TempestStroke({
 ```
 
 <a href="./tutorial-examples/tempest-stroke-example-6.html" target="_blank">Try it out!</a>
-<br/>  
+<br/>
+
+### Noise
+
+It is possible to add variation to the range of motion for each axis with the ```noise``` parameter. 
+
+The ```noise``` parameter must be a value between 0 and 1.
+It specifies how much the range should vary within the provided ```from``` and ```to``` parameters (zero being no variation—the default—and 1 being 
+the maximum variation). Ex:
+
+```javascript
+ayva.do(new TempestStroke({
+  stroke: { from: 0, to: 1, noise: 0.5 },
+}));
+```
+
+<a href="./tutorial-examples/tempest-stroke-example-7.html" target="_blank">Try it out!</a>
+<br/>
+
+This will cause both the ```from``` and ```to``` parameters to vary by up to 50% away from their specified value (towards the midpoint). To specify
+different variation at either end of the range, the ```noise``` parameter can also be an object with seperate properties for ```from``` and ```to```.
+In the following example, there is no noise on the ```from``` end of the range (the bottom of the stroke), but maximum noise on the ```to``` end (the top of the stroke):
+
+```javascript
+ayva.do(new TempestStroke({
+  stroke: { 
+    from: 0, 
+    to: 1, 
+    noise: {
+      from: 0,
+      to: 1,
+    } 
+  },
+}));
+```
+
+<a href="./tutorial-examples/tempest-stroke-example-8.html" target="_blank">Try it out!</a>
+<br/>
 
 <div style="text-align: center; font-size: 18px">Next: <a href="./tutorial-behavior-api-custom.html">Custom Behaviors</a></div>

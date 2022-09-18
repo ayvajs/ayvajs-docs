@@ -17,7 +17,7 @@
   },
   "templates": {
     "better-docs": {
-      "name": "Ayva Documentation",
+      "name": "Ayva.js Documentation",
       "css": "custom-styles.css",
       "navLinks": [
         {

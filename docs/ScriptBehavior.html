@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -7,7 +5,7 @@
   
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title> behaviors/generator-behavior.js</title>
+  <title> ScriptBehavior</title>
 
   <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -124,197 +122,239 @@
         <div class="core" id="main-content-wrapper">
             <div class="content">
                 <header class="page-title">
-                    <p>Source</p>
-                    <h1>behaviors/generator-behavior.js</h1>
+                    <p>Class</p>
+                    <h1>ScriptBehavior</h1>
                 </header>
                 
 
 
 
+
+<section>
+
+<header>
     
-    <section>
-        <article>
-            <pre class="prettyprint source linenums"><code>import Callable from '../util/callable.js';
-import MoveBuilder from '../util/move-builder.js';
+        <h2><span class="attribs"><span class="type-signature"></span></span>ScriptBehavior<span class="signature">(script, scope)</span><span class="type-signature"></span></h2>
+        
+            <div class="class-description"><p>A behavior that allows the execution of scripts stored in a string.</p>
+<p>WARNING: Scripts are run inside of a rudimentary sandbox. The sandbox is NOT secure.
+Care should be taken to avoid running scripts from untrusted sources.</p>
+<p>For full details on how to use this class, see the <a href="tutorial-behavior-api.html">Behavior API</a> tutorial.</p></div>
+        
+    
+</header>
 
-/**
- * Base class for Generator Behaviors.
- *
- * For full details on how to use this class, see the {@tutorial behavior-api} tutorial.
- */
-class GeneratorBehavior extends Callable {
-  complete = false;
+<article>
+    <div class="container-overview">
+    
+        
+            <div class='vertical-section'>
+                <div class="members">
+                    <div class="member">
+                        <div class=name>
+                            <span class="tag">Constructor</span>
+                        </div>
+                        
 
-  #generator;
 
-  #done = false;
+    
+    <h4 class="name" id="ScriptBehavior">
+        <a class="href-link" href="#ScriptBehavior">#</a>
+        
+        <span class="code-name">
+            
+                new ScriptBehavior<span class="signature">(script, scope)</span><span class="type-signature"></span>
+            
+        </span>
+    </h4>
+    
 
-  #ayva = null;
+    
+    
+    <div class="description">
+        <p>Create a new ScriptBehavior.</p>
+    </div>
+    
 
-  #unboundStart;
 
-  #unboundGenerate;
 
-  #unboundIterated;
 
-  get ayva () {
-    return this.#ayva;
-  }
 
-  constructor (generate) {
-    super();
 
-    if (generate) {
-      if (generate.constructor.name !== 'GeneratorFunction') {
-        throw Error(`Not a generator function: ${generate}`);
-      }
 
-      this.generate = generate;
-    }
-  }
 
-  /**
-   * Generate any actions that setup this behavior. Typically this is moving the device into
-   * some starting position. Subclasses can implement this method, although it is optional.
-   *
-   * For full details on how to implement this method, see the {@tutorial behavior-api} tutorial.
-   *
-   * @param {Ayva} [ayva] - instance of Ayva to generate actions for. Defaults to the Ayva instance bound to this behavior (if it exists).
-   *//* c8 ignore start */
-  * start (ayva) { // eslint-disable-line require-yield, no-unused-vars
-    // Optional
-  }/* c8 ignore stop */
 
-  /**
-   * Generate the actions that make up this behavior. Subclasses must implement this method.
-   *
-   * For full details on how to implement this method, see the {@tutorial behavior-api} tutorial.
-   *
-   * @param {Ayva} [ayva] - instance of Ayva to generate actions for. Defaults to the Ayva instance bound to this behavior (if it exists).
-   */
-  * generate (ayva) { // eslint-disable-line require-yield, no-unused-vars
-    throw new Error('generate() not implemented.');
-  }
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
 
-  /**
-   * Repeats the actions that make up this behavior the specified number of iterations.
-   *
-   * @param {Ayva} [ayva] - instance of Ayva to generate actions for. Defaults to the Ayva instance bound to this behavior (if it exists).
-   * @param {Number} count - the number of iterations
-   */
-  * iterated (ayva, count = 1) {
-    for (let i = 0; i &lt; count; i++) {
-      yield* this.generate(ayva);
-    }
-  }
+            <th>Type</th>
 
-  /**
-   * Perform one step of this behavior.
-   *
-   * @param {Ayva} [ayva] - instance of Ayva to use. Defaults to the Ayva instance bound to this behavior (if it exists).
-   * @returns Promise that resolves when the step is complete.
-   */
-  perform (ayva = this.#ayva) {
-    const value = this.next(ayva);
+            
 
-    if (value) {
-      if (Array.isArray(value)) {
-        return ayva.move(...value);
-      } else if (Number.isFinite(value) &amp;&amp; value >= 0) {
-        return ayva.ready().then(() => ayva.sleep(value));
-      } else if (value instanceof MoveBuilder) {
-        return value.execute();
-      } else if (value instanceof Promise) {
-        return value;
-      }
+            
 
-      return ayva.move(value);
-    }
+            <th class="last">Description</th>
+        </tr>
+        </thead>
 
-    return Promise.resolve();
-  }
+        <tbody>
+        
 
-  /**
-   * Binds this behavior to the specified Ayva instance.
-   *
-   * Not to be confused with Function.prototype.bind(). Although the effect is similar.
-   * This affects start(), generate(), iterated(), and when calling this behavior
-   * using the shorthand callable syntax.
-   *
-   * @param {Ayva} ayva
-   * @returns this behavior
-   */
-  bind (ayva) {
-    this.unbind();
-    this.#ayva = ayva;
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>script</code></td>
+  
 
-    this.#unboundStart = this.start;
-    this.#unboundGenerate = this.generate;
-    this.#unboundIterated = this.iterated;
+  <td class="type">
+  
+      
+<span class="param-type">String</span>
 
-    this.start = this.start.bind(this, ayva);
-    this.generate = this.generate.bind(this, ayva);
-    this.iterated = this.iterated.bind(this, ayva);
 
-    return this;
-  }
+  
+  </td>
 
-  /**
-   * Unbind this behavior from any Ayva instance.
-   */
-  unbind () {
-    if (this.#ayva) {
-      this.#ayva = null;
-      this.start = this.#unboundStart;
-      this.generate = this.#unboundGenerate;
-      this.iterated = this.#unboundIterated;
-    }
-  }
+  
 
-  /**
-   * Generate and return the next action of this behavior.
-   *
-   * @param {Ayva} ayva - defaults to the bound instance (if any)
-   * @returns - the next action.
-   */
-  next (ayva = this.#ayva) {
-    if (!this.#generator || this.#done) {
-      this.#generator = this.generate(ayva);
-      this.#done = false;
-    }
+  
 
-    const { value, done } = this.#generator.next();
+  <td class="description last"><p>the script.</p></td>
+</tr>
 
-    this.#done = done;
 
-    return !done ? value : null;
-  }
+        
 
-  /**
-   * Implementation for Callable.
-   */
-  __call__ (...args) {
-    const countArg = this.#ayva ? args[0] : args[1];
-    const ayva = this.#ayva || args[0];
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>scope</code></td>
+  
 
-    const count = Number.isFinite(countArg) &amp;&amp; countArg >= 1 ? countArg : undefined;
+  <td class="type">
+  
+      
+<span class="param-type">Object</span>
 
-    if (this.#ayva) {
-      return count ? this.iterated(count) : this.generate();
-    }
 
-    return count ? this.iterated(ayva, count) : this.generate(ayva);
-  }
+  
+  </td>
 
-  [Symbol.iterator] () {
-    return this.generate();
-  }
-}
+  
 
-export default GeneratorBehavior;
-</code></pre>
-        </article>
-    </section>
+  
+
+  <td class="description last"><p>an object containing variables to include in the script's scope.</p></td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="behaviors_script-behavior.js.html" class="button">View Source</a>
+            <span>
+                <a href="behaviors_script-behavior.js.html">behaviors/script-behavior.js</a>, <a href="behaviors_script-behavior.js.html#line14">line 14</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    </div>
+                </div>
+            </div>
+        
+    
+    </div>
+    
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
 
 
 
