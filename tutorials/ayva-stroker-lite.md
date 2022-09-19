@@ -24,6 +24,10 @@ Features:
 
 A video guide is available <a href="https://www.youtube.com/watch?v=0WTC9joyvN8" target="_blank">here</a>.
 
+Supported browsers: Chrome, Edge, Safari
+
+_Note: The app will run in Firefox, but Firefox does not support the Web Serial API yet so connecting to an actual device in Firefox is currently not possible._
+
 ## Guide
 
 <img src="./images/stroker-lite-guide-1.png">
