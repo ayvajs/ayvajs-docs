@@ -94,8 +94,7 @@ ayva.do(function*() {
 
 ### Object Oriented Programming
 
-You can package your generator behavior into a class to make it more reusable and/or configurable by extending the ```GeneratorBehavior``` base class.
-To use a ```GeneratorBehavior```, you must import it. For example, _in a browser_:
+You can package your generator behavior into a class to make it more reusable and/or configurable by extending the ```GeneratorBehavior``` base class. ```GeneratorBehavior``` is available as part of the standard distribution, but to use it within an <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules" target="_blank">ES6 module</a>, you must import it. For example, _in a browser_:
 
 ```javascript
 import { Ayva, GeneratorBehavior } from 'https://unpkg.com/ayvajs';
