@@ -167,8 +167,9 @@ yield* fullSpeedStroke(ayva, 4);
 This is because a ```GeneratorBehavior``` is designed to be a _callable_ object. i.e. It can behave like a function. When invoked, it will automatically call its ```*generate()``` function to return the generator for the behavior. The first parameter is the Ayva instance to pass to ```*generate()```, and the second (optional) parameter is the number of iterations to perform (_default = 1_). 
 
 ```yield*``` will give control to the sub behavior until the specified number of iterations have completed.
+<br/> 
 <br/>  
-
+  
 #### bind()
 
 It is sometimes tedious to always have to pass the Ayva instance to a generator behavior when it is invoked. To prevent having to do this, a ```GeneratorBehavior``` can be bound to an Ayva instance using the ```bind()``` method (not to be confused with <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_objects/Function/bind" target="_blank">Function.prototype.bind()</a>, although the effect is similar).
@@ -211,10 +212,49 @@ ayva.do(function*() {
   yield* behavior;
 });
 ```
+<br/> 
+
+#### next()
+
+One limitation of a ```yield*``` expression is that it passes control to the supplied generator until that generator is finished. There is therefore no way for the parent behavior to take back control. ```GeneratorBehaviors``` have a ```next()``` method that allows for finer control if needed. It returns only the next action of a behavior so control can be taken back at any time. The following example demonstrates this by creating a stroke that sometimes pauses for half a second in between movements:
+
+```javascript
+class MyStroke extends GeneratorBehavior {
+  * generate (ayva) { 
+    // Create a stroke where up strokes are performed at half speed.
+    const stroke = new ClassicStroke(0, 1, [1, 0.5]).bind(ayva);
+
+    while (true) {
+      yield* stroke;
+    }
+  }
+}
+
+class MyCompositeBehavior extends GeneratorBehavior {
+  * generate (ayva) {
+    const myStroke = new MyStroke().bind(ayva);
+
+    while (true) {
+      // Yield only the next action of MyStroke (a single stroke).
+      yield myStroke.next();
+
+      if (Math.random() < 0.5) {
+        // 50% chance of pausing for half a second in between strokes.
+        yield 0.5;
+      }
+    }
+  }
+}
+
+ayva.do(new MyCompositeBehavior()); 
+```
+
+<a href="./tutorial-examples/behavior-api-custom-example-13.html" target="_blank">Try it out!</a>  
 
 ### Tempest Stroke
 
 ```TempestStrokes``` contain some convenience methods to allow incorporating them into ```GeneratorBehaviors``` more seamlessly.
+<br/>  
 
 #### start()
 
@@ -254,6 +294,8 @@ ayva.do(function*() {
 <a href="./tutorial-examples/behavior-api-custom-example-11.html" target="_blank">Try it out!</a>  
 
 _Note: The ```start()``` method's first parameter would normally be the Ayva instance, but in these examples the usage of ```bind()``` allows us to omit it._
+<br/>  
+
 
 #### transition()
 
