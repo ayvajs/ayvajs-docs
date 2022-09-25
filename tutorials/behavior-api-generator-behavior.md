@@ -249,7 +249,40 @@ class MyCompositeBehavior extends GeneratorBehavior {
 ayva.do(new MyCompositeBehavior()); 
 ```
 
-<a href="./tutorial-examples/behavior-api-custom-example-13.html" target="_blank">Try it out!</a>  
+### Loops
+
+> <p style="color: #AA0000"><b>Warning:</b> Be careful when using loops such as <b>while</b> inside of Generator Behaviors. If a behavior does not yield a value you could end up with an infinite loop that blocks the main thread! The following example demonstrates this:
+
+```javascript
+class SubBehavior {
+  * generate (ayva) {
+    ayva.$.stroke(0, 1).execute();
+    ayva.$.stroke(1, 1).execute();
+  }
+}
+
+class ParentBehavior {
+  * generate (ayva) {
+    const child = new SubBehavior().bind(ayva);
+
+    while (true) {
+      // Because child does not yield a value, this will block!!!
+      yield* child;
+    }
+  }
+}
+
+ayva.do(new ParentBehavior());
+```
+
+To fix this example, either SubBehavior could yield a value, or an additional empty yield could be added inside of the loop:
+
+```javascript
+while (true) {
+  yield* child;
+  yield; // Adding an additional yield here ensures execution gets paused even if child does not yield a value.
+}
+```
 
 ### Tempest Stroke
 
