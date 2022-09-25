@@ -212,6 +212,75 @@ ayva.do(function*() {
 });
 ```
 
+### Tempest Stroke
+
+```TempestStrokes``` contain some convenience methods to allow incorporating them into ```GeneratorBehaviors``` more seamlessly.
+
+#### start()
+
+The ```start()``` method returns a generator that moves the device into the starting position of a ```TempestStroke```:
+
+```javascript
+ayva.do(function*() {
+  const stroke = new TempestStroke('down-forward', 30).bind(ayva);
+
+  yield* stroke.start();
+
+  while (true) {
+    yield* stroke;
+  }
+});
+```
+
+<a href="./tutorial-examples/behavior-api-custom-example-10.html" target="_blank">Try it out!</a>  
+
+By default the speed of the movement is _1 unit per second_. An object may be passed to the  ```start()``` method to override any properties of the movement. The properties available for override are those supplied to movement descriptors according to the <a href="tutorial-motion-api-overview.html">Motion API</a>. Here is an example that makes the start move last for 2 seconds with a parabolic ramp:
+
+```javascript
+ayva.do(function*() {
+  const stroke = new TempestStroke('down-forward', 30).bind(ayva);
+
+  yield* stroke.start({ 
+    duration: 2, 
+    value: Ayva.RAMP_PARABOLIC 
+  });
+
+  while (true) {
+    yield* stroke;
+  }
+});
+```
+
+<a href="./tutorial-examples/behavior-api-custom-example-11.html" target="_blank">Try it out!</a>  
+
+_Note: The ```start()``` method's first parameter would normally be the Ayva instance, but in these examples the usage of ```bind()``` allows us to omit it._
+
+#### transition()
+
+The ```transition()``` method returns a new ```TempestStroke``` that includes a transition at the beginning:
+
+```javascript
+ayva.do(function*() {
+  const stroke = new TempestStroke('down-forward', 45).bind(ayva);
+
+  // Perform two down-forward strokes.
+  // Note: Each iteration of a TempestStroke is 180 degrees.
+  yield* stroke.start();
+  yield* stroke(4);
+
+  // Transition into an orbit-grind at 60 bpm over three seconds.
+  const nextStroke = stroke.transition('orbit-grind', 60, 3);
+
+  while (true) {
+    yield* nextStroke;
+  }
+});
+```
+
+<a href="./tutorial-examples/behavior-api-custom-example-12.html" target="_blank">Try it out!</a>
+
+_Note: In this example the first parameter of ```transition()``` was a named stroke, but it could also be a stroke config—just like the first parameter of TempestStroke's constructor._
+
 ### Whew!
 
 That's all for the Behavior API! Feel free to explore the <a href="./index.html" target="_blank">API Documentation</a> to discover anything not covered here. 😊
