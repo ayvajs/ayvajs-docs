@@ -248,6 +248,7 @@ class MyCompositeBehavior extends GeneratorBehavior {
 
 ayva.do(new MyCompositeBehavior()); 
 ```
+<a href="./tutorial-examples/behavior-api-custom-example-13.html" target="_blank">Try it out!</a>  
 
 ### Loops
 
