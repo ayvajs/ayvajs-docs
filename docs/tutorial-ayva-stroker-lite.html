@@ -128,7 +128,7 @@
                 <section>
 
 <article>
-    <p><a href="https://ayvajs.github.io/ayva-stroker-lite/" target="_blank">Ayva Stroker Lite</a> is a small web based random stroker app that uses the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Serial_API" target="_blank">Web Serial API</a> to connect to and control an OSR2 or SR6 device.</p>
+    <p><a href="https://ayvajs.github.io/ayva-stroker-lite/" target="_blank">Ayva Stroker Lite</a> is a small web based random stroker app that can connect to and control an OSR2 or SR6 device.</p>
 <style>
   ol.strokes ::marker {
     font-weight: bold;
@@ -137,6 +137,7 @@
 <p>Features:</p>
 <ul>
 <li>Create, import, and export your own custom multiaxis strokes with variations.</li>
+<li>Create, import, and export your own custom AyvaScripts.</li>
 <li>Run any <a href="https://ayvajs.github.io/ayvajs-docs/tutorial-behavior-api-tempest-stroke.html" target="_blank">TempestStroke</a> in Ayva's library.</li>
 <li>Change the speed (bpm) of the currently running stroke.</li>
 <li>Enter Free Play mode where strokes are randomly selected according to user preferences.</li>
@@ -148,12 +149,12 @@
 <li>Enable default twist movements.</li>
 <li>Choose what strokes to include in Free Play mode.</li>
 <li>Set device output limits.</li>
-<li>Connect to device via Web Serial API.</li>
+<li>Connect to an output via the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Serial_API" target="_blank">Web Serial API</a> or a WebSocket.</li>
 <li>Emulator to see 3D simulation of movements on screen (with or without hardware device connected).</li>
 </ul>
-<p>A video guide is available <a href="https://www.youtube.com/watch?v=0WTC9joyvN8" target="_blank">here</a>.</p>
+<div style="display: none">A video guide is available <a href="https://www.youtube.com/watch?v=0WTC9joyvN8" target="_blank">here</a>.</div>
 <p>Supported browsers: Chrome, Edge, Safari</p>
-<p><em>Note: The app will run in Firefox, but Firefox does not support the Web Serial API yet so connecting to an actual device in Firefox is currently not possible.</em></p>
+<p><em>Note: The app will run in Firefox, but Firefox does not support the Web Serial API yet so connecting to an actual device via serial in Firefox is currently not possible.</em></p>
 <h2>Guide</h2>
 <img src="./images/stroker-lite-guide-1.png">
 <h3>Contents</h3>
@@ -162,15 +163,16 @@
   <li><a href="#output">Output Range and Device Connection</a></li>
   <li><a href="#controls">Controls</a></li>
   <li><a href="#parameters">Parameters</a></li>
-  <li><a href="#strokes">Strokes</a></li>
+  <li><a href="#strokes">Behaviors</a></li>
   <li><a href="#mode">Mode</a></li>
   <li><a href="#bpm">Current BPM</a></li>
   <li><a href="#designer">Stroke Designer</a></li>
   <li><a href="#import-export">Import / Export</a></li>
-  <li><a href="#stroke-format">Stroke File Format</a></li>
+  <li><a href="#ayvascripts">AyvaScripts</a></li>
+  <li><a href="#stroke-format">Behavior File Format</a></li>
 </ol>
 <h3 id="emulator">1. Emulator</h3>
-<p>The emulator provides a 3D simulation of the movements of the device. The current version is of an OSR2+. It does not have a <code>forward</code> or <code>left</code> axis (as available on the SR6), however, movements on those axes are still supported by the application and will be sent to an actual device when connected. Strokes can be played on the emulator alone (a physical device does not have to be connected).</p>
+<p>The emulator provides a 3D simulation of the movements of the device. The current version is of an OSR2+. It does not have a <code>surge</code> or <code>sway</code> axis (as available on the SR6), however, movements on those axes are still supported by the application and will be sent to an actual device when connected. Behaviors can be played on the emulator alone (a physical device does not have to be connected).</p>
 <p>Controls:</p>
 <ul>
 <li><em>Click+Drag</em> to rotate the camera.</li>
@@ -179,14 +181,23 @@
 </ul>
 <h3 id="output">2. Output Range and Device Connection</h3>
 <p><img width="350px" src="./images/stroker-lite-guide-output-range.png"><br/></p>
-<p>This section allows you to set the output range for all linear and rotational axes. The details on how Ayva scales output can be found in the <a href="https://ayvajs.github.io/ayvajs-docs/tutorial-configuration.html" target="_blank">Configuration</a> documentation under the Axis Limits section.</p>
-<p>The button in the top right gives the device connection status. Clicking it will open the built-in Web Serial API window of the browser that allows you to select a device to connect to. <em>For safety reasons, connections can only be made when in <strong>Stopped</strong> mode. You will not be able to connect to a device if a stroke is currently playing.</em></p>
+<p>This section allows you to set the output type and the output range for all linear and rotational axes. The details on how Ayva scales output can be found in the <a href="https://ayvajs.github.io/ayvajs-docs/tutorial-configuration.html" target="_blank">Configuration</a> documentation under the Axis Limits section.</p>
+<p>The button in the top middle gives the output connection status. Clicking it will connect to the current output. The default output type is Serial.
+This can be changed by clicking the <em>gear</em> icon in the top right:</p>
+<img width="250px" src="./images/stroker-lite-guide-output-type-serial.png">
+<div style="margin-bottom: 10px; margin-top: 5px; margin-left: 20px">When in Serial mode, clicking the connect button will open the built-in Web Serial API window of the browser and allow you to select a serial port to connect to.</div>
+<img width="250px" src="./images/stroker-lite-guide-output-type-websocket.png">
+<div style="margin-bottom: 10px; margin-top: 5px; margin-left: 20px">When in WebSocket mode, clicking the connect button will open a websocket to the  <i>/ws</i> path on the provided host and port. To connect to device firmware that supports WiFi, you should set the host to the IP address of your device, and the port to 80.</div>
+<img width="250px" src="./images/stroker-lite-guide-output-type-console.png">
+<div style="margin-bottom: 10px; margin-top: 5px; margin-left: 20px">When in Console mode, clicking the connect button will cause all TCode to simply be output to the console. This output type is generally only used for debugging.</div>
+<p>Clicking the connect button again after an output is connected will disconnect.</p>
+<p><em>Note: For safety reasons, connections can only be made when in <strong>Stopped</strong> mode. You will not be able to connect to an output if a stroke is currently playing.</em></p>
 <h3 id="controls">3. Controls</h3>
 <img width="500px" src="./images/stroker-lite-guide-controls.png">  
 <ul>
 <li><strong>Eye Icon</strong>: Hide/show the UI.</li>
 <li><strong>Home Device</strong>: Stops the current behavior and moves the device to the home position.</li>
-<li><strong>Free Play</strong>: Commands Ayva to start playing strokes randomly according to the current parameters.</li>
+<li><strong>Free Play</strong>: Commands Ayva to start playing behaviors randomly according to the current parameters.</li>
 <li><strong>Stop (Esc)</strong>: Immediately stops the current behavior and ceases to send any output to the device. Pressing the <em>Escape</em> key will also trigger this action.</li>
 </ul>
 <h3 id="parameters">4. Parameters</h3>
@@ -209,14 +220,14 @@
 <li><strong>Twist Eccentricity</strong>: When twist is enabled, this allows you to specify the <em>eccentricity</em> of the twist motion.</li>
 </ul>
 <p>Default twist motion is a sinusoidal shaped movement. See the <a href="https://ayvajs.github.io/ayvajs-docs/tutorial-behavior-api-tempest-stroke.html" target="_blank">TempestStroke</a> documentation for additional details on parameters such as phase and eccentricity.</p>
-<h3 id="strokes">5. Strokes</h3>
+<h3 id="strokes">5. Behaviors</h3>
 <p><img width="500px" src="./images/stroker-lite-guide-strokes.png"><br/></p>
-<p>This section allows you to manage strokes.</p>
+<p>This section allows you to manage strokes and AyvaScripts.</p>
 <ol class="strokes" style="list-style-type: upper-alpha">
-  <li>Select what strokes to include in free play mode. The top most checkbox can be used to select or deselect all strokes.</li>
-  <li>Manually trigger a stroke. Manually triggering a stroke transitions out of free play mode. In manual mode, the current stroke will play continuously until another stroke is selected or free play mode is triggered.</li>
-  <li>Hover over the <i>eye</i> icon to quickly view a preview of the corresponding stroke.</li>
-  <li>Access create, import, and export strokes functionality. These features are covered in the <a href="#designer">Stroke Designer</a> section. This menu can only be accessed in Stopped mode. When a stroke is playing this area will instead show the current stroke, as well as when a transition is occurring.</li>
+  <li>Select what strokes or scripts to include in free play mode. The top most checkbox can be used to select or deselect all behaviors.</li>
+  <li>Manually trigger a behavior. Manually triggering a behavior transitions out of free play mode. In manual mode, the current behavior will play continuously until another behavior is selected, free play mode is triggered, or the behavior completes (in the case of an AyvaScript).</li>
+  <li>Hover over the <i>eye</i> icon to quickly view a preview of the corresponding stroke. <i>Previews are disabled for AyvaScripts.</i></li>
+  <li>Access create, import, and export behaviors functionality. These features are covered in the <a href="#designer">Stroke Designer</a> and <a href="#ayvascripts">AyvaScripts</a> sections. This menu can only be accessed in Stopped mode. When a stroke or script is playing this area will instead show the name of the current behavior, as well as when a transition is occurring.</li>
 </ol>
 <h3 id="mode">6. Mode</h3>
 <p><img width="200px" src="./images/stroker-lite-guide-mode.png"><br/></p>
@@ -224,10 +235,10 @@
 <h3 id="bpm">7. Current BPM</h3>
 <p><img width="600px" src="./images/stroker-lite-guide-current-bpm.png"><br/></p>
 <p>This slider shows the current speed. In both <strong>Free Play</strong> and <strong>Manual</strong> mode the speed of the current stroke can be changed in real time. However, while you can set the speed in <strong>Free Play</strong> mode, Ayva can (and likely <strong>will</strong>) choose a new speed when it decides to play a new stroke. But Ayva will never changes strokes while you are dragging the slider. This means that if you are in Free Play mode and you would like to stay on the current pattern without leaving Free Play, you could keep the bpm slider engaged until you are ready to switch.</p>
-<p>Manually updating the bpm is not allowed during a transition (the widget will be disabled), as Ayva has full control of the speed during that time.</p>
+<p>Manually updating the bpm is not allowed during a transition or when an AyvaScript is playing (the widget will be disabled), as Ayva has full control of the speed during that time.</p>
 <h3 id="designer">8. Stroke Designer</h3>
 <p><img width="600px" src="./images/stroker-lite-guide-designer-1.png"><br/></p>
-<p>The stroke designer can be accessed by clicking the <em>gear</em> icon in the top right of the <em>Strokes</em> section, then clicking <em>Create</em>.</p>
+<p>The stroke designer can be accessed by clicking the <em>gear</em> icon in the top right of the <em>Strokes</em> section, then clicking <em>Create TempestStroke</em>.</p>
 <br/>  
 <p><img width="900px" src="./images/stroker-lite-guide-designer-2.png"><br/></p>
 <ol class="strokes" style="list-style: upper-alpha">
@@ -254,15 +265,53 @@
 <p>Note that all strokes are saved in the local storage of the browser, so they will remain between sessions. However, if you clear your browser storage then you will lose your strokes. To make a backup of your stroke(s) (or to share your strokes with others) you can use the import/export functionality as detailed in the next section.</p>
 <h3 id="import-export">9. Import / Export</h3>
 <p><img width="600px" src="./images/stroker-lite-guide-designer-3.png"><br/></p>
-<p>Import or Export can be accessed by clicking the <em>gear</em> icon in the top right of the <em>Strokes</em> section. These will open the browser file dialogs and allow you to import or export a stroke file. When exporting this way, all custom strokes will be exported. The option to export an individual stroke can be found by clicking the <em>gear</em> icon next to the desired stroke:</p>
+<p>Import or Export of behaviors can be accessed by clicking the <em>gear</em> icon in the top right of the <em>Strokes</em> section. These will open the browser file dialogs and allow you to import or export a behavior file. When exporting this way, all custom behaviors will be exported. The option to export an individual behavior can be found by clicking the <em>gear</em> icon next to the desired behavior:</p>
 <p><img width="600px" src="./images/stroker-lite-guide-designer-4.png"><br/></p>
 <p><em>Note that this is also how you access the Edit and Delete functionality.</em></p>
-<h3 id="stroke-format">10. Stroke File Format</h3>
-<p>Stroke files are <a href="https://www.json.org/json-en.html" target="_blank">JSON</a> files. The top level object is an array containing all the strokes. Each stroke has the following properties:</p>
+<p>To import or export <strong>all</strong> app data, click the gear box in the lower left corner of the app:</p>
+<p><img width="600px" src="./images/stroker-lite-guide-settings.png"><br/></p>
+<p><em>Note: This is also how you access the Release Notes.</em></p>
+<h3 id="ayvascripts">10. AyvaScripts</h3>
+<blockquote>
+<p><span style="color: #AA0000"><b>Warning:</b> AyvaScripts are an Advanced feature. To write AyvaScripts you should have familiarity with <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank" style="color: #AA0000;font-weight: bold;text-decoration: underline;">JavaScript</a>, Ayva's  <a style="color: #AA0000;font-weight: bold;text-decoration: underline;" href="./tutorial-motion-api.html" target="_blank">Motion API</a> , and Ayva's <a style="color: #AA0000;font-weight: bold;text-decoration: underline;" href="./tutorial-behavior-api.html" target="_blank">Behavior API</a></span>.</p>
+</blockquote>
+<p>AyvaScripts allow you to extend Ayva's functionality with custom scripts that can leverage the full power of Ayva.js's Motion and Behavior APIs. An AyvaScript is essentially just the body of the <code>*generate()</code> function of a <a href="./tutorial-behavior-api-generator-behavior.html" target="_blank">GeneratorBehavior</a>. The AyvaScript editor can be accessed by clicking the <em>gear</em> icon in the top right of the <em>Strokes</em> section, then clicking <em>Create AyvaScript</em>:</p>
+<p><img width="600px" src="./images/stroker-lite-guide-create-ayvascript.png"><br/></p>
+<p><img width="1100px" src="./images/stroker-lite-guide-ayvascript.png"><br/></p>
+<p>The body of an AyvaScript can be entered in the code editor on the left side, and previewed using the Play button on the top left. Anything that can be done in a <a href="./tutorial-behavior-api-generator-behavior.html" target="_blank">GeneratorBehavior</a> can be done in an AyvaScript.</p>
+<p>Here is an example AyvaScript that does a basic up / down stroke on the main axis using a move builder:</p>
+<pre class="prettyprint source lang-javascript"><code>const { stroke } = ayva.$;
+
+yield stroke(0, 1);
+yield stroke(1, 1);
+</code></pre>
+<p>Note that AyvaScripts have full control of Ayva. To take the user's parameters into account when constructing your behavior, a special <code>GLOBALS</code> object
+is available that contains a <i>parameters</i> object. It contains the following properties:</p>
+<p><code>twist</code>: <b>boolean.</b> true if default twist is enabled. false if not.<br/>
+<code>bpm</code>: <b>array</b>. The bpm range.<br/>
+<code>acceleration</code>: <b>array.</b> The bpm acceleration range.<br/>
+<code>patternDuration</code>: <b>array.</b> The pattern duration range.<br/>
+<code>transitionDuration</code>: <b>array.</b> The transition duration range.<br/>
+<code>twistRange</code>: <b>array.</b> The default twist range.<br/>
+<code>twistPhase</code>: <b>number.</b> The default twist phase.<br/>
+<code>twistEcc</code>: <b>number.</b> The default twist eccentricity.<br/>
+<code>bpmMode</code>: <b>string.</b> The change bpm mode. Either <i>transition</i> or <i>continuous</i></p>
+<p>The following example is the same simple AyvaScript from above but it utilizes the user supplied bpm range to choose a random duration for each stroke:</p>
+<pre class="prettyprint source lang-javascript"><code>const { stroke } = ayva.$;
+const [ minBpm, maxBpm ] = GLOBALS.parameters.bpm;
+const randomBpm = Ayva.map(Math.random(), 0, 1, minBpm, maxBpm);
+const duration = 60 / randomBpm;
+
+yield stroke(0, duration);
+yield stroke(1, duration);
+</code></pre>
+<p><b>TBD: There are many things that can be done with AyvaScripts. Stay tuned for a more detailed tutorial!</b></p>
+<h3 id="stroke-format">11. Behavior File Format</h3>
+<p>Behavior files are <a href="https://www.json.org/json-en.html" target="_blank">JSON</a> files. The top level object is an array containing all the behaviors. Each behavior has the following properties:</p>
 <ul>
-  <li><code>name</code>: alphanumeric, dash separated name of the stroke.</li>
-  <li><code>type</code>: currently the only supported type is <b>tempest-stroke</b></li>
-  <li><code>data</code>: an object containing the stroke parameters, keyed by axis name or alias.</code></li>
+  <li><code>name</code>: alphanumeric, dash separated name of the behavior.</li>
+  <li><code>type</code>: currently the only supported types are <b>tempest-stroke</b> and <b>ayvascript</b>.</li>
+  <li><code>data</code>: when the type is <b>tempest-stroke</b> this will be an object containing the stroke parameters, keyed by axis name or alias. When the type is <b>ayvascript</b>, this will be an object with a single property, <code>script</code>, that contains the entire script as a string.</li>
 </ul>
 <h4>Example</h4>
 <pre class="prettyprint source lang-javascript"><code>[
@@ -288,6 +337,13 @@
         &quot;phase&quot;: 0,
         &quot;ecc&quot;: -0.3
       }
+    }
+  },
+  {
+    &quot;name&quot;: &quot;my-custom-ayvascript&quot;,
+    &quot;type&quot;: &quot;ayvascript&quot;,
+    &quot;data&quot;: {
+      &quot;script&quot;: &quot;yield { to: 0, speed: 2 };\nyield { to: 1, speed: 1 };&quot;
     }
   }
 ]

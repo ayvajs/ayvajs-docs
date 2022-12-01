@@ -132,7 +132,7 @@
 <pre class="prettyprint source lang-javascript"><code>ayva.move({
   axis: 'stroke',
   to: 0,
-  speed: 0.25
+  duration: 2
 },{
   axis: 'twist',
   to: 0,
@@ -149,7 +149,7 @@
 <p>A move builder provides a way to construct moves using method chaining. The example at the beginning
 of this section rewritten using a move builder would be:</p>
 <pre class="prettyprint source lang-javascript"><code>ayva.moveBuilder()
-  .stroke(0, 0.25)
+  .stroke(0, 2)
   .twist(0)
   .roll(0.4)
   .pitch(0.2).execute();
@@ -163,7 +163,7 @@ added to the builder's internal list of  moves, and then the builder itself is r
 <p>Every Ayva instance has a special property—<strong>$</strong>—that contains subproperties for each axis specified in the configuration (both name and alias).
 These properties can be used as functions to create move builders:</p>
 <pre class="prettyprint source lang-javascript"><code>// The same example using $ shorthand.
-ayva.$.stroke(0, 0.25)
+ayva.$.stroke(0, 2)
   .twist(0)
   .roll(0.4)
   .pitch(0.2).execute();
@@ -171,55 +171,55 @@ ayva.$.stroke(0, 0.25)
 <p>We will use this special property instead of <code>moveBuilder()</code> for the remainder of this tutorial.</p>
 <h3>Builder Methods</h3>
 <p>This section documents all the forms a builder's axis methods can take:</p>
-<h4><i>[axis]</i>(to, speed, value)</h4>
-<pre class="prettyprint source lang-javascript"><code>// Builder &lt;to, speed, value>
+<h4><i>[axis]</i>(to, duration, value)</h4>
+<pre class="prettyprint source lang-javascript"><code>// Builder &lt;to, duration, value>
 ayva.$.stroke(0, 1, Ayva.RAMP_PARABOLIC).execute();
 
 // move() equivalent
 ayva.move({
   axis: 'stroke',
   to: 0,
-  speed: 1,
+  duration: 1,
   value: Ayva.RAMP_PARABOLIC
 });
 </code></pre>
-<h4 class="pad-20"><i>[axis]</i>(to, speed)</h4>
-<pre class="prettyprint source lang-javascript"><code>// Builder &lt;to, speed>
+<h4 class="pad-20"><i>[axis]</i>(to, duration)</h4>
+<pre class="prettyprint source lang-javascript"><code>// Builder &lt;to, duration>
 ayva.$.stroke(0, 1).execute();
 
 // move() equivalent
 ayva.move({
   axis: 'stroke',
   to: 0,
-  speed: 1
+  duration: 1
 });
 </code></pre>
 <h4 class="pad-20"><i>[axis]</i>(to, value)</h4>
-<pre class="prettyprint source lang-javascript"><code>// Builder.  &lt;to, speed> and &lt;to, value>
+<pre class="prettyprint source lang-javascript"><code>// Builder.  &lt;to, duration> and &lt;to, value>
 ayva.$.stroke(0, 1).twist(0, Ayva.RAMP_LINEAR).execute();
 
 // move() equivalent
 ayva.move({
   axis: 'stroke',
   to: 0,
-  speed: 1
+  duration: 1
 },{
   axis: 'twist',
   to: 0,
   value: Ayva.RAMP_LINEAR
 });
 </code></pre>
-<p>Note: In this example, the stroke axis uses the (to, speed) form while the twist axis uses the (to, value) form—omitting speed to synchronize
+<p>Note: In this example, the stroke axis uses the (to, duration) form while the twist axis uses the (to, value) form—omitting duration to synchronize
 with the stroke axis. See the <a href="./tutorial-motion-api-multiaxis.html#auto-sync" target="_blank">Auto Synchronization</a> section
 of the multiaxis movement documentation.</p>
 <h4 class="pad-20"><i>[axis]</i>(to)</h4>
-<pre class="prettyprint source lang-javascript"><code>// Builder &lt;to, speed> and &lt;to>
+<pre class="prettyprint source lang-javascript"><code>// Builder &lt;to, duration> and &lt;to>
 ayva.$.stroke(0, 1).twist(0).execute();
 
 // move() equivalent
 ayva.move({
   to: 0,
-  speed: 1
+  duration: 1
 },{
   axis: 'twist',
   to: 0
@@ -258,20 +258,20 @@ ayva.move({
 <h4 class="pad-20"><i>[axis]</i>(object)</h4>
 <pre class="prettyprint source lang-javascript"><code>// Builder &lt;object>
 // Any property that is available for objects passed to move() can be used here as well (except for 'axis')
-ayva.$.stroke({ to: 0, duration: 1}).execute();
+ayva.$.stroke({ to: 0, speed: 1}).execute();
 
 // move() equivalent
 ayva.move({
   axis: 'stroke',
   to: 0,
-  duration: 1
+  speed: 1
 });
 </code></pre>
 <h3>Reusability</h3>
 <p>Move builders can be held onto and executed as many times as you like. The following example performs
 a bouncy stroke with a twist by constructing two reusable moves and repeatedly executing them in a loop:</p>
-<pre class="prettyprint source lang-javascript"><code>const upStroke = ayva.$.stroke(1, 2, Ayva.RAMP_NEGATIVE_PARABOLIC).twist(0.25);
-const downStroke = ayva.$.stroke(0.25, 2, Ayva.RAMP_PARABOLIC).twist(0.75);
+<pre class="prettyprint source lang-javascript"><code>const upStroke = ayva.$.stroke(1, 0.5, Ayva.RAMP_NEGATIVE_PARABOLIC).twist(0.25);
+const downStroke = ayva.$.stroke(0.25, 0.5, Ayva.RAMP_PARABOLIC).twist(0.75);
 
 // Perform 10 bouncy twist strokes.
 for (let i = 0; i &lt; 10; i++) {
@@ -280,7 +280,7 @@ for (let i = 0; i &lt; 10; i++) {
 }
 </code></pre>
 <p><a href="./tutorial-examples/move-builder-bounce-example.html" target="_blank">Try it out!</a></p>
-<h3>Live Updates with $</h3>
+<h3>Live Updates</h3>
 <p>The axis subproperties of the special property <strong>$</strong> can also be used to perform live updates if necessary.
 You can get and set the value of an axis directly through the <code>value</code> property.</p>
 <pre class="prettyprint source lang-javascript"><code>console.log(ayva.$.stroke.value); // 0.5 - the starting value.
@@ -302,6 +302,13 @@ The axis subproperties of __$__ also allow updating limits:
 ayva.$.stroke.min = 0.25;
 ayva.$.stroke.max = 0.75;
 ```-->
+<p>To perform bulk live updates, you may use Ayva's <code>setValues()</code> method:</p>
+<pre class="prettyprint source lang-javascript"><code>// Perform multiple live updates. These values will be converted to TCode and output to the device immediately.
+ayva.setValues({
+  stroke: 0,
+  twist: 1
+});
+</code></pre>
 <h3>Whew!</h3>
 <p>That's all for the Motion API! The next tutorial will cover a layer of abstraction built on top of all of this—the Behavior API. 😊</p>
 <div style="text-align: center; font-size: 18px">Next: <a href="./tutorial-behavior-api.html">Behavior API</a></div>

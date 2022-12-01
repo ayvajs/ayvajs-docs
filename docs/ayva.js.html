@@ -142,7 +142,7 @@ import {
 } from './util/util.js';
 import validator from './util/validator.js';
 import OSR_CONFIG from './util/osr-config.js';
-import GeneratorBehavior from './behaviors/generator-behavior.js';
+import GeneratorBehavior from './behaviors/generator-behavior.js'; // eslint-disable-line import/no-cycle
 
 class Ayva {
   #devices = [];
@@ -174,6 +174,10 @@ class Ayva {
     return 10;
   }
 
+  static get maxFrequency () {
+    return 250;
+  }
+
   get performing () {
     return this.#performing;
   }
@@ -191,6 +195,14 @@ class Ayva {
 
   get frequency () {
     return this.#frequency;
+  }
+
+  set frequency (value) {
+    if (!validNumber(value, 1, Ayva.maxFrequency)) {
+      throw new Error(`Invalid frequency ${value}. Frequency must be a number between 1 and ${Ayva.maxFrequency}.`);
+    }
+
+    this.#frequency = value;
   }
 
   get period () {
@@ -266,7 +278,7 @@ class Ayva {
    * @param {GeneratorBehavior|Function|Object} behavior - the behavior to perform.
    */
   async do (behavior) {
-    this.stop();
+    this.#stop();
 
     const behaviorId = this.#nextBehaviorId++;
     this.#currentBehaviorId = behaviorId;
@@ -321,30 +333,15 @@ class Ayva {
    * @param  {...Object} movements
    * @return {Promise} a promise that resolves with the boolean value true when all movements have finished, or false if the move was cancelled.
    */
-  async move (...movements) {
+
+  move (...movements) {
     if (!this.#devices || !this.#devices.length) {
       throw new Error('No output devices have been added.');
     }
 
     validator.validateMovements(movements, this.#axes, this.defaultAxis);
 
-    const movementId = this.#nextMovementId++;
-    this.#movements.add(movementId);
-
-    while (this.#movements.has(movementId) &amp;&amp; this.#movements.values().next().value !== movementId) {
-      // Wait until current movements have completed to proceed.
-      await this.sleep();
-    }
-
-    if (!this.#movements.has(movementId)) {
-      // This move must have been cancelled.
-      return false;
-    }
-
-    return this.#performMovements(movementId, movements).finally(() => {
-      this.#movements.delete(movementId);
-      this.#checkNotifyReady();
-    });
+    return this.#asyncMove(...movements);
   }
 
   /**
@@ -359,7 +356,7 @@ class Ayva {
       });
     }
 
-    return Promise.resolve();
+    return this.sleep();
   }
 
   /**
@@ -404,15 +401,8 @@ class Ayva {
    * Cancels all running or pending movements, clears the current behavior (if any), and cancels any sleeps.
    */
   stop () {
-    this.#currentBehaviorId = null;
-    this.#movements.clear();
-    this.#sleepResolves.forEach((resolve) => resolve());
-
-    this.#getAxesArray().forEach((axis) => {
-      if (axis.resetOnStop) {
-        this.$[axis.name].value = axis.defaultValue;
-      }
-    });
+    // TODO: Add on stop notification here once event listening is implemented.
+    this.#stop();
   }
 
   /**
@@ -548,6 +538,18 @@ class Ayva {
   }
 
   /**
+   * Live update axis values.
+   *
+   * @param {Object} axisValueMap - axis to value map
+   */
+  setValues (axisValueMap) {
+    // TODO: Validate instead of silently ignoring invalid values?
+    const axisValues = Object.entries(axisValueMap).map(([axis, value]) => ({ axis, value }));
+
+    this.#writeAxisValues(axisValues);
+  }
+
+  /**
    * Registers a new output. Ayva outputs commands to all connected outputs.
    * More than one output can be specified.
    *
@@ -617,6 +619,44 @@ class Ayva {
     }
   }
 
+  async #asyncMove (...movements) {
+    const movementId = this.#nextMovementId++;
+    this.#movements.add(movementId);
+
+    while (this.#movements.has(movementId) &amp;&amp; this.#movements.values().next().value !== movementId) {
+      // Wait until current movements have completed to proceed.
+      await this.sleep();
+    }
+
+    if (!this.#movements.has(movementId)) {
+      // This move must have been cancelled.
+      return false;
+    }
+
+    return this.#performMovements(movementId, movements).finally(() => {
+      this.#movements.delete(movementId);
+      this.#checkNotifyReady();
+    });
+  }
+
+  #stop () {
+    this.#currentBehaviorId = null;
+    this.#movements.clear();
+    this.#sleepResolves.forEach((resolve) => resolve());
+
+    const resetValues = {};
+
+    this.#getAxesArray().forEach((axis) => {
+      if (axis.resetOnStop) {
+        resetValues[axis.name] = axis.defaultValue;
+      }
+    });
+
+    if (Object.keys(resetValues).length) {
+      this.setValues(resetValues);
+    }
+  }
+
   /**
    * Add the start of a move builder chain to $ for the specified axis.
    * Also add shortcut properties for value, min, and max to each axis.
@@ -632,18 +672,17 @@ class Ayva {
     Object.defineProperty(this.$[axis], 'value', {
       get: () => this.#axes[axis].value,
       set: (target) => {
-        // TODO: Thou shalt not repeat thyself?
         const { type } = this.#axes[axis];
 
         if (type !== 'boolean' &amp;&amp; !validNumber(target, 0, 1)) {
+          // TODO: Move this validation out into a place it can be reused for setValues() method?
           throw new Error(`Invalid value: ${target}`);
         }
 
-        const value = type === 'boolean' ? !!target : target;
-        const tcode = this.#tcode(axis, value);
-        this.#write(`${tcode}\n`);
-        this.#axes[axis].lastValue = this.#axes[axis].value;
-        this.#axes[axis].value = value;
+        this.#writeAxisValues([{
+          axis,
+          value: target,
+        }]);
       },
     });
 
@@ -742,15 +781,17 @@ class Ayva {
    * @returns the new error correction
    */
   async #stepSleep (index, stepCount, duration, startTime, errorCorrection) {
+    const clampPeriod = (period) => Math.max(period, 1 / Ayva.maxFrequency);
+
     if (index === stepCount - 1) {
       // This shenanigans is to (attempt to) account for the fact that a move is
       // an integer number of steps but a duration may be fractional. In the final step
       // we may have time remaining that is less than the period.
       const currentElapsed = this.#timer.now() - startTime;
       const remaining = Math.min(Math.max(duration - currentElapsed, 0), this.#period);
-      await this.sleep(remaining);
+      await this.sleep(clampPeriod(remaining));
     } else {
-      await this.sleep(this.#period - errorCorrection);
+      await this.sleep(clampPeriod(this.#period - errorCorrection));
     }
 
     const actualElapsed = this.#timer.now() - startTime;
@@ -760,20 +801,9 @@ class Ayva {
   }
 
   #executeProviders (providers, index) {
-    const axisValues = providers
-      .map((provider) => this.#executeProvider(provider, index))
-      .filter(({ value }) => this.#isValidAxisValue(value));
+    const axisValues = providers.map((provider) => this.#executeProvider(provider, index));
 
-    const tcodes = axisValues.map(({ axis, value }) => this.#tcode(axis, value));
-
-    if (tcodes.length) {
-      this.#write(`${tcodes.join(' ')}\n`);
-
-      axisValues.forEach(({ axis, value }) => {
-        this.#axes[axis].lastValue = this.#axes[axis].value;
-        this.#axes[axis].value = value;
-      });
-    }
+    this.#writeAxisValues(axisValues);
   }
 
   #executeProvider (provider, index) {
@@ -801,6 +831,20 @@ class Ayva {
       axis: parameters.axis,
       value: Number.isFinite(nextValue) ? clamp(round(nextValue, Ayva.precision), 0, 1) : nextValue,
     };
+  }
+
+  #writeAxisValues (axisValues) {
+    const filteredAxisValues = axisValues.filter(({ value }) => this.#isValidAxisValue(value));
+    const tcodes = filteredAxisValues.map(({ axis, value }) => this.#tcode(axis, value));
+
+    if (tcodes.length) {
+      this.#write(`${tcodes.join(' ')}\n`);
+
+      axisValues.forEach(({ axis, value }) => {
+        this.#axes[axis].lastValue = this.#axes[axis].value;
+        this.#axes[axis].value = value;
+      });
+    }
   }
 
   #isValidAxisValue (value) {

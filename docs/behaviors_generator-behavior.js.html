@@ -136,6 +136,7 @@
         <article>
             <pre class="prettyprint source linenums"><code>import Callable from '../util/callable.js';
 import MoveBuilder from '../util/move-builder.js';
+import Ayva from '../ayva.js'; // eslint-disable-line import/no-cycle
 
 /**
  * Base class for Generator Behaviors.
@@ -143,8 +144,6 @@ import MoveBuilder from '../util/move-builder.js';
  * For full details on how to use this class, see the {@tutorial behavior-api} tutorial.
  */
 class GeneratorBehavior extends Callable {
-  complete = false;
-
   #generator;
 
   #done = false;
@@ -298,6 +297,12 @@ class GeneratorBehavior extends Callable {
     const ayva = this.#ayva || args[0];
 
     const count = Number.isFinite(countArg) &amp;&amp; countArg >= 1 ? countArg : undefined;
+
+    if (ayva !== undefined) {
+      if (!(ayva instanceof Ayva)) {
+        throw new TypeError(`Invalid Ayva instance: ${ayva}`);
+      }
+    }
 
     if (this.#ayva) {
       return count ? this.iterated(count) : this.generate();

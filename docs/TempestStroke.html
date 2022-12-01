@@ -134,7 +134,7 @@
 
 <header>
     
-        <h2><span class="attribs"><span class="type-signature"></span></span>TempestStroke<span class="signature">(config, bpm<span class="signature-attributes">opt</span>, angle<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h2>
+        <h2><span class="attribs"><span class="type-signature"></span></span>TempestStroke<span class="signature">(config, bpm<span class="signature-attributes">opt</span>, angle<span class="signature-attributes">opt</span>, timer<span class="signature-attributes">opt</span>, startTime<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h2>
         
             <div class="class-description"><p>A behavior that allows specifying oscillatory motion on an arbitrary
 number of axes with a formula loosely based on orbital motion calculations.
@@ -162,7 +162,7 @@ See the <a href="https://ayvajs.github.io/ayvajs-docs/tutorial-behavior-api-temp
         
         <span class="code-name">
             
-                new TempestStroke<span class="signature">(config, bpm<span class="signature-attributes">opt</span>, angle<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span>
+                new TempestStroke<span class="signature">(config, bpm<span class="signature-attributes">opt</span>, angle<span class="signature-attributes">opt</span>, timer<span class="signature-attributes">opt</span>, startTime<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span>
             
         </span>
     </h4>
@@ -328,6 +328,88 @@ See the <a href="https://ayvajs.github.io/ayvajs-docs/tutorial-behavior-api-temp
 
 
         
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>timer</code></td>
+  
+
+  <td class="type">
+  
+      
+<span class="param-type">Object</span>
+
+
+  
+  </td>
+
+  
+      <td class="attributes">
+      
+          &lt;optional><br>
+      
+
+      
+
+      
+      </td>
+  
+
+  
+      <td class="default">
+      
+          null
+      
+      </td>
+  
+
+  <td class="description last"></td>
+</tr>
+
+
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>startTime</code></td>
+  
+
+  <td class="type">
+  
+      
+<span class="param-type">Number</span>
+
+
+  
+  </td>
+
+  
+      <td class="attributes">
+      
+          &lt;optional><br>
+      
+
+      
+
+      
+      </td>
+  
+
+  
+      <td class="default">
+      
+          null
+      
+      </td>
+  
+
+  <td class="description last"></td>
+</tr>
+
+
+        
         </tbody>
     </table>
 </div>
@@ -371,7 +453,7 @@ See the <a href="https://ayvajs.github.io/ayvajs-docs/tutorial-behavior-api-temp
         <p class="tag-source">
             <a href="behaviors_tempest-stroke.js.html" class="button">View Source</a>
             <span>
-                <a href="behaviors_tempest-stroke.js.html">behaviors/tempest-stroke.js</a>, <a href="behaviors_tempest-stroke.js.html#line14">line 14</a>
+                <a href="behaviors_tempest-stroke.js.html">behaviors/tempest-stroke.js</a>, <a href="behaviors_tempest-stroke.js.html#line16">line 16</a>
             </span>
         </p>
     
@@ -501,7 +583,7 @@ This controls how often a bpm provider is called per stroke.</p>
         <p class="tag-source">
             <a href="behaviors_tempest-stroke.js.html" class="button">View Source</a>
             <span>
-                <a href="behaviors_tempest-stroke.js.html">behaviors/tempest-stroke.js</a>, <a href="behaviors_tempest-stroke.js.html#line39">line 39</a>
+                <a href="behaviors_tempest-stroke.js.html">behaviors/tempest-stroke.js</a>, <a href="behaviors_tempest-stroke.js.html#line69">line 69</a>
             </span>
         </p>
     
@@ -690,7 +772,7 @@ The speed of the moves default to 1 unit per second.</p>
         <p class="tag-source">
             <a href="behaviors_tempest-stroke.js.html" class="button">View Source</a>
             <span>
-                <a href="behaviors_tempest-stroke.js.html">behaviors/tempest-stroke.js</a>, <a href="behaviors_tempest-stroke.js.html#line157">line 157</a>
+                <a href="behaviors_tempest-stroke.js.html">behaviors/tempest-stroke.js</a>, <a href="behaviors_tempest-stroke.js.html#line221">line 221</a>
             </span>
         </p>
     
@@ -905,7 +987,7 @@ The speed of the moves default to 1 unit per second.</p>
         <p class="tag-source">
             <a href="behaviors_tempest-stroke.js.html" class="button">View Source</a>
             <span>
-                <a href="behaviors_tempest-stroke.js.html">behaviors/tempest-stroke.js</a>, <a href="behaviors_tempest-stroke.js.html#line143">line 143</a>
+                <a href="behaviors_tempest-stroke.js.html">behaviors/tempest-stroke.js</a>, <a href="behaviors_tempest-stroke.js.html#line207">line 207</a>
             </span>
         </p>
     
@@ -1127,7 +1209,7 @@ The speed of the moves default to 1 unit per second.</p>
         <p class="tag-source">
             <a href="behaviors_tempest-stroke.js.html" class="button">View Source</a>
             <span>
-                <a href="behaviors_tempest-stroke.js.html">behaviors/tempest-stroke.js</a>, <a href="behaviors_tempest-stroke.js.html#line223">line 223</a>
+                <a href="behaviors_tempest-stroke.js.html">behaviors/tempest-stroke.js</a>, <a href="behaviors_tempest-stroke.js.html#line287">line 287</a>
             </span>
         </p>
     

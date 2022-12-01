@@ -4,7 +4,7 @@ Powerful as it may be, the ```move()``` method is also a little verbose. Conside
 ayva.move({
   axis: 'stroke',
   to: 0,
-  speed: 0.25
+  duration: 2
 },{
   axis: 'twist',
   to: 0,
@@ -26,7 +26,7 @@ of this section rewritten using a move builder would be:
 
 ```javascript
 ayva.moveBuilder()
-  .stroke(0, 0.25)
+  .stroke(0, 2)
   .twist(0)
   .roll(0.4)
   .pitch(0.2).execute();
@@ -46,7 +46,7 @@ These properties can be used as functions to create move builders:
 
 ```javascript
 // The same example using $ shorthand.
-ayva.$.stroke(0, 0.25)
+ayva.$.stroke(0, 2)
   .twist(0)
   .roll(0.4)
   .pitch(0.2).execute();
@@ -58,66 +58,66 @@ We will use this special property instead of ```moveBuilder()``` for the remaind
 
 This section documents all the forms a builder's axis methods can take:
 
-<h4><i>[axis]</i>(to, speed, value)</h4>
+<h4><i>[axis]</i>(to, duration, value)</h4>
 
 ```javascript
-// Builder <to, speed, value>
+// Builder <to, duration, value>
 ayva.$.stroke(0, 1, Ayva.RAMP_PARABOLIC).execute();
 
 // move() equivalent
 ayva.move({
   axis: 'stroke',
   to: 0,
-  speed: 1,
+  duration: 1,
   value: Ayva.RAMP_PARABOLIC
 });
 ```
 
-<h4 class="pad-20"><i>[axis]</i>(to, speed)</h4>
+<h4 class="pad-20"><i>[axis]</i>(to, duration)</h4>
 
 ```javascript
-// Builder <to, speed>
+// Builder <to, duration>
 ayva.$.stroke(0, 1).execute();
 
 // move() equivalent
 ayva.move({
   axis: 'stroke',
   to: 0,
-  speed: 1
+  duration: 1
 });
 ```
 
 <h4 class="pad-20"><i>[axis]</i>(to, value)</h4>
 
 ```javascript
-// Builder.  <to, speed> and <to, value>
+// Builder.  <to, duration> and <to, value>
 ayva.$.stroke(0, 1).twist(0, Ayva.RAMP_LINEAR).execute();
 
 // move() equivalent
 ayva.move({
   axis: 'stroke',
   to: 0,
-  speed: 1
+  duration: 1
 },{
   axis: 'twist',
   to: 0,
   value: Ayva.RAMP_LINEAR
 });
 ```
-Note: In this example, the stroke axis uses the (to, speed) form while the twist axis uses the (to, value) form—omitting speed to synchronize
+Note: In this example, the stroke axis uses the (to, duration) form while the twist axis uses the (to, value) form—omitting duration to synchronize
 with the stroke axis. See the <a href="./tutorial-motion-api-multiaxis.html#auto-sync" target="_blank">Auto Synchronization</a> section
 of the multiaxis movement documentation.
 
 <h4 class="pad-20"><i>[axis]</i>(to)</h4>
 
 ```javascript
-// Builder <to, speed> and <to>
+// Builder <to, duration> and <to>
 ayva.$.stroke(0, 1).twist(0).execute();
 
 // move() equivalent
 ayva.move({
   to: 0,
-  speed: 1
+  duration: 1
 },{
   axis: 'twist',
   to: 0
@@ -165,13 +165,13 @@ ayva.move({
 ```javascript
 // Builder <object>
 // Any property that is available for objects passed to move() can be used here as well (except for 'axis')
-ayva.$.stroke({ to: 0, duration: 1}).execute();
+ayva.$.stroke({ to: 0, speed: 1}).execute();
 
 // move() equivalent
 ayva.move({
   axis: 'stroke',
   to: 0,
-  duration: 1
+  speed: 1
 });
 ```
 
@@ -181,8 +181,8 @@ Move builders can be held onto and executed as many times as you like. The follo
 a bouncy stroke with a twist by constructing two reusable moves and repeatedly executing them in a loop:
 
 ```javascript
-const upStroke = ayva.$.stroke(1, 2, Ayva.RAMP_NEGATIVE_PARABOLIC).twist(0.25);
-const downStroke = ayva.$.stroke(0.25, 2, Ayva.RAMP_PARABOLIC).twist(0.75);
+const upStroke = ayva.$.stroke(1, 0.5, Ayva.RAMP_NEGATIVE_PARABOLIC).twist(0.25);
+const downStroke = ayva.$.stroke(0.25, 0.5, Ayva.RAMP_PARABOLIC).twist(0.75);
 
 // Perform 10 bouncy twist strokes.
 for (let i = 0; i < 10; i++) {
@@ -192,7 +192,7 @@ for (let i = 0; i < 10; i++) {
 ```
 <a href="./tutorial-examples/move-builder-bounce-example.html" target="_blank">Try it out!</a>
 
-### Live Updates with $
+### Live Updates
 
 The axis subproperties of the special property __$__ can also be used to perform live updates if necessary.
 You can get and set the value of an axis directly through the ```value``` property.
@@ -221,6 +221,16 @@ The axis subproperties of __$__ also allow updating limits:
 ayva.$.stroke.min = 0.25;
 ayva.$.stroke.max = 0.75;
 ```-->
+
+To perform bulk live updates, you may use Ayva's ```setValues()``` method:
+
+```javascript
+// Perform multiple live updates. These values will be converted to TCode and output to the device immediately.
+ayva.setValues({
+  stroke: 0,
+  twist: 1
+});
+```
 
 ### Whew!
 
