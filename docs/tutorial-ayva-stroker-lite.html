@@ -278,15 +278,30 @@ This can be changed by clicking the <em>gear</em> icon in the top right:</p>
 <p>AyvaScripts allow you to extend Ayva's functionality with custom scripts that can leverage the full power of Ayva.js's Motion and Behavior APIs. An AyvaScript is essentially just the body of the <code>*generate()</code> function of a <a href="./tutorial-behavior-api-generator-behavior.html" target="_blank">GeneratorBehavior</a>. The AyvaScript editor can be accessed by clicking the <em>gear</em> icon in the top right of the <em>Strokes</em> section, then clicking <em>Create AyvaScript</em>:</p>
 <p><img width="600px" src="./images/stroker-lite-guide-create-ayvascript.png"><br/></p>
 <p><img width="1100px" src="./images/stroker-lite-guide-ayvascript.png"><br/></p>
-<p>The body of an AyvaScript can be entered in the code editor on the left side, and previewed using the Play button on the top left. Anything that can be done in a <a href="./tutorial-behavior-api-generator-behavior.html" target="_blank">GeneratorBehavior</a> can be done in an AyvaScript.</p>
-<p>Here is an example AyvaScript that does a basic up / down stroke on the main axis using a move builder:</p>
+<p>The body of an AyvaScript can be entered in the code editor on the left side, and previewed using the <b>Play</b> button on the top left. Anything that can be done in a <a href="./tutorial-behavior-api-generator-behavior.html" target="_blank">GeneratorBehavior</a> can be done in an AyvaScript.</p>
+<p>Here is an example AyvaScript that does a basic up / down stroke on the main axis using a <a href="/tutorial-motion-api-syntactic-sugar.html" target="_blank">move builder</a>:</p>
 <pre class="prettyprint source lang-javascript"><code>const { stroke } = ayva.$;
 
 yield stroke(0, 1);
 yield stroke(1, 1);
 </code></pre>
-<p>Note that AyvaScripts have full control of Ayva. To take the user's parameters into account when constructing your behavior, a special <code>GLOBALS</code> object
-is available that contains a <i>parameters</i> object. It contains the following properties:</p>
+<p>Note that AyvaScripts have full control of Ayva and will run forever unless the user takes some action or the script stops itself.</p>
+<p>A script can stop itself by setting its <code>complete</code> property to true. For example, here is a script that uses a <a href="/VariableDuration.html" target="_blank">VariableDuration</a> object to perform a stroke for a random duration between 5 and 10 seconds:</p>
+<pre class="prettyprint source lang-javascript"><code>const { stroke } = ayva.$;
+
+// Create a new duration between 5 - 10 seconds if it doesn't exist.
+this.duration = this.duration ?? new VariableDuration(5, 10); 
+
+yield stroke(0, 1);
+yield stroke(1, 1);
+
+if (this.duration.complete) {
+  this.complete = true;
+}
+</code></pre>
+<p>This example also shows that you can use <code>this</code> to store data in between iterations.</p>
+<h4>Parameters</h4>
+<p>A special <code>GLOBALS</code> object is available to allow accessing data about the environment. For example, to take the user's parameters into account when constructing your behavior, you can use the <i>parameters</i> property. It is an object that contains the following properties:</p>
 <p><code>twist</code>: <b>boolean.</b> true if default twist is enabled. false if not.<br/>
 <code>bpm</code>: <b>array</b>. The bpm range.<br/>
 <code>acceleration</code>: <b>array.</b> The bpm acceleration range.<br/>
@@ -296,16 +311,89 @@ is available that contains a <i>parameters</i> object. It contains the following
 <code>twistPhase</code>: <b>number.</b> The default twist phase.<br/>
 <code>twistEcc</code>: <b>number.</b> The default twist eccentricity.<br/>
 <code>bpmMode</code>: <b>string.</b> The change bpm mode. Either <i>transition</i> or <i>continuous</i></p>
-<p>The following example is the same simple AyvaScript from above but it utilizes the user supplied bpm range to choose a random duration for each stroke:</p>
+<p>The following example is the same simple AyvaScript from above but it utilizes the user supplied bpm range to choose a random speed for each stroke:</p>
 <pre class="prettyprint source lang-javascript"><code>const { stroke } = ayva.$;
 const [ minBpm, maxBpm ] = GLOBALS.parameters.bpm;
 const randomBpm = Ayva.map(Math.random(), 0, 1, minBpm, maxBpm);
-const duration = 60 / randomBpm;
+const strokeDuration = 60 / randomBpm;
 
-yield stroke(0, duration);
-yield stroke(1, duration);
+// Create a new duration between 5 - 10 seconds if it doesn't exist.
+this.duration = this.duration ?? new VariableDuration(5, 10); 
+
+yield stroke(0, strokeDuration);
+yield stroke(1, strokeDuration);
+
+if (this.duration.complete) {
+  this.complete = true;
+}
 </code></pre>
-<p><b>TBD: There are many things that can be done with AyvaScripts. Stay tuned for a more detailed tutorial!</b></p>
+<br/>
+<h4>Input and Output</h4>
+<p>The <a href="/tutorial-behavior-api-tempest-stroke.html">TempestStroke</a> that was currently playing is available on the <code>input</code> property. If no stroke was playing this property will be <code>null</code>. The following AyvaScript will smooth transition from the current stroke (if it exists) into an orbit-grind.</p>
+<pre class="prettyprint source lang-javascript"><code>if (!this.stroke) {
+  // Initialize our stroke if we haven't already.
+  if (GLOBALS.input) {
+    // If there is an input stroke, perform a smooth transition.
+    this.stroke = GLOBALS.input.transition('orbit-grind', 45, 3);
+  } else {
+    // No input stroke, so perform a move to start transition.
+    this.stroke = new TempestStroke('orbit-grind', 45).bind(ayva);
+    yield* this.stroke.start();
+  }
+}
+
+yield* this.stroke;
+</code></pre>
+<p>An AyvaScript can set <code>GLOBALS.output</code> to a <a href="/tutorial-behavior-api-tempest-stroke.html">TempestStroke</a>. This will allow for another script or Ayva Stroker to use that stroke to smoothly transition to the next behavior. The following example demonstrates this:</p>
+<pre class="prettyprint source lang-javascript"><code>if (!this.stroke) {
+  // Initialize our stroke if we haven't already.
+  if (GLOBALS.input) {
+    // If there is an input stroke, perform a smooth transition.
+    this.stroke = GLOBALS.input.transition('orbit-grind', 45, 3);
+  } else {
+    // No input stroke, so perform a move to start transition.
+    this.stroke = new TempestStroke('orbit-grind', 45).bind(ayva);
+    yield* this.stroke.start();
+  }
+}
+
+GLOBALS.output = this.stroke;
+
+yield* this.stroke;
+</code></pre>
+<br/>
+<h4>Mode</h4>
+<p>An AyvaScript has access to the current mode through <code>GLOBALS.mode</code>. It can be either <code>freePlay</code> or <code>manual</code>. The following example will run forever if triggered in manual mode or will run for a duration based on the user parameters if in free play mode:</p>
+<pre class="prettyprint source lang-javascript"><code>if (!this.stroke) {
+  // Initialize our stroke if we haven't already.
+  if (GLOBALS.input) {
+    // If there is an input stroke, perform a smooth transition.
+    this.stroke = GLOBALS.input.transition('orbit-grind', 45, 3);
+  } else {
+    // No input stroke, so perform a move to start transition.
+    this.stroke = new TempestStroke('orbit-grind', 45).bind(ayva);
+    yield* this.stroke.start();
+  }
+}
+
+if (GLOBALS.mode === 'freePlay') {
+  const [ minDuration, maxDuration ] = GLOBALS.parameters.patternDuration;
+  this.duration = this.duration ?? new VariableDuration(minDuration, maxDuration);
+}
+
+GLOBALS.output = this.stroke;
+
+yield* this.stroke;
+
+if (this.duration && this.duration.complete) {
+  // Only complete these script if a duration exists and it has elapsed.
+  this.complete = true;
+}
+</code></pre>
+<p>This behavior will now fit seamlessly into free play or manual modes, smoothly transitioning out of or into other strokes.</p>
+<h4>Caveats</h4>
+<p>AyvaScripts run in a <em>sandbox</em>. So you do not have access to browser globals such as the <code>window</code> object. However, it is not a 100% secure sandbox. There are likely ways to get around the limitations, therefore you <b style="color: #AA0000">should not run code from untrusted sources</b>.</p>
+<p>Also, variable replacement in JavaScript <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals">template strings</a> currently do not work and will result in an error if attempted.</p>
 <h3 id="stroke-format">11. Behavior File Format</h3>
 <p>Behavior files are <a href="https://www.json.org/json-en.html" target="_blank">JSON</a> files. The top level object is an array containing all the behaviors. Each behavior has the following properties:</p>
 <ul>

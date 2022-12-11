@@ -194,9 +194,9 @@ AyvaScripts allow you to extend Ayva's functionality with custom scripts that ca
 
 <img width="1100px" src="./images/stroker-lite-guide-ayvascript.png"><br/>
 
-The body of an AyvaScript can be entered in the code editor on the left side, and previewed using the Play button on the top left. Anything that can be done in a <a href="./tutorial-behavior-api-generator-behavior.html" target="_blank">GeneratorBehavior</a> can be done in an AyvaScript.
+The body of an AyvaScript can be entered in the code editor on the left side, and previewed using the <b>Play</b> button on the top left. Anything that can be done in a <a href="./tutorial-behavior-api-generator-behavior.html" target="_blank">GeneratorBehavior</a> can be done in an AyvaScript.
 
-Here is an example AyvaScript that does a basic up / down stroke on the main axis using a move builder:
+Here is an example AyvaScript that does a basic up / down stroke on the main axis using a <a href="/tutorial-motion-api-syntactic-sugar.html" target="_blank">move builder</a>:
 
 ```javascript
 const { stroke } = ayva.$;
@@ -205,8 +205,29 @@ yield stroke(0, 1);
 yield stroke(1, 1);
 ```
 
-Note that AyvaScripts have full control of Ayva. To take the user's parameters into account when constructing your behavior, a special ```GLOBALS``` object 
-is available that contains a <i>parameters</i> object. It contains the following properties:
+Note that AyvaScripts have full control of Ayva and will run forever unless the user takes some action or the script stops itself. 
+
+A script can stop itself by setting its ```complete``` property to true. For example, here is a script that uses a <a href="/VariableDuration.html" target="_blank">VariableDuration</a> object to perform a stroke for a random duration between 5 and 10 seconds:
+
+```javascript
+const { stroke } = ayva.$;
+
+// Create a new duration between 5 - 10 seconds if it doesn't exist.
+this.duration = this.duration ?? new VariableDuration(5, 10); 
+
+yield stroke(0, 1);
+yield stroke(1, 1);
+
+if (this.duration.complete) {
+  this.complete = true;
+}
+```
+
+This example also shows that you can use ```this``` to store data in between iterations.
+
+#### Parameters
+
+A special ```GLOBALS``` object is available to allow accessing data about the environment. For example, to take the user's parameters into account when constructing your behavior, you can use the <i>parameters</i> property. It is an object that contains the following properties:
 
 ```twist```: <b>boolean.</b> true if default twist is enabled. false if not.<br/>
 ```bpm```: <b>array</b>. The bpm range.<br/>
@@ -218,19 +239,106 @@ is available that contains a <i>parameters</i> object. It contains the following
 ```twistEcc```: <b>number.</b> The default twist eccentricity.<br/>
 ```bpmMode```: <b>string.</b> The change bpm mode. Either <i>transition</i> or <i>continuous</i>
 
-The following example is the same simple AyvaScript from above but it utilizes the user supplied bpm range to choose a random duration for each stroke:
+The following example is the same simple AyvaScript from above but it utilizes the user supplied bpm range to choose a random speed for each stroke:
 
 ```javascript
 const { stroke } = ayva.$;
 const [ minBpm, maxBpm ] = GLOBALS.parameters.bpm;
 const randomBpm = Ayva.map(Math.random(), 0, 1, minBpm, maxBpm);
-const duration = 60 / randomBpm;
+const strokeDuration = 60 / randomBpm;
 
-yield stroke(0, duration);
-yield stroke(1, duration);
+// Create a new duration between 5 - 10 seconds if it doesn't exist.
+this.duration = this.duration ?? new VariableDuration(5, 10); 
+
+yield stroke(0, strokeDuration);
+yield stroke(1, strokeDuration);
+
+if (this.duration.complete) {
+  this.complete = true;
+}
+```
+<br/>
+
+#### Input and Output
+
+The <a href="/tutorial-behavior-api-tempest-stroke.html">TempestStroke</a> that was currently playing is available on the ```input``` property. If no stroke was playing this property will be ```null```. The following AyvaScript will smooth transition from the current stroke (if it exists) into an orbit-grind.
+
+```javascript
+if (!this.stroke) {
+  // Initialize our stroke if we haven't already.
+  if (GLOBALS.input) {
+    // If there is an input stroke, perform a smooth transition.
+    this.stroke = GLOBALS.input.transition('orbit-grind', 45, 3);
+  } else {
+    // No input stroke, so perform a move to start transition.
+    this.stroke = new TempestStroke('orbit-grind', 45).bind(ayva);
+    yield* this.stroke.start();
+  }
+}
+
+yield* this.stroke;
 ```
 
-<b>TBD: There are many things that can be done with AyvaScripts. Stay tuned for a more detailed tutorial!</b>
+An AyvaScript can set ```GLOBALS.output``` to a <a href="/tutorial-behavior-api-tempest-stroke.html">TempestStroke</a>. This will allow for another script or Ayva Stroker to use that stroke to smoothly transition to the next behavior. The following example demonstrates this:
+
+```javascript
+if (!this.stroke) {
+  // Initialize our stroke if we haven't already.
+  if (GLOBALS.input) {
+    // If there is an input stroke, perform a smooth transition.
+    this.stroke = GLOBALS.input.transition('orbit-grind', 45, 3);
+  } else {
+    // No input stroke, so perform a move to start transition.
+    this.stroke = new TempestStroke('orbit-grind', 45).bind(ayva);
+    yield* this.stroke.start();
+  }
+}
+
+GLOBALS.output = this.stroke;
+
+yield* this.stroke;
+```
+<br/>
+
+#### Mode
+
+An AyvaScript has access to the current mode through ```GLOBALS.mode```. It can be either ```freePlay``` or ```manual```. The following example will run forever if triggered in manual mode or will run for a duration based on the user parameters if in free play mode:
+
+```javascript
+if (!this.stroke) {
+  // Initialize our stroke if we haven't already.
+  if (GLOBALS.input) {
+    // If there is an input stroke, perform a smooth transition.
+    this.stroke = GLOBALS.input.transition('orbit-grind', 45, 3);
+  } else {
+    // No input stroke, so perform a move to start transition.
+    this.stroke = new TempestStroke('orbit-grind', 45).bind(ayva);
+    yield* this.stroke.start();
+  }
+}
+
+if (GLOBALS.mode === 'freePlay') {
+  const [ minDuration, maxDuration ] = GLOBALS.parameters.patternDuration;
+  this.duration = this.duration ?? new VariableDuration(minDuration, maxDuration);
+}
+
+GLOBALS.output = this.stroke;
+
+yield* this.stroke;
+
+if (this.duration && this.duration.complete) {
+  // Only complete these script if a duration exists and it has elapsed.
+  this.complete = true;
+}
+```
+
+This behavior will now fit seamlessly into free play or manual modes, smoothly transitioning out of or into other strokes.
+
+#### Caveats
+
+AyvaScripts run in a _sandbox_. So you do not have access to browser globals such as the ```window``` object. However, it is not a 100% secure sandbox. There are likely ways to get around the limitations, therefore you <b style="color: #AA0000">should not run code from untrusted sources</b>.
+
+Also, variable replacement in JavaScript <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals">template strings</a> currently do not work and will result in an error if attempted.
 
 <h3 id="stroke-format">11. Behavior File Format</h3>
 
