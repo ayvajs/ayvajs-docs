@@ -128,7 +128,7 @@ This label displays the current mode. It will be either __Stopped__, __Free Play
 
 <img width="600px" src="./images/stroker-lite-guide-current-bpm.png"><br/>  
 
-This slider shows the current speed. In both __Free Play__ and __Manual__ mode the speed of the current stroke can be changed in real time. However, while you can set the speed in __Free Play__ mode, Ayva can (and likely __will__) choose a new speed when it decides to play a new stroke. But Ayva will never changes strokes while you are dragging the slider. This means that if you are in Free Play mode and you would like to stay on the current pattern without leaving Free Play, you could keep the bpm slider engaged until you are ready to switch.
+This slider shows the current speed. In both __Free Play__ and __Manual__ mode the speed of the current stroke can be changed in real time. However, while you can set the speed in __Free Play__ mode, Ayva can (and likely __will__) choose a new speed when it decides to play a new stroke. But Ayva will never change strokes while you are dragging the slider. This means that if you are in Free Play mode and you would like to stay on the current pattern without leaving Free Play, you could keep the bpm slider engaged until you are ready to switch.
 
 Manually updating the bpm is not allowed during a transition or when an AyvaScript is playing (the widget will be disabled), as Ayva has full control of the speed during that time.
 
@@ -196,7 +196,7 @@ AyvaScripts allow you to extend Ayva's functionality with custom scripts that ca
 
 The body of an AyvaScript can be entered in the code editor on the left side, and previewed using the <b>Play</b> button on the top left. Anything that can be done in a <a href="./tutorial-behavior-api-generator-behavior.html" target="_blank">GeneratorBehavior</a> can be done in an AyvaScript.
 
-Here is an example AyvaScript that does a basic up / down stroke on the main axis using a <a href="/tutorial-motion-api-syntactic-sugar.html" target="_blank">move builder</a>:
+Here is an example AyvaScript that does a basic up / down stroke on the main axis using a <a href="./tutorial-motion-api-syntactic-sugar.html" target="_blank">move builder</a>:
 
 ```javascript
 const { stroke } = ayva.$;
@@ -207,7 +207,7 @@ yield stroke(1, 1);
 
 Note that AyvaScripts have full control of Ayva and will run forever unless the user takes some action or the script stops itself. 
 
-A script can stop itself by setting its ```complete``` property to true. For example, here is a script that uses a <a href="/VariableDuration.html" target="_blank">VariableDuration</a> object to perform a stroke for a random duration between 5 and 10 seconds:
+A script can stop itself by setting its ```complete``` property to true. For example, here is a script that uses a <a href="./VariableDuration.html" target="_blank">VariableDuration</a> object to perform a stroke for a random duration between 5 and 10 seconds:
 
 ```javascript
 const { stroke } = ayva.$;

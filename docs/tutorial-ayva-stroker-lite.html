@@ -234,7 +234,7 @@ This can be changed by clicking the <em>gear</em> icon in the top right:</p>
 <p>This label displays the current mode. It will be either <strong>Stopped</strong>, <strong>Free Play</strong>, or <strong>Manual</strong>.</p>
 <h3 id="bpm">7. Current BPM</h3>
 <p><img width="600px" src="./images/stroker-lite-guide-current-bpm.png"><br/></p>
-<p>This slider shows the current speed. In both <strong>Free Play</strong> and <strong>Manual</strong> mode the speed of the current stroke can be changed in real time. However, while you can set the speed in <strong>Free Play</strong> mode, Ayva can (and likely <strong>will</strong>) choose a new speed when it decides to play a new stroke. But Ayva will never changes strokes while you are dragging the slider. This means that if you are in Free Play mode and you would like to stay on the current pattern without leaving Free Play, you could keep the bpm slider engaged until you are ready to switch.</p>
+<p>This slider shows the current speed. In both <strong>Free Play</strong> and <strong>Manual</strong> mode the speed of the current stroke can be changed in real time. However, while you can set the speed in <strong>Free Play</strong> mode, Ayva can (and likely <strong>will</strong>) choose a new speed when it decides to play a new stroke. But Ayva will never change strokes while you are dragging the slider. This means that if you are in Free Play mode and you would like to stay on the current pattern without leaving Free Play, you could keep the bpm slider engaged until you are ready to switch.</p>
 <p>Manually updating the bpm is not allowed during a transition or when an AyvaScript is playing (the widget will be disabled), as Ayva has full control of the speed during that time.</p>
 <h3 id="designer">8. Stroke Designer</h3>
 <p><img width="600px" src="./images/stroker-lite-guide-designer-1.png"><br/></p>
@@ -279,14 +279,14 @@ This can be changed by clicking the <em>gear</em> icon in the top right:</p>
 <p><img width="600px" src="./images/stroker-lite-guide-create-ayvascript.png"><br/></p>
 <p><img width="1100px" src="./images/stroker-lite-guide-ayvascript.png"><br/></p>
 <p>The body of an AyvaScript can be entered in the code editor on the left side, and previewed using the <b>Play</b> button on the top left. Anything that can be done in a <a href="./tutorial-behavior-api-generator-behavior.html" target="_blank">GeneratorBehavior</a> can be done in an AyvaScript.</p>
-<p>Here is an example AyvaScript that does a basic up / down stroke on the main axis using a <a href="/tutorial-motion-api-syntactic-sugar.html" target="_blank">move builder</a>:</p>
+<p>Here is an example AyvaScript that does a basic up / down stroke on the main axis using a <a href="./tutorial-motion-api-syntactic-sugar.html" target="_blank">move builder</a>:</p>
 <pre class="prettyprint source lang-javascript"><code>const { stroke } = ayva.$;
 
 yield stroke(0, 1);
 yield stroke(1, 1);
 </code></pre>
 <p>Note that AyvaScripts have full control of Ayva and will run forever unless the user takes some action or the script stops itself.</p>
-<p>A script can stop itself by setting its <code>complete</code> property to true. For example, here is a script that uses a <a href="/VariableDuration.html" target="_blank">VariableDuration</a> object to perform a stroke for a random duration between 5 and 10 seconds:</p>
+<p>A script can stop itself by setting its <code>complete</code> property to true. For example, here is a script that uses a <a href="./VariableDuration.html" target="_blank">VariableDuration</a> object to perform a stroke for a random duration between 5 and 10 seconds:</p>
 <pre class="prettyprint source lang-javascript"><code>const { stroke } = ayva.$;
 
 // Create a new duration between 5 - 10 seconds if it doesn't exist.
