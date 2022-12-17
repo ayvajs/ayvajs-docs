@@ -392,7 +392,7 @@ if (this.duration && this.duration.complete) {
 </code></pre>
 <p>This behavior will now fit seamlessly into free play or manual modes, smoothly transitioning out of or into other strokes.</p>
 <h4>Caveats</h4>
-<p>AyvaScripts run in a <em>sandbox</em>. So you do not have access to browser globals such as the <code>window</code> object. However, it is not a 100% secure sandbox. There are likely ways to get around the limitations, therefore you <b style="color: #AA0000">should not run code from untrusted sources</b>.</p>
+<p>AyvaScripts run in a <em>sandbox</em>. So you do not have access to browser globals such as the <code>window</code> object. However, it is not a 100% secure sandbox. There are likely ways to get around the limitations, therefore you <b style="color: #AA0000">should never run code from untrusted sources</b>.</p>
 <p>Also, variable replacement in JavaScript <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals">template strings</a> currently do not work and will result in an error if attempted.</p>
 <h3 id="stroke-format">11. Behavior File Format</h3>
 <p>Behavior files are <a href="https://www.json.org/json-en.html" target="_blank">JSON</a> files. The top level object is an array containing all the behaviors. Each behavior has the following properties:</p>

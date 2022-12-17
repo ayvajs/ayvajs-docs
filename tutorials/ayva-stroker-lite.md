@@ -336,7 +336,7 @@ This behavior will now fit seamlessly into free play or manual modes, smoothly t
 
 #### Caveats
 
-AyvaScripts run in a _sandbox_. So you do not have access to browser globals such as the ```window``` object. However, it is not a 100% secure sandbox. There are likely ways to get around the limitations, therefore you <b style="color: #AA0000">should not run code from untrusted sources</b>.
+AyvaScripts run in a _sandbox_. So you do not have access to browser globals such as the ```window``` object. However, it is not a 100% secure sandbox. There are likely ways to get around the limitations, therefore you <b style="color: #AA0000">should never run code from untrusted sources</b>.
 
 Also, variable replacement in JavaScript <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals">template strings</a> currently do not work and will result in an error if attempted.
 
