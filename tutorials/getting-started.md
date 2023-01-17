@@ -2,6 +2,13 @@
 
 ## What is Ayva.js?
 Ayva.js is a lightweight, behavior-based JavaScript library for controlling <a href="https://www.patreon.com/tempestvr" target="_blank">Open Source Multi Axis Stroker Robots</a> such as the <a href="https://www.thingiverse.com/thing:4843410" target="_blank">OSR2+</a>, SR6, or any device that can be controlled with TCode. It allows specifying simple or complex multi-axis movements using an expressive Motion API. More complex behaviors can be constructed using a Behavior API.
+
+### Sponsor this project
+
+<div style="display: flex; align-items: center;">
+  <img width="32" height="32" style="margin-right: 8px;" alt="patreon" src="./images/patreon.svg"><a href="https://www.patreon.com/soritesparadox" target="_blank">patreon.com/soritesparadox</a>
+</div>
+
 ## Quick Start
 
 

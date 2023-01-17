@@ -29,6 +29,12 @@ Supported browsers: Chrome, Edge, Safari
 
 _Note: The app will run in Firefox, but Firefox does not support the Web Serial API yet so connecting to an actual device via serial in Firefox is currently not possible._
 
+### Sponsor this project
+
+<div style="display: flex; align-items: center;">
+  <img width="32" height="32" style="margin-right: 8px;" alt="patreon" src="./images/patreon.svg"><a href="https://www.patreon.com/soritesparadox" target="_blank">patreon.com/soritesparadox</a>
+</div>
+
 ## Guide
 
 <img src="./images/stroker-lite-guide-1.png">

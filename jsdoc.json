@@ -1,6 +1,7 @@
 {
   "source": {
-    "include": ["./ayvajs/src"]
+    "include": ["./ayvajs/src"],
+    "exclude": ["./ayvajs/src/util/lodash.clonedeep.js"]
   },
   "plugins": [
     "better-docs/category",
