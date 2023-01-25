@@ -191,8 +191,9 @@ This can be changed by clicking the <em>gear</em> icon in the top right:</p>
 <img width="250px" src="./images/stroker-lite-guide-output-type-serial.png">
 <div style="margin-bottom: 10px; margin-top: 5px; margin-left: 20px">When in Serial mode, clicking the connect button will open the built-in Web Serial API window of the browser and allow you to select a serial port to connect to.</div>
 <img width="250px" src="./images/stroker-lite-guide-output-type-websocket.png">
-<div style="margin-bottom: 10px; margin-top: 5px; margin-left: 20px">When in WebSocket mode, clicking the connect button will open a websocket to the  <i>/ws</i> path on the provided host and port. To connect to device firmware that supports WiFi, you should set the host to the IP address of your device, and the port to 80.</div>
-<img width="250px" src="./images/stroker-lite-guide-output-type-console.png">
+<div style="margin-bottom: 10px; margin-top: 5px; margin-left: 20px">When in WebSocket mode, clicking the connect button will open a websocket to the  <i>/ws</i> path on the provided host and port. 
+<p><b style="color: rgb(127, 0, 0)">Note: This feature currently cannot connect to a WiFi enabled device due to devices not supporting secure WebSockets. An companion app called Ayva WebSocket Hub is being developed to act as a bridge.</b></div>
+<img width="250px" src="./images/stroker-lite-guide-output-type-console.png"></p>
 <div style="margin-bottom: 10px; margin-top: 5px; margin-left: 20px">When in Console mode, clicking the connect button will cause all TCode to simply be output to the console. This output type is generally only used for debugging.</div>
 <p>Clicking the connect button again after an output is connected will disconnect.</p>
 <p><em>Note: For safety reasons, connections can only be made when in <strong>Stopped</strong> mode. You will not be able to connect to an output if a stroke is currently playing.</em></p>
